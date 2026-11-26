@@ -992,6 +992,10 @@ body.resfx #fx{opacity:.45}
 .r3d .qcard .qtip.ok{background:#E9FBF0;border-color:#86EFAC;color:#14532D}
 @media (max-width:760px){.r3d .rh-q .qt{font-size:18px;padding:8px 12px 10px}.r3d .rh-q .qh{padding:6px 10px}}
 @media (max-width:760px) and (max-height:500px){.r3d .rh-q .qt{font-size:15px;padding:6px 12px 8px}}
+/* v13 — Fokus */
+.fseg{display:grid!important;grid-template-columns:repeat(4,1fr);gap:6px}
+.fseg button{font-size:12.5px!important;padding:9px 4px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:420px){.fseg{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -3624,6 +3628,867 @@ const BK_VC1=[
  ['Mein persönliches ___','Fazit','Fazite','Fazits','ein Fazit ziehen.']]]
 ];
 
+/* ---------- Lernwortschatz (W) + Kommunikation (K): Momente A1 ---------- */
+/* Format: Lektion: [[Kat, Frage, richtig, falsch..., Tipp uz], ...] */
+const BX_MA1={
+1:[
+["W","Guten ___! (morgens, 8 Uhr)","Morgen","Abend","Nacht","Ertalab: Guten Morgen!"],
+["W","Ich spreche Usbekisch, Russisch und ein bisschen ___.","Deutsch","Deutschland","Deutsche","Til: Deutsch. Mamlakat: Deutschland."],
+["W","Das Gegenteil von „Hallo!“ ist ___","Tschüss!","Guten Tag!","Danke!","Xayrlashuv: Tschüss! / Auf Wiedersehen!"],
+["K","Sie treffen Ihren Lehrer. Sie sagen: ___","Guten Tag, Herr Braun!","Hallo, Braun!","Tschüss, Herr Braun!","Rasmiy salom: Guten Tag + Herr/Frau."],
+["K","Wie heißt du? – ___","Ich heiße Aziz.","Ich komme aus Andijon.","Mir geht's gut.","Wie heißt du? → ism so'raladi."],
+["K","Sie verstehen das Wort nicht. Sie sagen: ___","Wie bitte?","Bitte schön!","Danke, gut.","Tushunmasangiz: Wie bitte?"]],
+2:[
+["W","Er arbeitet im Krankenhaus. Er ist ___.","Arzt","Lehrer","Koch","Krankenhaus — kasalxona → Arzt."],
+["W","Sie ist nicht verheiratet. Sie ist ___.","ledig","geschieden","alt","ledig — turmush qurmagan."],
+["W","20 = ___","zwanzig","zweizehn","zwölf","20 — zwanzig."],
+["K","Was sind Sie von Beruf? – ___","Ich bin Ingenieur.","Ich bin 30 Jahre alt.","Ich wohne in Buchara.","von Beruf → kasb so'raladi."],
+["K","Wie alt bist du? – ___","Ich bin 19.","Ich bin Student.","Ich bin ledig.","Wie alt → yosh."],
+["K","Sie fragen nach der Telefonnummer: ___","Wie ist Ihre Telefonnummer?","Wie viel ist Ihre Nummer?","Wo ist Ihr Telefon?","Raqam so'rash: Wie ist Ihre …nummer?"]],
+3:[
+["W","Die Mutter von meiner Mutter ist meine ___.","Großmutter","Tante","Schwester","Onaning onasi — Großmutter (Oma)."],
+["W","Mein Bruder und meine Schwester sind meine ___.","Geschwister","Eltern","Kinder","Aka-uka, opa-singillar: Geschwister."],
+["W","der Sohn – die ___","Tochter","Tante","Mutter","Sohn — o'g'il, Tochter — qiz."],
+["K","Wer ist das? – ___","Das ist mein Onkel.","Das ist ein Tisch.","Er ist 40.","Wer? → shaxs."],
+["K","Welche Sprachen sprichst du? – ___","Usbekisch und Englisch.","Aus Usbekistan.","Ja, gern.","Welche Sprachen → tillar."],
+["K","Sie stellen Ihre Freundin vor: ___","Das ist Dilnoza, meine Freundin.","Ich bin Dilnoza.","Wie heißt Dilnoza?","Tanishtirish: Das ist …"]],
+4:[
+["W","Ich sitze auf dem ___.","Sofa","Regal","Bild","Sofa ustida o'tiriladi."],
+["W","Das Gegenteil von „teuer“ ist ___.","billig","schön","neu","teuer ↔ billig."],
+["W","Gelb und Blau zusammen: ___","Grün","Rot","Braun","Sariq + ko'k = yashil."],
+["K","Im Möbelgeschäft: ___","Was kostet der Schrank?","Wie heißt der Schrank?","Wo wohnt der Schrank?","Narx: Was kostet …?"],
+["K","Wie findest du die Lampe? – ___","Sehr schön!","Sie kostet 20 Euro.","Sie ist im Zimmer.","Wie findest du …? → fikr."],
+["K","Das ist zu teuer. Sie sagen höflich: ___","Haben Sie auch etwas Billigeres?","Das ist doof!","Ich nehme alles.","Arzonroq so'rash: etwas Billigeres."]],
+5:[
+["W","Damit schreibe ich: ___","der Kuli","der Teller","der Schlüssel","Kuli — ruchka."],
+["W","Das Fenster ist aus ___.","Glas","Papier","Leder","Deraza — shishadan: aus Glas."],
+["W","Die Uhr ist nicht eckig, sie ist ___.","rund","lang","leicht","eckig ↔ rund."],
+["K","Wie heißt das auf Deutsch? – ___","Das ist ein Radiergummi.","Das ist schön.","Er heißt Max.","Narsa nomi: Das ist ein/eine …"],
+["K","Sie suchen Ihr Handy. Sie fragen: ___","Wo ist mein Handy?","Wer ist mein Handy?","Was kostet mein Handy?","Joy: Wo ist …?"],
+["K","Wie schreibt man das? – ___","T-I-S-C-H.","Das ist ein Tisch.","Mit dem Kuli.","Harflab aytish (buchstabieren)."]],
+6:[
+["W","Montag, Dienstag, ___","Mittwoch","Donnerstag","Sonntag","Dushanba, seshanba, chorshanba."],
+["W","15:30 Uhr = halb ___","vier","drei","fünf","halb vier = 3:30."],
+["W","Beim Arzt brauche ich einen ___.","Termin","Tisch","Kaffee","Termin — uchrashuv vaqti."],
+["K","Wann hast du Zeit? – ___","Am Freitag um 5.","Im Café.","Mit Anna.","Wann? → vaqt."],
+["K","Am Telefon, beim Arzt: ___","Ich möchte einen Termin machen.","Ich möchte einen Arzt kaufen.","Wie spät ist der Arzt?","Termin olish: einen Termin machen/vereinbaren."],
+["K","Wie spät ist es? – ___","Viertel nach acht.","Am Montag.","Acht Stunden.","Wie spät? → soat."]],
+7:[
+["W","Er spielt gern ___.","Fußball","Schwimmen","Musik hören","spielen + Fußball/Gitarre."],
+["W","Im Sommer gehe ich ___.","schwimmen","Ski fahren","Schlittschuh","Yozda — suzish."],
+["W","Ich ___ gern Bücher.","lese","spiele","fahre","Kitob o'qish: lesen."],
+["K","Was machst du gern? – ___","Ich koche gern.","Ich bin gern.","Ja, gern.","Was machst du gern → sevimli mashg'ulot."],
+["K","Kannst du Gitarre spielen? – ___","Nein, leider nicht.","Nein, ich kann nicht Gitarre.","Doch, ich spiele nicht.","Rad javob: Nein, leider nicht."],
+["K","Sie fragen nach Hobbys: ___","Was sind deine Hobbys?","Wo sind deine Hobbys?","Wie viel Hobbys kostest du?","Qiziqish so'rash."]],
+8:[
+["W","Ich ___ um 7 Uhr auf.","stehe","gehe","fange","aufstehen — turmoq."],
+["W","Am Abend esse ich ___.","Abendessen","Frühstück","Mittagessen","Kechqurun — Abendessen."],
+["W","Der Unterricht ___ um 9 Uhr an.","fängt","hört","ruft","anfangen — boshlanmoq."],
+["K","Kommst du heute mit ins Kino? – ___","Tut mir leid, ich habe keine Zeit.","Ja, ich habe keine Zeit.","Nein, gern.","Rad etish: Tut mir leid …"],
+["K","Sie schlagen einen Termin vor: ___","Hast du am Samstag Zeit?","Bist du am Samstag Zeit?","Machst du Samstag?","Taklif: Hast du … Zeit?"],
+["K","Wie lange arbeitest du? – ___","Bis 17 Uhr.","Um 17 Uhr.","Seit Montag.","Wie lange → bis …"]],
+9:[
+["W","Ich trinke morgens ___.","Tee","Brot","Käse","Ichimlik: Tee."],
+["W","Eine ___ Milch, bitte.","Flasche","Stück","Kilo","eine Flasche Milch."],
+["W","Äpfel und Bananen sind ___.","Obst","Gemüse","Fleisch","Meva — Obst."],
+["K","Was möchten Sie? – ___","Ich hätte gern ein Kilo Tomaten.","Ich mag Tomaten nicht.","Tomaten sind rot.","Do'konda: Ich hätte gern …"],
+["K","Im Supermarkt: ___","Entschuldigung, wo finde ich Reis?","Hallo, ich bin Reis.","Reis, wie spät?","Joy so'rash: Wo finde ich …?"],
+["K","Möchten Sie noch etwas? – ___","Nein, danke. Das ist alles.","Ja, das ist alles.","Nein, bitte schön.","Boshqa kerak emas: Das ist alles."]],
+10:[
+["W","Der Zug fährt vom ___ ab.","Bahnhof","Flughafen","Bahnsteig 3","Poyezd — Bahnhof."],
+["W","Ich fliege mit dem ___.","Flugzeug","Zug","Fahrrad","fliegen → Flugzeug."],
+["W","hin und zurück = ___","eine Rückfahrkarte","ein Ticket nur hin","eine Ankunft","Borib-kelish chiptasi."],
+["K","Am Schalter: ___","Eine Fahrkarte nach Berlin, bitte.","Ein Berlin nach Fahrkarte.","Ich bin Berlin, bitte.","Chipta so'rash."],
+["K","Wann kommt der Zug in Hamburg an? – ___","Um 14:20 Uhr.","Auf Gleis 5.","Mit dem Bus.","Wann → vaqt."],
+["K","Der Zug hat Verspätung. Ihr Freund wartet. Sie schreiben: ___","Ich komme 20 Minuten später.","Ich komme 20 Minuten früh.","Der Zug ist pünktlich.","Kechikish: später."]],
+11:[
+["W","Am Wochenende habe ich meine Wohnung ___.","geputzt","gespielt","gekauft","putzen — tozalash."],
+["W","Gestern war ___. Heute ist Mittwoch.","Dienstag","Donnerstag","Montag","Kecha — Dienstag."],
+["W","Ich habe Freunde ___.","getroffen","gegangen","gefahren","treffen → getroffen."],
+["K","Was hast du am Wochenende gemacht? – ___","Ich habe viel geschlafen.","Ich schlafe viel.","Ich werde schlafen.","O'tgan zamon: Perfekt."],
+["K","Wie war dein Wochenende? – ___","Super, danke!","Am Sonntag.","Ja, ich habe.","Wie war …? → baho."],
+["K","Ihr Freund erzählt etwas Tolles. Sie sagen: ___","Wirklich? Das ist ja toll!","Schade!","Das tut mir leid.","Hayrat/quvonch: Das ist ja toll!"]],
+12:[
+["W","Im ___ ist es kalt und es schneit.","Winter","Sommer","Frühling","Qish — Winter."],
+["W","Ich bin mit dem Zug nach Wien ___.","gefahren","gefliegt","gegangt","fahren → ist gefahren."],
+["W","Wir haben im Urlaub viele Fotos ___.","gemacht","gegeben","geschrieben","Fotos machen."],
+["K","Wo warst du im Urlaub? – ___","Ich war in Italien.","Ich bin Italien.","Ich fahre Italien.","Wo warst du → qayerda edingiz."],
+["K","Wie lange bist du geblieben? – ___","Zwei Wochen.","Mit dem Auto.","Im Hotel.","Wie lange → muddat."],
+["K","Sie empfehlen eine Stadt: ___","Du musst unbedingt nach Chiwa fahren!","Du darfst nicht nach Chiwa.","Chiwa ist nicht.","Tavsiya: unbedingt."]],
+13:[
+["W","Hier kann man Bilder ansehen: ___","das Museum","die Bank","die Post","Rasm ko'rish — Museum."],
+["W","Hier kauft man Medikamente: ___","die Apotheke","die Bäckerei","der Bahnhof","Dori — Apotheke."],
+["W","Die Stadt ist nicht langweilig, sie ist ___.","interessant","alt","klein","langweilig ↔ interessant."],
+["K","Wie gefällt dir Berlin? – ___","Sehr gut! Die Stadt ist toll.","Mir gefällt Berlin heißt.","Ich bin Berlin.","gefallen + Dativ."],
+["K","Sie schreiben eine Postkarte: ___","Liebe Grüße aus München!","Sehr geehrte Grüße!","Tschüss Grüße!","Otkritka oxiri: Liebe Grüße."],
+["K","Ein Tourist fragt nach dem Museum. Sie wissen es nicht: ___","Tut mir leid, ich bin auch fremd hier.","Ja, das Museum.","Bitte, das ist alles.","Bilmasangiz: Ich bin auch fremd hier."]],
+14:[
+["W","Gehen Sie hier ___ und dann links.","geradeaus","rechts aus","zurück links","to'g'ri — geradeaus."],
+["W","An der ___ ist es rot. Wir warten.","Ampel","Kreuzung","Brücke","Svetofor — Ampel."],
+["W","Die Bank ist ___ der Post und dem Café.","zwischen","neben","gegenüber","zwischen … und … — orasida."],
+["K","Entschuldigung, wie komme ich zum Bahnhof? – ___","Die zweite Straße links.","Mit Gleis 3.","Um 8 Uhr.","Yo'l ko'rsatish."],
+["K","Ist das weit? – ___","Nein, nur fünf Minuten zu Fuß.","Nein, es ist 5 Euro.","Ja, sehr gern.","Masofa: zu Fuß."],
+["K","Sie danken für die Hilfe: ___","Vielen Dank!","Bitte sehr!","Gern geschehen!","Rahmat: Vielen Dank! (Javob: Gern geschehen.)"]],
+15:[
+["W","Hier koche ich: ___","die Küche","das Bad","der Flur","Ovqat pishirish — Küche."],
+["W","Die Wohnung ist nicht dunkel, sie ist ___.","hell","laut","teuer","dunkel ↔ hell."],
+["W","Die Wohnung kostet 600 Euro ___.","Miete","Zimmer","Balkon","Ijara haqi — Miete."],
+["K","Am Telefon: Ist die Wohnung noch frei? – ___","Ja, möchten Sie sie ansehen?","Ja, sie ist hell.","Nein, sie ist 60 m².","Ko'rishga taklif."],
+["K","Wie viele Zimmer hat die Wohnung? – ___","Drei Zimmer, Küche, Bad.","Im dritten Stock.","Sehr schön.","Wie viele → son."],
+["K","Sie finden das Zimmer schön: ___","Das Zimmer gefällt mir sehr.","Mir das Zimmer gefällt.","Ich gefalle das Zimmer.","Das … gefällt mir."]],
+16:[
+["W","Im Hotelzimmer ist es kalt. Die ___ funktioniert nicht.","Heizung","Dusche","Lampe","Isitish — Heizung."],
+["W","Das Wasser ist nicht warm, es ist ___.","kalt","laut","kaputt","warm ↔ kalt."],
+["W","Den Schlüssel bekomme ich an der ___.","Rezeption","Küche","Haltestelle","Mehmonxonada — Rezeption."],
+["K","An der Rezeption: ___","Das WLAN funktioniert nicht.","Das WLAN ist nicht kaputt gut.","Ich funktioniere nicht.","Muammo aytish: … funktioniert nicht."],
+["K","Können Sie das reparieren? – ___","Ja, natürlich. Ich komme sofort.","Nein, ich bin Hotel.","Ja, das ist kaputt.","Yordam: Ich komme sofort."],
+["K","Sie beschweren sich höflich: ___","Entschuldigung, das Zimmer ist leider sehr laut.","Das Zimmer ist laut, Sie!","Laut, laut, laut!","Muloyim shikoyat: leider."]],
+17:[
+["W","Ich möchte Medizin studieren. Ich gehe an die ___.","Universität","Grundschule","Firma","Oliy ta'lim — Universität."],
+["W","Nach der Schule mache ich eine ___ als Koch.","Ausbildung","Prüfung","Pause","Kasb ta'limi — Ausbildung."],
+["W","Er fliegt Flugzeuge. Er ist ___.","Pilot","Fahrer","Mechaniker","Pilot."],
+["K","Was willst du werden? – ___","Ich will Ärztin werden.","Ich will Ärztin.","Ich werde Ärztin sein gern.","wollen + werden."],
+["K","Warum? – ___","Weil ich Menschen helfen möchte.","Weil ich möchte helfen Menschen.","Weil Menschen.","weil → fe'l oxirida."],
+["K","Sie finden die Idee gut: ___","Das ist eine gute Idee!","Das ist eine gute Ideen!","Gute Idee ist das nicht.","Ma'qullash."]],
+18:[
+["W","Ich habe ___schmerzen. Mein Kopf tut weh.","Kopf","Bauch","Hals","Kopf — bosh."],
+["W","Der Arzt schreibt ein ___.","Rezept","Termin","Medikament","Retsept — Rezept."],
+["W","Mein Bein tut weh: Ich habe ___schmerzen.","Bein","Zahn","Rücken","Bein — oyoq."],
+["K","Was fehlt Ihnen? – ___","Ich habe Fieber und Husten.","Mir fehlt nichts Fieber.","Ich bin Fieber.","Was fehlt Ihnen → nima bezovta qiladi."],
+["K","Gute Besserung! – ___","Danke!","Bitte!","Gleichfalls krank!","Gute Besserung → Danke!"],
+["K","Der Arzt sagt: Sie sollen viel trinken. Sie erzählen: ___","Der Arzt sagt, ich soll viel trinken.","Der Arzt soll viel trinken.","Ich will viel Arzt trinken.","sollen — boshqaning maslahati."]],
+19:[
+["W","Er lacht viel. Er ist ___.","fröhlich","traurig","sauer","Xursand — fröhlich."],
+["W","Sie weint. Sie ist ___.","traurig","glücklich","müde","weinen — yig'lamoq → traurig."],
+["W","Ich habe Angst ___ Hunden.","vor","von","mit","Angst vor + Dativ."],
+["K","Ihr Freund ist sauer. Sie sagen: ___","Sei doch nicht sauer!","Bist doch nicht sauer!","Seid nicht sauer, du!","Imperativ: sei!"],
+["K","Was ist los? – ___","Ich bin so müde.","Es ist los.","Ich los.","Was ist los → nima bo'ldi."],
+["K","Sie entschuldigen sich: ___","Entschuldige, das war mein Fehler.","Gute Besserung!","Herzlichen Glückwunsch!","Kechirim: Entschuldige."]],
+20:[
+["W","Im Winter trage ich einen ___.","Mantel","Rock","Badeanzug","Palto — Mantel."],
+["W","Er ist nicht klein, er ist ___.","groß","jung","dick","klein ↔ groß."],
+["W","Sie hat lange, blonde ___.","Haare","Augen","Bart","Haare — soch."],
+["K","Im Geschäft: Kann ich die Hose anprobieren? – ___","Ja, die Kabine ist dort hinten.","Ja, sie kostet 30 Euro.","Nein, die Hose ist blau.","Kiyib ko'rish: Kabine."],
+["K","Welche Größe haben Sie? – ___","Größe 38.","Sehr groß.","Blau, bitte.","Größe → o'lcham."],
+["K","Wie sieht dein Bruder aus? – ___","Er ist groß und hat dunkle Haare.","Er sieht gern fern.","Er ist Lehrer.","aussehen → tashqi ko'rinish."]],
+21:[
+["W","Im Museum ist Fotografieren ___.","verboten","erlaubt nicht","gesund","Ruxsat yo'q — verboten."],
+["W","Hier darf man nicht ___. (Zigarette)","rauchen","essen gehen","parken lassen","Chekish — rauchen."],
+["W","Das Gegenteil von „erlaubt“ ist ___.","verboten","möglich","pünktlich","erlaubt ↔ verboten."],
+["K","Darf ich hier parken? – ___","Nein, das ist leider verboten.","Nein, das ist leider erlaubt.","Ja, das ist verboten.","Ruxsat so'rash."],
+["K","Sie bitten um Erlaubnis: ___","Darf ich das Fenster öffnen?","Muss ich das Fenster öffnen, bitte?","Fenster, darf?","Darf ich …?"],
+["K","Was steht auf dem Schild? – ___","Hunde müssen draußen bleiben.","Hunde dürfen draußen.","Hunde sind Schild.","müssen — majburiyat."]],
+22:[
+["W","Das Handy ist teuer, aber der Laptop ist noch ___.","teurer","teuerer","mehr teuer","teuer → teurer."],
+["W","Ich bezahle mit ___.","Karte","Rechnung","Kasse","Karta bilan to'lash."],
+["W","Das Gegenteil von „alt“ (Handy) ist ___.","neu","jung","klein","Narsa uchun: alt ↔ neu."],
+["K","Welches Handy ist besser? – ___","Das rote, es ist billiger.","Das rote ist am billig.","Besser als rot.","Taqqoslash: billiger."],
+["K","An der Kasse: ___","Kann ich mit Karte bezahlen?","Kann ich Karte kaufen?","Wo ist die Karte bezahlt?","Kartada to'lash."],
+["K","Sie vergleichen: ___","Ich finde Tee besser als Kaffee.","Ich finde Tee gut als Kaffee.","Tee ist am besten als Kaffee.","Komparativ + als."]],
+23:[
+["W","Es ist sehr heiß. Die ___ scheint.","Sonne","Wolke","Regen","Quyosh — Sonne."],
+["W","Nimm einen Schirm! Es ___.","regnet","schneit","scheint","regnen — yomg'ir yog'moq."],
+["W","Minus 10 Grad: Es ist sehr ___.","kalt","warm","nass","Sovuq — kalt."],
+["K","Wie ist das Wetter heute? – ___","Es ist bewölkt und windig.","Es ist Montag.","Das Wetter heißt gut.","Ob-havo: Es ist …"],
+["K","Es regnet. Ihre Freundin ist traurig. Sie sagen: ___","Na und? Wir gehen ins Kino!","Gute Besserung!","Herzlichen Glückwunsch!","Ko'nglini ko'tarish."],
+["K","Wie warm ist es? – ___","Ungefähr 25 Grad.","Sehr Sonne.","Im Sommer.","Harorat: … Grad."]],
+24:[
+["W","Am 31. Dezember feiern wir ___.","Silvester","Ostern","Geburtstag","31-dekabr — Silvester."],
+["W","Heute ist der ___ Mai. (3.)","dritte","dreite","dreißigste","3. → der dritte."],
+["W","Zum Geburtstag bekomme ich ein ___.","Geschenk","Fest","Glück","Sovg'a — Geschenk."],
+["K","Ihre Freundin hat Geburtstag: ___","Alles Gute zum Geburtstag!","Gute Besserung!","Gute Reise!","Tug'ilgan kun tabrigi."],
+["K","Wann hast du Geburtstag? – ___","Am zwölften März.","Im zwölf März.","Um zwölf.","Sana: am + -ten."],
+["K","Sie laden ein: ___","Ich mache eine Party. Kommst du?","Ich bin Party. Kommst?","Party ist am Geschenk.","Taklif qilish."]]
+};
+
+/* ---------- Lernwortschatz (W) + Kommunikation (K): Momente A2 ---------- */
+const BX_MA2={
+1:[
+["W","Die Eltern von meinem Vater sind meine ___.","Großeltern","Geschwister","Enkel","Bobo-buvilar — Großeltern."],
+["W","Er hat Italien verlassen und ist nach Deutschland ___.","ausgewandert","eingekauft","umgezogen worden","auswandern — boshqa mamlakatga ko'chib ketmoq."],
+["W","Der Sohn von meiner Tante ist mein ___.","Cousin","Neffe","Onkel","Xolaning o'g'li — Cousin."],
+["K","Woher kommt deine Familie ursprünglich? – ___","Meine Großeltern kommen aus Samarkand.","Ursprünglich ist gut.","Wir kommen morgen.","ursprünglich — asli."],
+["K","Sie erzählen von früher: ___","Als Kind wollte ich Tierärztin werden.","Als Kind will ich Tierärztin.","Wenn Kind wollte ich.","Präteritum: wollte."],
+["K","Ihr Gesprächspartner erzählt etwas Neues. Sie reagieren: ___","Ach, das wusste ich nicht!","Ach, das weiß ich nicht gestern!","Das ist mir egal.","Qiziqish bildirish."]],
+2:[
+["W","Ich arbeite in einem Team mit netten ___.","Kollegen","Kunden","Chefs","Hamkasblar — Kollegen."],
+["W","Er arbeitet nicht den ganzen Tag, er arbeitet ___.","Teilzeit","Vollzeit","Überstunden","Yarim kunlik — Teilzeit."],
+["W","Mein Beruf ist ___: Ich arbeite oft nachts.","anstrengend","langweilig","günstig","anstrengend — charchatadigan."],
+["K","Warum magst du deinen Job? – ___","Weil ich gern mit Menschen arbeite.","Weil ich arbeite gern mit Menschen.","Deshalb Menschen.","weil → fe'l oxirda."],
+["K","Was gefällt Ihnen an Ihrer Arbeit nicht? – ___","Die Arbeitszeiten sind ziemlich lang.","Ich gefalle nicht.","Mir gefällt Arbeit sehr gut.","Salbiy tomon aytish."],
+["K","Sie wollen mehr wissen: ___","Und was genau machst du da?","Und wer genau ist da?","Und wann genau kostet das?","Aniqlashtiruvchi savol."]],
+3:[
+["W","In einer ___ wohnen mehrere Personen zusammen.","WG","Villa","Hütte","WG — Wohngemeinschaft."],
+["W","Wir teilen uns die ___: Ich koche, er putzt.","Hausarbeit","Miete","Nebenkosten","Uy ishlari — Hausarbeit."],
+["W","Ich bin allein und vermisse meine Freunde. Meine Freunde ___ mir.","fehlen","gefallen","gehören","fehlen + Dativ — sog'inmoq."],
+["K","Gefällt dir deine neue Wohnung? – ___","Ja, aber die WG fehlt mir ein bisschen.","Ja, ich fehle die WG.","Nein, mir gefällt sehr.","fehlen + Dativ."],
+["K","Ihre Mitbewohnerin spült nie. Sie sagen freundlich: ___","Könntest du bitte heute mal spülen?","Du spülst nie, nie, nie!","Spül! Sofort!","Muloyim iltimos: Könntest du …?"],
+["K","Wem gehört die Tasse? – ___","Die gehört mir.","Die gehört mich.","Ich gehöre die Tasse.","gehören + Dativ: mir."]],
+4:[
+["W","Die Firma hat einen neuen ___ bekommen: viel Arbeit!","Auftrag","Urlaub","Feierabend","Auftrag — buyurtma."],
+["W","Um 17 Uhr habe ich ___: Ich gehe nach Hause.","Feierabend","Besprechung","Überstunden","Ish tugashi — Feierabend."],
+["W","Ich habe heute eine wichtige ___ mit dem Chef.","Besprechung","Bewerbung","Gehalt","Yig'ilish — Besprechung."],
+["K","Kannst du heute länger bleiben? – ___","Leider nicht, ich habe einen Arzttermin.","Leider ja, ich habe keinen Termin.","Länger ist gut.","Uzrli rad."],
+["K","Am Telefon in der Firma: ___","Firma Lenz, Sie sprechen mit Frau Abe.","Hallo, wer bist du?","Ja? Was?","Rasmiy telefon salomlashuvi."],
+["K","Sie möchten eine Nachricht hinterlassen: ___","Können Sie ihm bitte ausrichten, dass ich angerufen habe?","Können Sie ihn bitte anrufen mich?","Sagen Sie ihm Nachricht.","ausrichten — xabarni yetkazmoq."]],
+5:[
+["W","Ich ___ mich für Fußball.","interessiere","freue","ärgere","sich interessieren für."],
+["W","Beim Klettern braucht man ___. (Kein Angst!)","Mut","Hunger","Glück","Mut — jasorat."],
+["W","Ich ___ mich auf das Wochenende.","freue","interessiere","erinnere","sich freuen auf — intiqlik bilan kutmoq."],
+["K","Komm doch mit zum Klettern! – Ich weiß nicht … – ___","Ach, komm schon! Das macht bestimmt Spaß!","Ja, du weißt nicht.","Nein, Spaß macht nicht.","Ko'ndirish: Ach, komm schon!"],
+["K","Sie haben keine Lust: ___","Ehrlich gesagt habe ich keine Lust.","Ehrlich gesagt habe ich keinen Lust.","Lust ist nicht.","die Lust → keine Lust."],
+["K","Sie schlagen vor: ___","Wie wäre es mit Schwimmen?","Wie ist es Schwimmen?","Schwimmen wäre wie?","Taklif: Wie wäre es mit …?"]],
+6:[
+["W","Ich bin oft müde. Ich habe zu wenig ___.","Schlaf","Stress","Sport","Uyqu — Schlaf."],
+["W","Gesund ist: viel Obst und ___ essen.","Gemüse","Süßigkeiten","Fast Food","Sabzavot — Gemüse."],
+["W","Ich habe ___: Ich arbeite zu viel.","Stress","Fieber","Hunger","Stress."],
+["K","Ich habe immer Rückenschmerzen. – ___","Du solltest mal zum Arzt gehen.","Du solltest Rückenschmerzen.","Du sollst nicht Rücken.","Maslahat: Du solltest …"],
+["K","Was würdest du an meiner Stelle machen? – ___","Ich würde mehr spazieren gehen.","Ich würde mehr spazieren gegangen.","Ich bin deine Stelle.","an meiner Stelle — mening o'rnimda."],
+["K","Sie nehmen einen Rat an: ___","Danke, das ist ein guter Tipp!","Danke, du solltest das!","Guter Tipp ist nicht.","Maslahatga rahmat."]],
+7:[
+["W","Ich bin Vegetarier. Ich esse kein ___.","Fleisch","Gemüse","Brot","Vegetarier — go'sht yemaydi."],
+["W","Die Suppe ist zu ___: Da ist viel Salz drin.","salzig","süß","sauer","Sho'r — salzig."],
+["W","Im Restaurant: Die ___, bitte! Wir möchten bezahlen.","Rechnung","Speisekarte","Bestellung","Hisob — Rechnung."],
+["K","Der Kellner fragt: Was darf es sein? – ___","Ich nehme die Gemüsesuppe, bitte.","Ich bin die Gemüsesuppe.","Ja, es darf.","Buyurtma berish."],
+["K","Zusammen oder getrennt? – ___","Getrennt, bitte.","Zusammen sind wir.","Bitte trennen Sie uns.","Alohida to'lash: getrennt."],
+["K","Sie loben das Essen: ___","Das schmeckt wirklich super!","Das schmeckt wirklich supper!","Das Essen schmeckt mich.","Maqtash: Das schmeckt …"]],
+8:[
+["W","Beim Tanzen fühle ich mich ___: Ich habe keine Sorgen.","frei","krank","nervös","Erkin — frei."],
+["W","Ich mache Yoga, um mich zu ___.","entspannen","anstrengen","ärgern","entspannen — dam olmoq."],
+["W","Musik macht mich ___. (glücklich)","froh","sauer","müde","froh — xursand."],
+["K","Was machst du, wenn du Stress hast? – ___","Wenn ich Stress habe, höre ich Musik.","Wenn ich habe Stress, ich höre Musik.","Ich höre Musik, wenn Stress.","wenn-gap: fe'l oxirda, bosh gapda fe'l oldinda."],
+["K","Sie fragen nach Gefühlen: ___","Wie fühlst du dich dabei?","Wie fühlt dich dabei?","Wo fühlst du?","Hissiyot so'rash."],
+["K","Sie stimmen zu: ___","Das kann ich gut verstehen.","Das kann ich gut stehen.","Ich verstehe nicht gut dich.","Tushunish bildirish."]],
+9:[
+["W","Ich habe meinen Schlüssel ___. Wo ist er?","verloren","vergessen gehabt","verlaufen","verlieren → verloren."],
+["W","Das Handy ist runtergefallen. Jetzt ist es ___.","kaputt","verloren","pünktlich","Buzilgan — kaputt."],
+["W","Ich habe den Bus ___. Jetzt komme ich zu spät.","verpasst","gefunden","bekommen","verpassen — o'tkazib yubormoq."],
+["K","Oh nein, ich habe meinen Geldbeutel verloren! – ___","So ein Pech! Wo warst du zuletzt?","Herzlichen Glückwunsch!","Das ist ja toll!","Hamdardlik: So ein Pech!"],
+["K","Sie sind zu spät zum Kurs: ___","Entschuldigung, ich habe den Bus verpasst.","Entschuldigung, ich habe den Kurs verpasst gern.","Zu spät bin ich nicht.","Kechikish sababini aytish."],
+["K","Ihr Freund ist frustriert. Sie trösten: ___","Das kann doch jedem mal passieren.","Das passiert nur dir.","Das ist deine Schuld.","Tasalli berish."]],
+10:[
+["W","Ich fahre nicht ___ dich. Du kommst mit!","ohne","für","gegen","ohne + Akkusativ."],
+["W","Im Urlaub schlafen wir im Zelt auf dem ___.","Campingplatz","Bahnsteig","Parkplatz","Kemping — Campingplatz."],
+["W","Wir haben ein Doppelzimmer im Hotel ___.","gebucht","bezahlt gemacht","besucht","buchen — band qilmoq."],
+["K","Wir fahren im Urlaub zelten! – ___","Auf keinen Fall! Ohne mich!","Auf jeden Fall nicht ohne!","Keinen Fall mit!","Qat'iy rad: Auf keinen Fall!"],
+["K","Sie sind dafür: ___","Super Idee, ich bin dabei!","Super Idee, ich bin dagegen!","Ich bin ohne.","Rozi: Ich bin dabei!"],
+["K","Sie machen einen Kompromiss: ___","Okay, aber dann buchen wir eine Ferienwohnung.","Okay, aber ich will nicht.","Nein, und dann nein.","Murosa taklifi."]],
+11:[
+["W","Am Meer liegen wir am ___.","Strand","Gipfel","Wald","Plyaj — Strand."],
+["W","Ich ___ jetzt gern im Urlaub! (Wunsch)","wäre","bin","war","Konjunktiv II: wäre."],
+["W","Wir haben eine ___ durch die Altstadt gemacht.","Führung","Ankunft","Reservierung","Ekskursiya — Führung."],
+["K","Sie sehen Urlaubsfotos von Freunden: ___","Da wäre ich jetzt auch gern!","Da bin ich jetzt auch gern gewesen!","Da war ich gern morgen!","Istak: wäre gern."],
+["K","Was würdest du mit einer Million machen? – ___","Ich würde eine Weltreise machen.","Ich werde eine Weltreise gemacht.","Ich hätte Weltreise.","würde + Infinitiv."],
+["K","Sie schreiben eine Urlaubskarte: ___","Hier ist es wunderschön. Schade, dass du nicht hier bist!","Hier war es wunderschön morgen.","Schön, du bist nicht hier!","Sog'inch bildirish."]],
+12:[
+["W","Ich habe die Prüfung nicht bestanden. Ich bin ___.","enttäuscht","begeistert","verliebt","Hafsalasi pir — enttäuscht."],
+["W","Er ist ___: Er hat bald eine wichtige Prüfung.","nervös","zufrieden","entspannt","Hayajonli — nervös."],
+["W","Ich habe mich sehr ___ deine Nachricht gefreut.","über","auf","an","sich freuen über (bo'lgan narsa)."],
+["K","Ich habe die Stelle nicht bekommen. – ___","Kopf hoch! Das nächste Mal klappt es bestimmt.","Kopf runter! Schade.","Super, gratuliere!","Ruhlantirish: Kopf hoch!"],
+["K","Sie zeigen Mitgefühl: ___","Das tut mir wirklich leid für dich.","Das tut mich leid.","Das ist mir leid.","tut mir leid — Dativ: mir."],
+["K","Sie bieten Hilfe an: ___","Soll ich dir helfen?","Soll du mir helfen?","Hilf ich?","Yordam taklifi: Soll ich …?"]],
+13:[
+["W","Können Sie mir bitte den Koffer ___? Er ist so schwer.","tragen","fragen","schicken","tragen — ko'tarmoq."],
+["W","Ich ___ meiner Nachbarin beim Umzug.","helfe","hilfe","helfst","helfen: ich helfe."],
+["W","Er hat mir sein Fahrrad ___. Ich gebe es morgen zurück.","geliehen","geschenkt","gekauft","leihen — qarzga bermoq."],
+["K","Eine ältere Frau trägt schwere Taschen: ___","Moment, ich helfe Ihnen!","Moment, Sie helfen mir!","Taschen sind schwer, oder?","Yordam taklifi."],
+["K","Vielen Dank für Ihre Hilfe! – ___","Gern geschehen!","Danke schön!","Bitte helfen!","Rahmatga javob."],
+["K","Sie bitten um einen Gefallen: ___","Könntest du mir bitte dein Auto leihen?","Könntest du mir bitte dein Auto leiden?","Gib Auto!","leihen — qarzga olish/berish."]],
+14:[
+["W","Morgen habe ich eine Prüfung. Ich muss viel ___.","lernen","lehren","leiden","lernen — o'rganmoq."],
+["W","Ich habe die Prüfung ___! Super!","bestanden","bestellt","bekommen","bestehen → bestanden."],
+["W","Ich drücke dir die ___! (= viel Glück)","Daumen","Finger","Hände","Ich drücke dir die Daumen — omad tilayman."],
+["K","Morgen ist meine Fahrprüfung. – ___","Ich drück' dir die Daumen!","Ich drück' dir die Hand!","Gute Besserung!","Omad tilash."],
+["K","Ich habe bestanden! – ___","Herzlichen Glückwunsch!","Herzliches Beileid!","Gute Reise!","Tabrik."],
+["K","Sie geben einen Lerntipp: ___","Am besten lernst du jeden Tag ein bisschen.","Am besten lernst du nie.","Lernen ist am Tag.","Maslahat: Am besten …"]],
+15:[
+["W","Die ___ regelt: Ab 22 Uhr ist Ruhe.","Hausordnung","Hausnummer","Hausfrau","Uy qoidalari — Hausordnung."],
+["W","Den Müll werfe ich in die ___.","Mülltonne","Badewanne","Waschmaschine","Axlat qutisi — Mülltonne."],
+["W","Der Nachbar über mir ist sehr ___. Ich kann nicht schlafen.","laut","leise","ruhig","laut — shovqinli."],
+["K","Ihr Nachbar hört um 23 Uhr laut Musik: ___","Entschuldigung, könnten Sie die Musik etwas leiser machen?","Musik aus! Sofort!","Ihre Musik ist schön laut.","Muloyim iltimos."],
+["K","Sie sind neu im Haus: ___","Guten Tag, ich bin Ihre neue Nachbarin.","Guten Tag, Sie sind mein Haus.","Hallo, wo wohnen Sie hier nicht?","Qo'shniga tanishtirish."],
+["K","Die Nachbarin entschuldigt sich. Sie sagen: ___","Kein Problem, das kann passieren.","Doch, Problem!","Ja, Entschuldigung.","Kechirimni qabul qilish."]],
+16:[
+["W","Ich habe die Jacke online ___.","bestellt","bestanden","bekommen gemacht","bestellen — buyurtma bermoq."],
+["W","Die Schuhe passen nicht. Ich schicke sie ___.","zurück","weg","ab","zurückschicken — qaytarib yubormoq."],
+["W","Ich möchte die Ware ___: Sie ist kaputt.","umtauschen","umziehen","umsteigen","umtauschen — almashtirmoq."],
+["K","Im Geschäft: Ich möchte diese Hose reklamieren. – ___","Was ist denn das Problem damit?","Die Hose ist schön.","Kaufen Sie eine Hose!","Sotuvchi javobi."],
+["K","Sie erklären das Problem: ___","Der Reißverschluss ist kaputt.","Der Reißverschluss ist pünktlich.","Die Hose passt mich nicht.","Nuqsonni aytish."],
+["K","Sie wollen Ihr Geld zurück: ___","Kann ich mein Geld zurückbekommen?","Kann ich mein Geld zurückgeben?","Geld, bitte, zurück ich.","zurückbekommen — qaytarib olmoq."]],
+17:[
+["W","Wir arbeiten an einem gemeinsamen ___.","Projekt","Feierabend","Urlaub","Projekt."],
+["W","Der Kollege, ___ neben mir sitzt, ist sehr nett.","der","den","dem","Relativsatz: der (Nominativ)."],
+["W","Die Aufgaben im Team sind gut ___.","verteilt","verkauft","verloren","verteilen — taqsimlamoq."],
+["K","In der Besprechung: ___","Ich schlage vor, dass wir das zusammen machen.","Ich schlage vor, wir machen zusammen dass.","Vorschlag ist das.","Taklif: Ich schlage vor, dass …"],
+["K","Sie sind anderer Meinung: ___","Da bin ich anderer Meinung.","Da bin ich anderen Meinung.","Meinung ist anders ich.","Qarshi fikr: anderer Meinung."],
+["K","Sie bitten um Hilfe im Team: ___","Kannst du mir bei der Präsentation helfen?","Kannst du mir die Präsentation helfen?","Hilfst du Präsentation?","helfen bei + Dativ."]],
+18:[
+["W","Ich muss noch schnell Geld vom ___ holen.","Automaten","Schalter","Briefkasten","Bankomat — Geldautomat."],
+["W","Den Brief bringe ich zur ___.","Post","Bank","Apotheke","Xat — Post."],
+["W","Ich muss noch meine Reinigung ___. (Kleidung holen)","abholen","abgeben","abfahren","abholen — olib ketmoq."],
+["K","Am Schalter: ___","Ich möchte dieses Paket nach Usbekistan schicken.","Ich möchte Usbekistan schicken.","Paket ist Usbekistan.","Pochtada."],
+["K","Hast du kurz Zeit? – ___","Gleich! Ich muss nur noch schnell eine Mail schreiben.","Gleich muss ich schreiben schnell.","Kurz ist Zeit.","Biroz kutish."],
+["K","Sie bitten um eine Quittung: ___","Kann ich bitte eine Quittung bekommen?","Kann ich bitte eine Quittung werden?","Quittung, ich!","bekommen — olmoq."]],
+19:[
+["W","Ich kann mich gut an meinen ersten Schultag ___.","erinnern","vergessen","denken","sich erinnern an."],
+["W","___ ich zehn war, bin ich zum ersten Mal geflogen.","Als","Wenn","Wann","O'tmishdagi bir marta: als."],
+["W","Das war ein ___ Erlebnis: Ich vergesse es nie.","unvergessliches","langweiliges","normales","unvergesslich — unutilmas."],
+["K","Wann bist du zum ersten Mal Auto gefahren? – ___","Als ich 18 war.","Wenn ich 18 bin.","Wann ich 18 war.","O'tmish: als."],
+["K","Sie erzählen eine Erinnerung: ___","Ich weiß noch genau, wie aufgeregt ich war.","Ich weiß noch genau, wie war ich aufgeregt.","Ich erinnere genau aufgeregt.","Yordamchi gap: fe'l oxirda."],
+["K","Sie fragen nach: ___","Und wie war das für dich?","Und wie warst das für dich?","Und wann bist du?","Qiziqish."]],
+20:[
+["W","Heute Abend gehen wir in die ___. (Musik, Opernsänger)","Oper","Ausstellung","Bibliothek","Oper."],
+["W","Die ___ im Museum zeigt moderne Kunst.","Ausstellung","Vorstellung","Bestellung","Ko'rgazma — Ausstellung."],
+["W","Die Tickets sind schon ___. Es gibt keine mehr.","ausverkauft","ausgeliehen","ausgegangen","Hammasi sotilgan — ausverkauft."],
+["K","Hast du Lust, am Samstag ins Theater zu gehen? – ___","Ja, gern! Wann fängt es an?","Ja, ich habe Theater.","Nein, ich habe Lust.","Taklifni qabul qilish."],
+["K","Sie lehnen höflich ab: ___","Schade, am Samstag kann ich leider nicht.","Schade, am Samstag will ich nie.","Nein. Tschüss.","Muloyim rad."],
+["K","Sie schlagen einen Treffpunkt vor: ___","Treffen wir uns um sieben vor dem Kino?","Treffen wir um sieben das Kino?","Wir sind Kino sieben.","Uchrashuv joyi."]],
+21:[
+["W","Ich ___ mir die Haare schneiden. (beim Friseur)","lasse","mache","habe","lassen — boshqaga qildirmoq."],
+["W","Wir sollten weniger Plastik ___.","verwenden","verwechseln","verlieren","verwenden — ishlatmoq."],
+["W","Altes Papier kommt in den ___.","Papiermüll","Biomüll","Restaurant","Qog'oz — Papiermüll."],
+["K","Lässt du dein Auto reparieren? – ___","Ja, ich bringe es morgen in die Werkstatt.","Ja, ich repariere es lassen.","Nein, ich lasse dich.","Ustaxona — Werkstatt."],
+["K","Sie bitten jemanden, etwas nicht zu tun: ___","Lass das bitte!","Lass bitte machen!","Lasst du das!","Lass das! — Qo'y buni!"],
+["K","Sie geben einen Umwelttipp: ___","Man sollte lieber mit dem Fahrrad fahren.","Man sollte lieber Fahrrad gefahren.","Fahrrad ist man.","Maslahat: man sollte."]],
+22:[
+["W","Für mich ist ___ am wichtigsten: Familie und Freunde.","Zeit","Geld","Arbeit","Vaqt."],
+["W","Ich bin mit meinem Leben sehr ___.","zufrieden","unzufrieden mit","fertig","zufrieden mit — mamnun."],
+["W","Es ist wichtig, gesund ___ leben.","zu","um","für","Infinitiv mit zu."],
+["K","Was ist für dich ein gutes Leben? – ___","Für mich ist es wichtig, Zeit mit der Familie zu verbringen.","Für mich ist wichtig, Familie verbringen.","Gutes Leben ist Zeit zu.","zu + Infinitiv oxirida."],
+["K","Sie stimmen zu: ___","Da hast du völlig recht.","Da hast du völlig Recht nicht.","Du bist recht.","Rozilik."],
+["K","Sie äußern Ihre Meinung: ___","Ich finde, dass Gesundheit das Wichtigste ist.","Ich finde, dass Gesundheit ist das Wichtigste.","Gesundheit finde ich dass.","dass → fe'l oxirida."]],
+23:[
+["W","Es ___ einmal ein kleiner Elefant.","war","ist","wäre","Ertak boshi: Es war einmal …"],
+["W","Am Ende ___ er seine Mutter wieder. (finden, Präteritum)","fand","findete","gefunden","finden → fand."],
+["W","Ein Tier, das nachts aktiv ist und ‚Hu-hu‘ macht: ___","die Eule","der Hund","die Kuh","Boyo'g'li — Eule."],
+["K","Sie beginnen eine Geschichte: ___","Vor langer Zeit lebte ein König.","Vor langer Zeit lebt ein König morgen.","Es war ein König gelebt.","Hikoya boshlanishi."],
+["K","Ihr Freund erzählt eine Geschichte. Sie wollen wissen, was dann passiert: ___","Und dann? Wie ging es weiter?","Und dann? Wie geht weiter?","Und? Wo dann?","Davomini so'rash."],
+["K","Wie hat dir das Buch gefallen? – ___","Es war spannend, ich konnte nicht aufhören zu lesen.","Es war spannend, ich konnte nicht aufhören lesen zu.","Das Buch gefällt.","Fikr bildirish."]],
+24:[
+["W","An Weihnachten wird der ___ geschmückt.","Baum","Kuchen","Ofen","Weihnachtsbaum."],
+["W","Zu Navro'z wird Sumalak ___.","gekocht","gekochen","kochen","Passiv: wird gekocht."],
+["W","Am Ende des Festes werden die Lichter ___.","ausgemacht","angemacht","aufgemacht","ausmachen — o'chirmoq."],
+["K","Wie wird bei euch Silvester gefeiert? – ___","Es wird viel gegessen und getanzt.","Es wird viel essen und tanzen.","Silvester feiert sich viel.","Passiv: wird + Partizip II."],
+["K","Sie wünschen frohe Feiertage: ___","Frohe Feiertage und alles Gute!","Gute Besserung und Feiertage!","Frohe Gute!","Bayram tabrigi."],
+["K","Sie bedanken sich für die Einladung: ___","Vielen Dank für die Einladung, es war wunderschön!","Vielen Dank zur Einladung, es ist schön gewesen morgen.","Danke Einladung.","Danke für …"]]
+};
+
+/* ---------- Lernwortschatz (W) + Kommunikation (K): Momente B1 ---------- */
+const BX_MB1={
+1:[
+["W","In meiner ___ habe ich auf dem Land gelebt.","Kindheit","Freizeit","Gesundheit","Bolalik — Kindheit."],
+["W","Ich kann mich nur noch ___ an das Haus erinnern.","vage","genau","pünktlich","vage — xira, noaniq."],
+["W","Wir haben jeden Sommer bei Oma ___.","verbracht","verbraucht","verbrannt","Zeit verbringen — vaqt o'tkazmoq."],
+["K","Woran erinnerst du dich gern? – ___","An die Sommerferien bei meinen Großeltern.","Auf die Sommerferien.","Ich erinnere gern dich.","sich erinnern an + Akk."],
+["K","Sie sind nicht mehr sicher: ___","Wenn ich mich richtig erinnere, war das 2010.","Wenn ich richtig erinnere mich, war das 2010.","Ich erinnere 2010 richtig.","Ishonchsizlik bildirish."],
+["K","Sie reagieren auf eine lustige Erinnerung: ___","Das ist ja witzig! Erzähl mehr!","Das ist ja traurig! Schweig!","Witz ist das.","Qiziqish bildirish."]],
+2:[
+["W","Einem echten Freund kann man ___.","vertrauen","verraten","vermeiden","vertrauen — ishonmoq (+Dativ)."],
+["W","Wir haben uns gestritten, aber jetzt haben wir uns wieder ___.","versöhnt","verlobt","verabschiedet","sich versöhnen — yarashmoq."],
+["W","Wir haben viel ___: Wir lieben beide Musik.","gemeinsam","einsam","langsam","gemeinsam — umumiy."],
+["K","Was ist dir in einer Freundschaft wichtig? – ___","Ehrlichkeit ist mir am wichtigsten.","Ehrlichkeit ist mich am wichtigsten.","Wichtig ist Freund.","Dativ: mir."],
+["K","Sie möchten sich nach einem Streit entschuldigen: ___","Es tut mir leid, ich habe überreagiert.","Es tut mich leid, du hast überreagiert.","Dein Fehler, tut mir leid nicht.","Kechirim so'rash."],
+["K","Ihr Freund braucht Rat. Sie sagen: ___","Du kannst immer auf mich zählen.","Du kannst immer mich zählen.","Zähl mich nie.","zählen auf — ishonmoq."]],
+3:[
+["W","Ich ___ mich sehr für Fotografie.","begeistere","beschäftige mit","freue auf","sich begeistern für."],
+["W","Fußball ist nicht so mein ___.","Ding","Sache","Spaß","Das ist (nicht) mein Ding — (yoqmaydi)."],
+["W","Sie ___ sich in ihrer Freizeit mit Malerei.","beschäftigt","interessiert","freut","sich beschäftigen mit."],
+["K","Wofür interessierst du dich? – ___","Für alles, was mit Technik zu tun hat.","An alles, was Technik hat.","Mit Technik interessiere ich.","sich interessieren für."],
+["K","Klettern? – Ja, ___","das ist genau mein Ding!","das ist genau meine Sache Ding!","Ding ist das genau.","Juda yoqadi."],
+["K","Sie fragen nach dem Grund: ___","Was gefällt dir denn so daran?","Was gefällt dir denn so darauf?","Woran gefällst du?","daran — unda."]],
+4:[
+["W","Er macht wichtige Aufgaben immer erst im letzten Moment. Er ___ sie auf.","schiebt","hebt","räumt","aufschieben — keyinga surish."],
+["W","Bis Freitag muss ich das Projekt ___.","erledigen","erleben","erlauben","erledigen — bajarib qo'ymoq."],
+["W","Ich mache mir eine ___ mit allen Aufgaben.","To-do-Liste","Speisekarte","Rechnung","Vazifalar ro'yxati."],
+["K","Hast du die Hausarbeit schon geschrieben? – ___","Noch nicht, aber ich fange heute damit an.","Noch nicht, aber ich fange heute darauf an.","Ja, morgen.","anfangen mit — damit."],
+["K","Sie geben einen Tipp gegen Aufschieben: ___","Fang mit der schwierigsten Aufgabe an!","Fang mit der schwierigsten Aufgabe auf!","Aufgabe fangen an!","anfangen mit."],
+["K","Sie versprechen etwas: ___","Ich verspreche dir, dass ich es bis Montag mache.","Ich verspreche dir, dass ich mache es bis Montag.","Versprochen Montag mache.","dass → fe'l oxirda."]],
+5:[
+["W","Ich ___ gern mehr Zeit für Hobbys.","hätte","habe gehabt","hatte","Istak: hätte gern."],
+["W","Mein ___ ist es, einmal nach Japan zu reisen.","Traum","Raum","Baum","Orzu — Traum."],
+["W","Das wäre eine tolle ___!","Gelegenheit","Gewohnheit","Gesellschaft","Imkoniyat — Gelegenheit."],
+["K","Ein Wochenende in Wien? – ___","Wär' das nicht was für uns?","War das nicht was uns?","Wäre das was nicht?","Taklif: Wär' das nicht was?"],
+["K","Sie äußern einen Wunsch: ___","Wenn ich mehr Geld hätte, würde ich reisen.","Wenn ich mehr Geld habe, würde ich reisen hätte.","Wenn Geld, reise.","Konjunktiv II."],
+["K","Sie sind begeistert: ___","Das klingt ja fantastisch!","Das klingelt ja fantastisch!","Klang fantastisch!","klingen — eshitilmoq."]],
+6:[
+["W","Vor dem Vorstellungsgespräch war ich sehr ___.","aufgeregt","aufgeräumt","aufgestanden","aufgeregt — hayajonlangan."],
+["W","Nachdem ich die Prüfung ___ hatte, war ich erleichtert.","bestanden","bestehen","bestand","Plusquamperfekt: hatte bestanden."],
+["W","Nach der Prüfung war ich total ___: Endlich vorbei!","erleichtert","erkältet","erschrocken","erleichtert — yengil tortgan."],
+["K","Wie war das Vorstellungsgespräch? – ___","Am Anfang war ich nervös, aber dann lief es gut.","Am Anfang war ich nervös, aber dann es lief gut.","Gespräch war Vorstellung.","Hikoya qilish."],
+["K","Sie machen Mut: ___","Keine Sorge, du schaffst das!","Keine Sorge, du schaffst nicht!","Sorge dich!","Ruhlantirish."],
+["K","Sie fragen nach Gefühlen: ___","Wie hast du dich danach gefühlt?","Wie hast du danach gefühlt?","Wie fühlst du danach dich?","Refleksiv: dich."]],
+7:[
+["W","Ich reise gern ___: ohne Freunde oder Familie.","allein","alle","einsam","allein — yolg'iz (o'zi)."],
+["W","Im Hostel habe ich viele Leute ___.","kennengelernt","gekannt","erkannt","kennenlernen — tanishmoq."],
+["W","Ich habe nur einen Rucksack als ___ dabei.","Gepäck","Gebäck","Gerät","Yuk — Gepäck."],
+["K","Hast du keine Angst, allein zu reisen? – ___","Ein bisschen, aber ich bin sehr vorsichtig.","Ein bisschen, aber ich bin vorsichtig sehr.","Angst ist allein.","Javob."],
+["K","Sie fragen im Hostel: ___","Ist hier noch ein Bett frei?","Ist hier noch ein Bett leer gemacht?","Bett frei ich?","Joy so'rash."],
+["K","Sie empfehlen eine App: ___","Probier mal diese App aus, die ist super praktisch.","Probier mal diese App, die ist aus.","App ist probiert.","ausprobieren — sinab ko'rmoq."]],
+8:[
+["W","Er arbeitet ___ in einem Altenheim, ohne Geld.","ehrenamtlich","hauptberuflich","selbstständig","Ko'ngilli — ehrenamtlich."],
+["W","Ein ___ für alle jungen Menschen? Viele sind dagegen.","Pflichtjahr","Feiertag","Wochenende","Majburiy yil."],
+["W","Ein ___ dafür ist: Man sammelt Erfahrung.","Argument","Ergebnis","Ereignis","Dalil — Argument."],
+["K","Was hältst du von einem sozialen Pflichtjahr? – ___","Ich halte das für eine gute Idee.","Ich halte das von einer guten Idee.","Ich halte Pflichtjahr.","halten für — deb hisoblamoq."],
+["K","Sie widersprechen: ___","Das sehe ich anders.","Das sehe ich andersrum nicht.","Anders sehe ich.","Qarshi fikr."],
+["K","Sie nennen ein Gegenargument: ___","Andererseits verlieren junge Leute ein Jahr.","Andererseits junge Leute verlieren ein Jahr.","Anders verlieren.","andererseits + fe'l 2-o'rinda."]],
+9:[
+["W","Ein Jahr im ___: Ich habe in Kanada studiert.","Ausland","Inland","Aufland","Chet el — Ausland."],
+["W","Am Anfang hatte ich ___: Ich habe meine Familie vermisst.","Heimweh","Fernweh","Kopfweh","Vatan sog'inchi — Heimweh."],
+["W","Es war schwierig. ___ war es eine super Erfahrung.","Trotzdem","Deshalb","Obwohl","Shunga qaramay — trotzdem."],
+["K","Wie war dein Auslandsjahr? – ___","Obwohl es manchmal schwer war, hat es sich gelohnt.","Obwohl es war manchmal schwer, hat es gelohnt sich.","Schwer gelohnt.","obwohl → fe'l oxirda."],
+["K","Sie würden es wieder tun: ___","Ich würde es auf jeden Fall wieder machen.","Ich würde es auf keinen Fall gern wieder.","Wieder mache ich auf Fall.","auf jeden Fall — albatta."],
+["K","Sie empfehlen etwas: ___","Ich kann das jedem nur empfehlen.","Ich kann das jeden nur empfehlen.","Empfohlen jedem.","empfehlen + Dativ: jedem."]],
+10:[
+["W","Ich möchte im ___ arbeiten: von zu Hause.","Homeoffice","Großraumbüro","Außendienst","Uydan ishlash."],
+["W","Mir ist ein gutes ___ wichtig: Ich brauche Geld.","Gehalt","Gericht","Gespräch","Maosh — Gehalt."],
+["W","Ich suche eine Stelle mit ___ Arbeitszeiten.","flexiblen","flexible","flexibler","mit + Dativ Plural → -en."],
+["K","Wie stellst du dir deinen Traumjob vor? – ___","Ich hätte gern ein nettes Team und flexible Zeiten.","Ich hätte gern einen netten Team.","Traumjob ist vorgestellt.","das Team → ein nettes Team."],
+["K","Was ist dir bei der Arbeit am wichtigsten? – ___","Dass ich mich weiterentwickeln kann.","Dass ich kann mich weiterentwickeln.","Wichtig ist Arbeit.","dass → fe'l oxirda."],
+["K","Sie fragen im Gespräch nach: ___","Gibt es die Möglichkeit, im Homeoffice zu arbeiten?","Gibt es die Möglichkeit, im Homeoffice arbeiten zu?","Homeoffice gibt?","zu + Infinitiv."]],
+11:[
+["W","Ein Gerät, das Staub saugt: der ___","Staubsauger","Kühlschrank","Wasserkocher","Changyutgich — Staubsauger."],
+["W","Diese ___ hat unser Leben verändert: das Smartphone.","Erfindung","Empfindung","Erfahrung","Ixtiro — Erfindung."],
+["W","Das ist ein Ding, ___ man Flaschen öffnet.","mit dem","mit der","mit den","der Flaschenöffner → mit dem."],
+["K","Wozu braucht man das? – ___","Damit kann man Gemüse schneiden.","Damit man kann Gemüse schneiden.","Wozu schneidet Gemüse.","damit — u bilan."],
+["K","Sie beschreiben einen Gegenstand: ___","Das ist ein Gerät, das Kaffee kocht.","Das ist ein Gerät, der Kaffee kocht.","Gerät kocht das Kaffee.","das Gerät → das."],
+["K","Sie finden etwas unnötig: ___","Ehrlich gesagt, brauche ich so etwas nicht.","Ehrlich gesagt, ich brauche so etwas nicht nicht.","Brauche ich nicht so ehrlich.","Fikr: Ehrlich gesagt …"]],
+12:[
+["W","Der Teig wird in den Ofen ___.","geschoben","geschieben","schieben","Passiv: wird geschoben."],
+["W","Das Essen sieht lecker aus: Es ist schön ___.","angerichtet","abgerichtet","angezogen","anrichten — chiroyli tortmoq."],
+["W","Die Zwiebeln werden klein ___.","geschnitten","geschneidet","schneiden","schneiden → geschnitten."],
+["K","Wie wird Plov gemacht? – ___","Zuerst wird Fleisch angebraten, dann kommen Karotten dazu.","Zuerst Fleisch brät an, dann Karotten kommen.","Plov wird.","Passiv bilan retsept."],
+["K","Sie bieten Essen an: ___","Möchtest du noch etwas nehmen?","Möchtest du noch etwas genommen?","Nimm, du!","Mehmon qilish."],
+["K","Sie lehnen höflich ab: ___","Danke, ich bin satt. Es war köstlich!","Danke, ich bin satt. Es war ekelhaft!","Nein, kein Essen.","Muloyim rad."]],
+13:[
+["W","Ich kümmere mich um den ___ von meinem Nachbarn.","Hund","Hunden","Hundes","Akkusativ: den Hund."],
+["W","Der Zoo hat einen neuen ___ für die Elefanten.","Tierpfleger","Tierarzt-Praxis","Tierheim","Hayvon parvarishchisi."],
+["W","Wer hat einen ___ gesehen? (der Bär)","Bären","Bär","Bärs","n-Deklination: den Bären."],
+["K","Hast du ein Haustier? – ___","Ja, eine Katze. Sie heißt Mosh.","Ja, ein Katze. Er heißt Mosh.","Haustier hat mich.","die Katze → eine Katze."],
+["K","Sie sind gegen Tiere in der Wohnung: ___","Ich finde, Tiere gehören nicht in eine kleine Wohnung.","Ich finde, Tiere gehören nicht eine kleine Wohnung in.","Tiere Wohnung nein.","Fikr bildirish."],
+["K","Sie fragen nach der Pflege: ___","Ist es viel Arbeit, sich um einen Hund zu kümmern?","Ist es viel Arbeit, um einen Hund kümmern zu sich?","Hund Arbeit?","sich kümmern um."]],
+14:[
+["W","Ich habe mich ___ eine Stelle als Krankenpfleger beworben.","um","für","auf","sich bewerben um."],
+["W","Zur Bewerbung gehören Anschreiben und ___.","Lebenslauf","Lebensmittel","Lebensstil","Rezyume — Lebenslauf."],
+["W","Ich bin zu einem ___ eingeladen.","Vorstellungsgespräch","Vorstellung","Vorschlag","Suhbat — Vorstellungsgespräch."],
+["K","Warum möchten Sie bei uns arbeiten? – ___","Weil mich Ihre Projekte sehr interessieren.","Weil mich Ihre Projekte interessieren sehr.","Weil Projekte.","weil → fe'l oxirda."],
+["K","Im Anschreiben, am Ende: ___","Über eine Einladung zu einem Gespräch freue ich mich sehr.","Ich freue mich auf eine Einladung sehr worden.","Laden Sie mich ein!","Xat oxiri."],
+["K","Sie fragen nach dem Stand Ihrer Bewerbung: ___","Ich wollte fragen, ob meine Bewerbung angekommen ist.","Ich wollte fragen, ob ist meine Bewerbung angekommen.","Bewerbung da?","ob → fe'l oxirda."]],
+15:[
+["W","Sie sind seit zehn Jahren ___. (Ehe)","verheiratet","verlobt","verliebt","Turmush qurgan — verheiratet."],
+["W","In einer Partnerschaft muss man ___ schließen.","Kompromisse","Komplimente","Kontakte","Murosa — Kompromiss."],
+["W","Wir haben uns auf einer Party ___.","kennengelernt","gekannt","bekannt","kennenlernen."],
+["K","Wie habt ihr euch kennengelernt? – ___","Wir haben uns im Deutschkurs kennengelernt.","Wir haben uns im Deutschkurs gekennt.","Kennengelernt Deutschkurs.","Perfekt."],
+["K","Sie sagen höflich Ihre Meinung: ___","Ich finde, dass man auch mal nachgeben muss.","Ich finde, dass man muss auch mal nachgeben.","Nachgeben finde.","nachgeben — yon bermoq."],
+["K","Sie geben einen Beziehungstipp: ___","Ihr solltet offen miteinander reden.","Ihr solltet offen miteinander geredet.","Reden offen ihr.","sollte + Infinitiv."]],
+16:[
+["W","Für den Pass muss ich zum ___. (Behörde)","Bürgeramt","Kaufhaus","Fundbüro","Davlat idorasi — Bürgeramt."],
+["W","Ich muss ein ___ ausfüllen.","Formular","Format","Formel","Ariza blanki — Formular."],
+["W","Es ist ___ nervig, aber notwendig.","zwar","weder","sowohl","zwar … aber."],
+["K","Am Schalter: ___","Ich möchte meinen Wohnsitz anmelden.","Ich möchte meinen Wohnsitz anrufen.","Wohnsitz, bitte melden.","sich anmelden — ro'yxatdan o'tish."],
+["K","Sie verstehen ein Wort im Formular nicht: ___","Könnten Sie mir erklären, was ‚Familienstand‘ bedeutet?","Könnten Sie mir erklären, was bedeutet ‚Familienstand‘?","Familienstand ist was?","Yordamchi gapda fe'l oxirda."],
+["K","Welche Unterlagen brauche ich? – ___","Ihren Pass und den Mietvertrag.","Ihr Pass und der Mietvertrag bitte nicht.","Unterlagen brauchen Sie.","Hujjatlar."]],
+17:[
+["W","Das Haus wurde 1890 ___.","gebaut","bauen","baute","Passiv Präteritum: wurde gebaut."],
+["W","Das alte Gebäude steht unter ___.","Denkmalschutz","Naturschutz","Umweltschutz","Tarixiy yodgorlik muhofazasi."],
+["W","Die Wohnung wurde komplett ___. Jetzt ist sie modern.","renoviert","reserviert","reklamiert","renovieren — ta'mirlamoq."],
+["K","Was weißt du über das Haus? – ___","Es wurde im Krieg zerstört und später wieder aufgebaut.","Es wurde im Krieg zerstören und später aufbauen.","Haus weiß.","Passiv."],
+["K","Sie zeigen Interesse: ___","Das ist ja spannend! Wer hat hier früher gewohnt?","Das ist ja spannend! Wer hat hier früher wohnt?","Spannend, wer?","Qiziqish."],
+["K","Sie vermuten: ___","Ich nehme an, dass es sehr alt ist.","Ich nehme an, dass es ist sehr alt.","Alt nehme an.","Taxmin: Ich nehme an …"]],
+18:[
+["W","Die Rolle ___ Vaters hat sich verändert.","des","dem","der","Genitiv: des Vaters."],
+["W","Wer kümmert sich um den ___? (Kochen, Putzen)","Haushalt","Haushaltsplan","Hausmeister","Ro'zg'or — Haushalt."],
+["W","Bei uns ist die Hausarbeit ___ verteilt.","gerecht","gerade","gering","Adolatli — gerecht."],
+["K","Wer macht bei euch den Haushalt? – ___","Wir teilen uns alles.","Wir teilen alles uns.","Haushalt macht.","sich teilen."],
+["K","Sie sind überrascht: ___","Echt? Das hätte ich nicht gedacht!","Echt? Das habe ich nicht gedenkt!","Gedacht nicht hätte.","Hayrat."],
+["K","Sie stimmen teilweise zu: ___","Da hast du zum Teil recht.","Da hast du zum Teil Recht nicht ganz.","Teil recht.","Qisman rozilik."]],
+19:[
+["W","Mein Diplom wurde in Deutschland ___.","anerkannt","anerkennen","erkannt","anerkennen — tan olmoq."],
+["W","Ich musste alle ___ übersetzen lassen.","Zeugnisse","Zeugen","Zeichen","Shahodatnomalar — Zeugnisse."],
+["W","Die Anerkennung hat lange ___.","gedauert","gedauern","dauern","dauern — davom etmoq."],
+["K","Wie lange hat das Verfahren gedauert? – ___","Fast ein Jahr, aber es hat sich gelohnt.","Fast ein Jahr, aber es hat gelohnt sich.","Verfahren dauert.","sich lohnen."],
+["K","Sie fragen bei der Behörde nach: ___","Könnten Sie mir sagen, wie lange die Bearbeitung dauert?","Könnten Sie mir sagen, wie lange dauert die Bearbeitung?","Wie lange Bearbeitung?","Bilvosita savol."],
+["K","Sie bedanken sich formell: ___","Vielen Dank für Ihre Unterstützung.","Vielen Dank zu Ihrer Unterstützung.","Danke Unterstützung.","Danke für."]],
+20:[
+["W","Du ___ nur auf den Knopf zu drücken.","brauchst","musst","sollst","nur … zu brauchen = faqat … kerak."],
+["W","Das ist ganz ___: Man muss nicht lange nachdenken.","einfach","einfältig","einsam","Oson — einfach."],
+["W","Die ___ für das Rätsel ist ganz leicht.","Lösung","Lüge","Leistung","Yechim — Lösung."],
+["K","Wie funktioniert das? – ___","Du brauchst nur die App zu öffnen.","Du brauchst nur die App öffnen zu.","Du musst nur App.","brauchen … zu."],
+["K","Sie verstehen die Erklärung nicht: ___","Kannst du das noch mal langsamer erklären?","Kannst du das noch mal langsamer erklärt?","Erklär langsam du.","Iltimos qilish."],
+["K","Sie haben die Lösung: ___","Ich hab's! Die Antwort ist …","Ich habe es gefunden nicht!","Lösung ich!","Topdim!"]],
+21:[
+["W","Je mehr man liest, ___ besser schreibt man.","desto","als","so dass","je … desto."],
+["W","In der Schule der Zukunft gibt es keine ___ mehr, nur Feedback.","Noten","Nöte","Nummern","Baholar — Noten."],
+["W","Die Schüler lernen ___ statt allein.","gemeinsam","gemeint","gemütlich","gemeinsam — birgalikda."],
+["K","Was würdest du an der Schule ändern? – ___","Ich würde mehr Praxis in den Unterricht bringen.","Ich würde mehr Praxis in den Unterricht gebracht.","Schule ändern würde.","würde + Infinitiv."],
+["K","Sie bringen ein Beispiel: ___","Zum Beispiel könnte man mehr Projekte machen.","Zum Beispiel man könnte mehr Projekte machen.","Beispiel Projekte.","Zum Beispiel + fe'l."],
+["K","Sie fassen zusammen: ___","Alles in allem finde ich die Idee gut.","Alles in allem ich finde die Idee gut.","Alles allem gut.","Xulosa."]],
+22:[
+["W","Die Bürger ___ alle vier Jahre das Parlament.","wählen","zählen","wählen ab","wählen — saylamoq."],
+["W","Die ___ Politikerin hat eine Rede gehalten. (bekannt sein)","bekannte","bekannten","bekannter","die … Politikerin → -e."],
+["W","Er ___ sich für Umweltschutz.","engagiert","beschäftigt mit","bewirbt","sich engagieren für."],
+["K","Interessierst du dich für Politik? – ___","Ja, ich verfolge regelmäßig die Nachrichten.","Ja, ich folge regelmäßig die Nachrichten.","Politik interessiert.","verfolgen — kuzatib bormoq."],
+["K","Sie äußern sich vorsichtig: ___","Ich bin mir nicht ganz sicher, aber ich glaube …","Ich bin mich nicht sicher, aber …","Sicher nicht glaube.","Ehtiyotkor fikr."],
+["K","Sie bitten um Erklärung: ___","Was genau meinst du damit?","Was genau meinst du davon?","Meinst was?","Aniqlashtirish."]],
+23:[
+["W","Wenn ich den Zug nicht verpasst ___, wäre ich pünktlich gewesen.","hätte","wäre","würde","Konj. II Vergangenheit: hätte + Partizip II."],
+["W","Zum ___ habe ich den Schlüssel gefunden!","Glück","Pech","Zufall nicht","Zum Glück — baxtga."],
+["W","Das war reiner ___: Wir haben uns zufällig getroffen.","Zufall","Unfall","Einfall","Tasodif — Zufall."],
+["K","Was wäre passiert, wenn du nicht nach Deutschland gegangen wärst? – ___","Dann hätte ich meinen Mann nie kennengelernt.","Dann habe ich meinen Mann nie kennengelernt hätte.","Dann wäre ich kennengelernt.","hätte + Partizip II."],
+["K","Sie bedauern etwas: ___","Hätte ich doch mehr gelernt!","Habe ich doch mehr gelernt hätte!","Wäre ich gelernt!","Afsus: Hätte ich doch …!"],
+["K","Sie trösten: ___","Mach dir keine Vorwürfe, das konntest du nicht wissen.","Mach dich keine Vorwürfe.","Vorwurf mach.","sich Vorwürfe machen."]],
+24:[
+["W","In zehn Jahren ___ ich vielleicht in Berlin wohnen.","werde","würde","wurde","Futur I: werde + Infinitiv."],
+["W","Wahnsinn, wie die Zeit ___!","vergeht","verbringt","vergisst","Vaqt o'tadi — vergehen."],
+["W","Ich bin ___ auf meine Fortschritte.","stolz","stark","still","stolz auf — faxrlanmoq."],
+["K","Was hast du dir für die Zukunft vorgenommen? – ___","Ich werde die B2-Prüfung machen.","Ich wurde die B2-Prüfung machen.","Zukunft habe vorgenommen.","Futur I."],
+["K","Sie blicken zurück: ___","Am Anfang hätte ich nie gedacht, dass ich so weit komme.","Am Anfang habe ich nie gedenkt.","Anfang weit.","Orqaga nazar."],
+["K","Sie verabschieden sich vom Kurs: ___","Es war eine tolle Zeit mit euch. Bleibt in Kontakt!","Es war eine tolle Zeit mit euch. Bleibt Kontakt!","Tschüss Kontakt.","in Kontakt bleiben."]]
+};
+
+/* ---------- Lernwortschatz (W) + Kommunikation (K): Vielfalt B2 ---------- */
+const BX_VB2={
+1:[
+["W","Nach der Trennung wollte sie ihr Leben neu ___.","gestalten","gestatten","gestehen","gestalten — shakllantirmoq."],
+["W","Einen Neuanfang ___ erfordert Mut.","zu wagen","zu wiegen","zu wählen ab","etwas wagen — jur'at qilmoq."],
+["W","Die Veränderung hat sich als großer ___ erwiesen.","Gewinn","Gewissen","Gewicht","sich erweisen als — bo'lib chiqmoq."],
+["K","Sie berichten von einer Veränderung: ___","Rückblickend war das die beste Entscheidung meines Lebens.","Rückblickend die beste Entscheidung war das meines Lebens.","Rückblickend Entscheidung gut.","rückblickend — orqaga qarab."],
+["K","Sie äußern Zweifel: ___","Ich frage mich, ob das wirklich die richtige Lösung ist.","Ich frage mich, ob ist das wirklich die richtige Lösung.","Frage ob richtig.","ob → fe'l oxirda."],
+["K","Sie ermutigen jemanden: ___","Trau dich ruhig, was hast du schon zu verlieren?","Trau dich ruhig, was hast du zu verloren?","Trau ruhig verlieren.","sich trauen — jur'at qilmoq."]],
+2:[
+["W","Viele Migranten mussten in der neuen Heimat ___ fassen.","Fuß","Hand","Kopf","Fuß fassen — o'rnashib olmoq."],
+["W","Die ___ in eine neue Kultur braucht Zeit.","Integration","Inspiration","Information","Integratsiya."],
+["W","Sie hat sich schnell an das Klima ___.","gewöhnt","gewohnt","gewonnen","sich gewöhnen an."],
+["K","Was hat Ihnen geholfen, sich einzuleben? – ___","Vor allem der Kontakt zu Nachbarn und Kollegen.","Vor allem der Kontakt mit Nachbarn hat eingelebt.","Einleben half.","Asosiy omil."],
+["K","Sie vergleichen: ___","Im Gegensatz zu Usbekistan ist hier vieles strenger geregelt.","Im Gegensatz von Usbekistan ist hier strenger geregelt vieles.","Gegensatz Usbekistan.","im Gegensatz zu + Dativ."],
+["K","Sie drücken Verständnis aus: ___","Ich kann gut nachvollziehen, wie schwer das am Anfang war.","Ich kann gut nachvollziehen, wie schwer war das.","Nachvollziehen schwer.","nachvollziehen — tushunmoq."]],
+3:[
+["W","Er hat einen ungewöhnlichen ___ gemacht: vom Bankkaufmann zum Koch.","Quereinstieg","Aufstieg","Abstieg","Quereinsteiger — boshqa sohadan kelgan."],
+["W","Nach dem Studium hat sie ein ___ in einer Agentur gemacht.","Praktikum","Praxis","Prinzip","Amaliyot — Praktikum."],
+["W","Er ist in seinem Beruf ___ erfolgreich.","äußerst","äußerlich","außen","äußerst — nihoyatda."],
+["K","Was hat Sie zu diesem Berufswechsel bewogen? – ___","Ich wollte etwas Sinnvolleres machen.","Ich wollte was Sinnvolles mehr.","Berufswechsel bewogen.","bewegen (bewog, bewogen) — undamoq."],
+["K","Sie beschreiben Ihre Stärken im Interview: ___","Zu meinen Stärken gehört, dass ich gut organisieren kann.","Zu meinen Stärken gehört, dass ich kann gut organisieren.","Stärke organisieren.","dass → fe'l oxirda."],
+["K","Sie schließen höflich ab: ___","Falls Sie noch Fragen haben, stehe ich Ihnen gern zur Verfügung.","Falls Sie Fragen haben, stehe ich gern Verfügung.","Fragen? Verfügung!","zur Verfügung stehen."]],
+4:[
+["W","Er ist in die ___ seines Vaters getreten und wurde Arzt.","Fußstapfen","Fußnoten","Fußgänger","in jds. Fußstapfen treten — izidan bormoq."],
+["W","Die Eltern haben ___ Erwartungen an ihren Sohn.","hohe","hoche","hoher","hoch → hohe."],
+["W","Sie hat sich gegen den Willen ihrer Eltern ___.","durchgesetzt","durchgefallen","durchgelesen","sich durchsetzen — o'z bilganini qilmoq."],
+["K","Hatten Ihre Eltern Einfluss auf Ihre Berufswahl? – ___","Ja, sie haben mich stark beeinflusst.","Ja, sie haben mich stark beeinflussen.","Einfluss Eltern.","Partizip II: beeinflusst."],
+["K","Sie relativieren eine Aussage: ___","Das kann man so pauschal nicht sagen.","Das kann man so pauschal nicht gesagt.","Pauschal nein.","Umumlashtirishga qarshi."],
+["K","Sie stellen eine Bedingung: ___","Unter der Bedingung, dass ich selbst entscheiden darf, mache ich mit.","Unter der Bedingung, dass ich darf selbst entscheiden.","Bedingung mache.","dass → fe'l oxirda."]],
+5:[
+["W","Sie ___ ihr Profil, um Arbeitgeber zu überzeugen.","schärft","schadet","schaltet","Profil schärfen — ko'rinishini kuchaytirmoq."],
+["W","Er hat schon 10 000 ___ auf Instagram.","Follower","Folgen","Verfolger","Obunachilar."],
+["W","Man sollte nicht zu viele ___ Daten im Netz teilen.","persönliche","persönlicher","persönlichem","Ko'plik, artiklsiz: -e."],
+["K","Was posten Sie in sozialen Medien? – ___","Eher selten, und wenn, dann beruflich.","Eher selten, und wenn, dann postet beruflich.","Posten selten Medien.","Javob."],
+["K","Sie warnen: ___","Pass auf, was du postest – das Internet vergisst nichts.","Pass auf, was postest du – das Internet vergisst nichts.","Internet vergiss.","Bilvosita savol: fe'l oxirda."],
+["K","Sie stimmen mit Einschränkung zu: ___","Im Prinzip ja, aber man muss vorsichtig sein.","Im Prinzip ja, aber man muss sein vorsichtig.","Prinzip vorsichtig.","Shartli rozilik."]],
+6:[
+["W","Eine gute Chefin ___ Aufgaben an ihr Team.","delegiert","degradiert","dekoriert","delegieren — topshirmoq."],
+["W","Im Team gab es einen ___ zwischen zwei Kollegen.","Konflikt","Kontakt","Kontrakt","Nizo — Konflikt."],
+["W","Die Führungskraft muss Verantwortung ___.","übernehmen","unternehmen","vernehmen","Verantwortung übernehmen — mas'uliyat olmoq."],
+["K","In der Teambesprechung leiten Sie über: ___","Ich würde gern zum nächsten Punkt kommen.","Ich würde gern zum nächsten Punkt gekommen.","Nächster Punkt komme.","Mavzuni o'zgartirish."],
+["K","Sie unterbrechen höflich: ___","Darf ich kurz etwas ergänzen?","Darf ich kurz etwas ergänzt?","Ergänze kurz!","Muloyim gap qo'shish."],
+["K","Sie lösen einen Konflikt: ___","Wie wäre es, wenn wir die Aufgaben neu verteilen?","Wie wäre es, wenn wir verteilen die Aufgaben neu?","Neu verteilen wäre.","wenn → fe'l oxirda."]],
+7:[
+["W","Regelmäßige ___ stärkt das Herz.","Bewegung","Bewerbung","Bewertung","Harakat — Bewegung."],
+["W","Nach dem Marathon hatte ich ___.","Muskelkater","Muskelkatze","Herzkater","Muskelkater — mushak og'rig'i."],
+["W","Er treibt ___ Sport, sogar im Winter.","regelmäßig","regelrecht","regellos","Muntazam — regelmäßig."],
+["K","Wie halten Sie sich fit? – ___","Ich gehe dreimal pro Woche joggen.","Ich gehe dreimal pro Woche joggen gegangen.","Fit halte.","Javob."],
+["K","Sie motivieren einen Freund: ___","Komm, nur noch ein Kilometer, du schaffst das!","Komm, nur noch ein Kilometer, du schaffst nicht!","Schaffst Kilometer.","Ruhlantirish."],
+["K","Sie äußern Skepsis: ___","Ich bezweifle, dass so viel Sport wirklich gesund ist.","Ich bezweifle, dass so viel Sport ist wirklich gesund.","Bezweifle Sport.","bezweifeln — shubha qilmoq."]],
+8:[
+["W","Er achtet sehr auf eine ___ Ernährung.","ausgewogene","ausgewogener","ausgewogenen","eine … Ernährung → -e."],
+["W","Zu viel Zucker kann ___ machen.","süchtig","sichtbar","sachlich","süchtig — qaram."],
+["W","Sie zählt jeden Tag die ___.","Kalorien","Kalender","Karotten","Kaloriya."],
+["K","Was halten Sie von Diäten? – ___","Davon halte ich ehrlich gesagt nicht viel.","Darüber halte ich ehrlich gesagt viel nicht.","Diäten halte.","halten von — davon."],
+["K","Sie empfehlen etwas vorsichtig: ___","Es wäre vielleicht sinnvoll, weniger Fertiggerichte zu essen.","Es wäre vielleicht sinnvoll, weniger Fertiggerichte essen zu.","Sinnvoll essen.","zu + Infinitiv oxirda."],
+["K","Sie geben eine Quelle an: ___","Laut einer Studie essen Deutsche zu viel Fleisch.","Laut einer Studie Deutsche essen zu viel Fleisch.","Studie Fleisch.","laut + Dativ/Genitiv."]],
+9:[
+["W","Ich bin ein ___: Ich stehe früh auf und bin morgens fit.","Frühaufsteher","Langschläfer","Nachtmensch","Erta turuvchi."],
+["W","Die innere Uhr ___ unseren Schlaf.","steuert","steigert","stört nicht","steuern — boshqarmoq."],
+["W","Nach einer langen Reise habe ich oft ___.","Jetlag","Feierabend","Mittagsschlaf","Vaqt mintaqasi charchog'i."],
+["K","Sind Sie eher Lerche oder Eule? – ___","Eindeutig Eule, vor zehn bin ich nicht ansprechbar.","Eindeutig Eule, vor zehn bin ich nicht sprechbar an.","Eule Lerche.","nicht ansprechbar — gaplashib bo'lmaydi."],
+["K","Sie stellen einen Vergleich an: ___","Während ich früh aufstehe, schläft mein Mann lange.","Während ich stehe früh auf, schläft mein Mann lange.","Während früh.","während → fe'l oxirda."],
+["K","Sie geben einen Schlaftipp: ___","Es hilft, abends kein Handy mehr zu benutzen.","Es hilft, abends kein Handy mehr benutzen zu.","Handy hilft.","zu + Infinitiv."]],
+10:[
+["W","Aus Fehlern kann man viel ___.","lernen","lehren","leihen","Xatolardan o'rganish."],
+["W","Das Start-up ist ___. Die Firma ist pleite.","gescheitert","gescheit","geschätzt","scheitern — muvaffaqiyatsizlikka uchramoq."],
+["W","Er hat aus der ___ eine Chance gemacht.","Niederlage","Niederlassung","Niederschlag","Mag'lubiyat — Niederlage."],
+["K","Wie gehen Sie mit Misserfolgen um? – ___","Ich versuche, daraus zu lernen und weiterzumachen.","Ich versuche, daraus lernen und weitermachen zu.","Misserfolg gehe.","zu + Infinitiv."],
+["K","Sie geben einem Freund Rückhalt: ___","Lass dich davon nicht unterkriegen!","Lass dich davon nicht untergekriegt!","Unterkriegen lass.","sich nicht unterkriegen lassen — taslim bo'lmaslik."],
+["K","Sie geben zu, einen Fehler gemacht zu haben: ___","Da habe ich mich wohl verschätzt.","Da habe ich wohl verschätzt mich.","Verschätzt da.","sich verschätzen — noto'g'ri baholamoq."]],
+11:[
+["W","Wer weniger kauft, lebt oft ___.","nachhaltiger","nachträglicher","nachlässiger","Barqaror — nachhaltig."],
+["W","Alte Möbel kann man auf dem ___ verkaufen.","Flohmarkt","Wochenmarkt","Supermarkt","Baraholka — Flohmarkt."],
+["W","Viele Produkte landen schnell auf dem ___.","Müll","Mühle","Mehl","Axlat — Müll."],
+["K","Brauchen wir wirklich so viel? – ___","Ganz im Gegenteil, weniger ist oft mehr.","Ganz im Gegenteil, weniger ist oft mehr nicht.","Gegenteil viel.","Qarama-qarshi fikr."],
+["K","Sie schlagen eine Alternative vor: ___","Statt neu zu kaufen, könnte man Dinge reparieren.","Statt neu kaufen zu, könnte man Dinge reparieren.","Statt kaufen.","statt … zu + Infinitiv."],
+["K","Sie geben zu bedenken: ___","Man darf aber nicht vergessen, dass Konsum Arbeitsplätze schafft.","Man darf aber nicht vergessen, dass Konsum schafft Arbeitsplätze.","Vergessen Konsum.","dass → fe'l oxirda."]],
+12:[
+["W","Wir organisieren ein ___ für alle Nachbarn.","Hoffest","Hofgang","Hoftor","Hovli bayrami."],
+["W","Gute Nachbarn ___ sich gegenseitig.","unterstützen","unterstellen","unterbrechen","unterstützen — qo'llab-quvvatlamoq."],
+["W","Wegen des Lärms gab es ___ mit den Nachbarn.","Ärger","Ärmel","Ärzte","Ärger — janjal, noxushlik."],
+["K","Sie beschweren sich schriftlich: ___","Leider muss ich mich über den nächtlichen Lärm beschweren.","Leider muss ich beschweren über den Lärm mich.","Lärm beschwer.","sich beschweren über."],
+["K","Sie bitten um Rücksicht: ___","Ich wäre Ihnen dankbar, wenn Sie nach 22 Uhr leiser wären.","Ich wäre Ihnen dankbar, wenn Sie wären nach 22 Uhr leiser.","Leiser dankbar.","Muloyim iltimos (Konj. II)."],
+["K","Sie lenken ein: ___","Sie haben recht, das kommt nicht wieder vor.","Sie haben recht, das kommt nicht wieder.","Recht vor.","vorkommen — sodir bo'lmoq."]],
+13:[
+["W","In der Stadt gibt es immer mehr ___ für Fahrräder.","Radwege","Radwechsel","Radarwege","Velosiped yo'laklari."],
+["W","Die ___ Pendler fahren mit dem Auto.","meisten","mehrsten","meistens","die meisten — ko'pchilik."],
+["W","Mit dem Lastenrad kann man Einkäufe ___.","transportieren","transformieren","transpirieren","tashimoq."],
+["K","Würden Sie aufs Auto verzichten? – ___","Nur wenn der öffentliche Nahverkehr besser ausgebaut wäre.","Nur wenn der Nahverkehr wäre besser ausgebaut.","Verzichten Auto.","verzichten auf — voz kechmoq."],
+["K","Sie nennen einen Vorteil: ___","Ein großer Vorteil ist, dass man nie im Stau steht.","Ein großer Vorteil ist, dass man steht nie im Stau.","Vorteil Stau.","dass → fe'l oxirda."],
+["K","Sie nennen einen Nachteil: ___","Andererseits ist man bei Regen schnell nass.","Andererseits man ist bei Regen schnell nass.","Nachteil nass.","andererseits + fe'l."]],
+14:[
+["W","Auf dem Dach wird Gemüse ___.","angebaut","angebracht","angeboten","anbauen — yetishtirmoq."],
+["W","Bäume ___ die Luft in der Stadt.","verbessern","verbreiten","verbieten","Havoni yaxshilaydi."],
+["W","Der Park ist eine grüne ___ mitten in der Stadt.","Oase","Ostern","Ozean","Voha — Oase."],
+["K","Was halten Sie von Urban Gardening? – ___","Ich finde, es bringt die Menschen zusammen.","Ich finde, es bringt zusammen die Menschen.","Gardening halte.","Fikr."],
+["K","Sie machen einen Vorschlag an die Stadt: ___","Man sollte mehr Grünflächen schaffen.","Man sollte mehr Grünflächen geschaffen.","Grün schaffen man.","sollte + Infinitiv."],
+["K","Sie stimmen völlig zu: ___","Da kann ich Ihnen nur zustimmen.","Da kann ich Sie nur zustimmen.","Zustimme nur.","zustimmen + Dativ."]],
+15:[
+["W","Dauerhafter ___ kann krank machen.","Lärm","Lehm","Leim","Shovqin — Lärm."],
+["W","In der Bibliothek herrscht ___.","Stille","Stelle","Stollen","Sukunat — Stille."],
+["W","Ich trage Kopfhörer, um mich vom Lärm ___.","abzuschirmen","abzuschreiben","abzuschließen","abschirmen — himoyalamoq."],
+["K","Stört Sie der Lärm? – ___","Ja, mit der Zeit geht er mir echt auf die Nerven.","Ja, mit der Zeit geht er mich auf die Nerven.","Lärm stört Nerven.","jdm. auf die Nerven gehen — asabga tegmoq."],
+["K","Sie bitten in der Bahn um Ruhe: ___","Würden Sie bitte etwas leiser telefonieren?","Würden Sie bitte etwas leiser telefoniert?","Leise!","Muloyim iltimos."],
+["K","Sie beschreiben Ihre Lieblingsgeräusche: ___","Am liebsten höre ich das Rauschen des Meeres.","Am liebsten höre ich das Rauschen das Meer.","Meer höre.","Genitiv: des Meeres."]],
+16:[
+["W","Das Rätsel war knifflig, aber ich habe es ___.","gelöst","gelöscht","gelobt","lösen — yechmoq."],
+["W","Er hat das Geheimnis für sich ___.","behalten","erhalten","verhalten","für sich behalten — sir saqlamoq."],
+["W","Der Brief war in einer ___ Sprache geschrieben.","verschlüsselten","verschlossenen","verschwundenen","shifrlangan."],
+["K","Kannst du ein Geheimnis für dich behalten? – ___","Klar, ich verrate niemandem etwas.","Klar, ich verrate niemand nichts.","Geheimnis behalten.","verraten — oshkor qilmoq."],
+["K","Sie deuten etwas an: ___","Ich sage nur so viel: Es lohnt sich!","Ich sage nur so viel: Es lohnt!","Sage viel.","Shama qilish."],
+["K","Sie sind neugierig: ___","Jetzt spann mich doch nicht so auf die Folter!","Jetzt spann mich doch nicht auf Folter so!","Folter spann.","Qiziqtirib qo'ymang!"]],
+17:[
+["W","Viele Menschen fühlen sich trotz Social Media ___.","einsam","gemeinsam","sparsam","Yolg'iz — einsam."],
+["W","Ein guter Dialog setzt ___ Zuhören voraus.","aktives","aktiver","aktiven","das Zuhören → aktives."],
+["W","Er hat lange nichts von sich ___ lassen.","hören","gehört","zu hören","von sich hören lassen."],
+["K","Sie melden sich nach langer Zeit: ___","Lange nichts voneinander gehört! Wie geht's dir?","Lange nichts voneinander gehören! Wie geht's?","Gehört lange.","Salomlashuv."],
+["K","Sie hören aktiv zu: ___","Verstehe ich dich richtig, dass du dich übergangen fühlst?","Verstehe ich dich richtig, dass du fühlst dich übergangen?","Richtig fühlst.","dass → fe'l oxirda."],
+["K","Sie beenden ein Telefonat: ___","Ich muss jetzt leider Schluss machen. Wir hören uns!","Ich muss jetzt leider Schluss gemacht.","Schluss hören.","Schluss machen — tugatmoq."]],
+18:[
+["W","Das Unternehmen setzt auf ___ im Team.","Vielfalt","Einfalt","Zwiefalt","Xilma-xillik — Vielfalt."],
+["W","Niemand darf wegen seiner Herkunft ___ werden.","benachteiligt","bevorzugt nicht","beteiligt","kamsitilmoq."],
+["W","Wir müssen ___ abbauen.","Vorurteile","Vorteile","Vorräte","Xurofot — Vorurteile."],
+["K","Was bedeutet Diversität für Sie? – ___","Dass alle Menschen die gleichen Chancen haben.","Dass alle Menschen haben die gleichen Chancen.","Chancen Diversität.","dass → fe'l oxirda."],
+["K","Sie widersprechen einem Vorurteil: ___","Das ist ein Klischee, das so nicht stimmt.","Das ist ein Klischee, der so nicht stimmt.","Klischee stimmt.","das Klischee → das."],
+["K","Sie fordern etwas: ___","Es ist höchste Zeit, dass sich etwas ändert.","Es ist höchste Zeit, dass ändert sich etwas.","Zeit ändert.","Talab."]],
+19:[
+["W","Die Angst, etwas zu verpassen, heißt ___.","FOMO","FAQ","FYI","Fear of missing out."],
+["W","Glück lässt sich nicht ___.","erzwingen","erzählen","erziehen","erzwingen — majburlamoq."],
+["W","Kleine Dinge machen mich ___.","glücklich","glücklicherweise","Glück","Sifat: glücklich."],
+["K","Was macht Sie glücklich? – ___","Zeit mit Menschen, die mir wichtig sind.","Zeit mit Menschen, die mich wichtig sind.","Glücklich Zeit.","mir wichtig — Dativ."],
+["K","Sie relativieren: ___","Das ist doch Ansichtssache.","Das ist doch Aussichtssache.","Sache Ansicht.","Ansichtssache — qarash masalasi."],
+["K","Sie geben einen Ratschlag: ___","Du solltest öfter mal das Handy weglegen.","Du solltest öfter mal das Handy weggelegt.","Handy weg.","weglegen — chetga qo'ymoq."]],
+20:[
+["W","Unter ___ treffe ich schlechte Entscheidungen.","Zeitdruck","Zeitpunkt","Zeitraum","Vaqt bosimi."],
+["W","Notärzte müssen in Sekunden ___ treffen.","Entscheidungen","Entschuldigungen","Entdeckungen","Entscheidungen treffen — qaror qilmoq."],
+["W","Er hat in der Situation ___ reagiert.","besonnen","besessen","besonnt","besonnen — vazmin."],
+["K","Wie gehen Sie mit Stress um? – ___","Ich atme tief durch und mache eine Liste.","Ich atme tief und durch mache eine Liste.","Stress gehe.","durchatmen."],
+["K","Sie beruhigen jemanden: ___","Ganz ruhig, wir bekommen das schon hin.","Ganz ruhig, wir bekommen das schon.","Ruhig hin.","hinbekommen — eplamoq."],
+["K","Sie bitten um Aufschub: ___","Könnten wir die Frist um eine Woche verlängern?","Könnten wir die Frist um eine Woche verlängert?","Frist länger!","Muddat uzaytirish."]],
+21:[
+["W","Sie hat gegen die Ungerechtigkeit ___ geleistet.","Widerstand","Widerspruch","Wiedersehen","Qarshilik ko'rsatmoq."],
+["W","Das war ein ___: Danach war alles anders.","Schlüsselerlebnis","Schlüsselbund","Schlusslicht","Burilish nuqtasi."],
+["W","Er hat ___ gezeigt und die Wahrheit gesagt.","Zivilcourage","Zivildienst","Zivilisation","Fuqarolik jasorati."],
+["K","Was würden Sie in so einer Situation tun? – ___","Ich würde auf jeden Fall eingreifen.","Ich würde auf jeden Fall eingegriffen.","Eingreifen Situation.","eingreifen — aralashmoq."],
+["K","Sie zeigen Bewunderung: ___","Ich habe großen Respekt vor ihrem Mut.","Ich habe großen Respekt für ihrem Mut.","Mut Respekt.","Respekt vor + Dativ."],
+["K","Sie ziehen ein Fazit: ___","Daraus lässt sich lernen, dass man nicht wegsehen darf.","Daraus lässt sich lernen, dass man darf nicht wegsehen.","Lernen weg.","dass → fe'l oxirda."]],
+22:[
+["W","Er hat sein Hobby zum ___ gemacht.","Beruf","Berufung","Bericht","Kasb."],
+["W","E-Sport-Turniere ___ Tausende Zuschauer.","locken","lochen","lockern","jalb qilmoq."],
+["W","Beim Spielen werden ___ Fähigkeiten trainiert.","strategische","strategischen","strategischer","Artiklsiz ko'plik: -e."],
+["K","Ist Computerspielen ein Sport? – ___","Darüber lässt sich streiten.","Darüber lässt sich gestritten.","Streiten lässt.","Bahsli masala."],
+["K","Sie stimmen einer Seite zu: ___","Ich stehe eher auf der Seite der Kritiker.","Ich stehe eher auf die Seite der Kritiker.","Seite Kritiker.","auf der Seite (Dativ)."],
+["K","Sie begründen: ___","Das liegt vor allem daran, dass man sich kaum bewegt.","Das liegt vor allem daran, dass man bewegt sich kaum.","Liegt bewegt.","liegen an — sababi."]],
+23:[
+["W","Ein ___ schreibt Texte für andere Personen.","Ghostwriter","Schriftsteller","Korrektor","Yashirin muallif."],
+["W","Das ist rechtlich eine ___.","Grauzone","Grauwolke","Graupe","Noaniq hudud."],
+["W","Wer abschreibt, begeht ein ___.","Plagiat","Plakat","Plädoyer","Ko'chirmachilik — Plagiat."],
+["K","Ist Ghostwriting legitim? – ___","Das kommt ganz auf den Zusammenhang an.","Das kommt ganz an den Zusammenhang.","Zusammenhang legitim.","ankommen auf — bog'liq."],
+["K","Sie formulieren Kritik vorsichtig: ___","Ich habe da so meine Bedenken.","Ich habe da so mein Bedenken.","Bedenken habe so.","Bedenken (Pl.) — xavotir."],
+["K","Sie wägen ab: ___","Einerseits spart es Zeit, andererseits ist es unehrlich.","Einerseits es spart Zeit, andererseits unehrlich.","Spart unehrlich.","einerseits … andererseits."]],
+24:[
+["W","In den 20er-Jahren ___ Kunst und Kultur in Berlin.","blühten","blühen auf","blutet","Gullab-yashnadi."],
+["W","Das Gemälde gilt als ___.","Meisterwerk","Meisterschaft","Meisterbrief","Shoh asar."],
+["W","Die Ausstellung ___ die Epoche lebendig.","macht","lässt sich","gibt","lebendig machen."],
+["K","Wie hat Ihnen die Ausstellung gefallen? – ___","Sie hat mich wirklich beeindruckt.","Sie hat mich wirklich beeindrucken.","Beeindruckt mir.","beeindrucken — ta'sir qilmoq."],
+["K","Sie empfehlen etwas weiter: ___","Die Ausstellung ist absolut sehenswert.","Die Ausstellung ist absolut sehenswürdig gemacht.","Sehenswert ist.","sehenswert — ko'rishga arziydi."],
+["K","Sie interpretieren ein Bild: ___","Das Bild soll vermutlich die Unruhe der Zeit zeigen.","Das Bild soll vermutlich die Unruhe die Zeit zeigen.","Bild zeigt Unruhe.","Genitiv: der Zeit."]]
+};
+
+/* ---------- Lernwortschatz (W) + Kommunikation (K): Vielfalt C1 ---------- */
+const BX_VC1={
+1:[
+["W","Echte Freundschaft ___ sich oft erst in Krisen.","bewährt","bewahrt","bewehrt","sich bewähren — sinovdan o'tmoq."],
+["W","Wir sind durch dick und ___ gegangen.","dünn","dicht","doof","durch dick und dünn — har qanday holatda birga."],
+["W","Die Freundschaft ist mit der Zeit ___.","eingeschlafen","eingeschlossen","eingeschaltet","einschlafen — so'nib qolmoq."],
+["K","Sie bringen Verständnis zum Ausdruck: ___","Ich kann absolut nachvollziehen, dass dich das kränkt.","Ich kann absolut nachvollziehen, dass dich kränkt das.","Kränkt nachvollziehen.","dass → fe'l oxirda."],
+["K","Sie sprechen ein heikles Thema an: ___","Ich weiß nicht, wie ich es sagen soll, aber …","Ich weiß nicht, wie soll ich es sagen, aber …","Sagen soll wie.","Nozik mavzuni boshlash."],
+["K","Sie bekräftigen: ___","Darauf kannst du dich hundertprozentig verlassen.","Darauf kannst du hundertprozentig verlassen dich.","Verlass hundert.","sich verlassen auf."]],
+2:[
+["W","Ihr ___ stimmt nicht mit der Fremdwahrnehmung überein.","Selbstbild","Selbstlauf","Selbstbau","O'zini idrok etish."],
+["W","Er neigt dazu, sich selbst zu ___.","überschätzen","überzeugen","übersetzen","überschätzen — ortiqcha baholamoq."],
+["W","Sie wirkt nach außen hin sehr ___.","selbstbewusst","selbstverständlich","selbstständig gemacht","O'ziga ishongan."],
+["K","Wie würden Sie sich selbst beschreiben? – ___","Ich würde mich als zielstrebig, aber manchmal ungeduldig bezeichnen.","Ich würde mich zielstrebig als bezeichnen.","Beschreiben zielstrebig.","sich bezeichnen als."],
+["K","Sie relativieren ein Lob: ___","Das ist nett, aber ich würde das nicht überbewerten.","Das ist nett, aber ich würde das nicht überbewertet.","Überbewerte nicht.","Kamtarlik."],
+["K","Sie geben konstruktives Feedback: ___","Was mir positiv aufgefallen ist, … Woran du noch arbeiten könntest, …","Was mir positiv aufgefallen, … Woran du könntest arbeiten …","Feedback positiv.","Konstruktiv fikr tuzilishi."]],
+3:[
+["W","Kinder, die zweisprachig ___, haben oft Vorteile.","aufwachsen","aufwecken","aufweisen","aufwachsen — o'sib-ulg'aymoq."],
+["W","Er ___ fließend vier Sprachen.","beherrscht","beherbergt","behauptet","beherrschen — mukammal bilmoq."],
+["W","Beim Sprechen wechselt sie ständig zwischen den Sprachen: Sie ___.","switcht","schweigt","schwitzt","Code-Switching."],
+["K","Sie bitten um Präzisierung: ___","Könnten Sie das an einem Beispiel veranschaulichen?","Könnten Sie das ein Beispiel veranschaulicht?","Beispiel veranschaulich.","veranschaulichen — misol bilan tushuntirish."],
+["K","Sie leiten eine These ein: ___","Ich vertrete die Auffassung, dass Mehrsprachigkeit ein Gewinn ist.","Ich vertrete die Auffassung, dass Mehrsprachigkeit ist ein Gewinn.","Auffassung Gewinn.","die Auffassung vertreten."],
+["K","Sie geben eine Gegenposition wieder: ___","Kritiker wenden ein, dass Kinder dadurch überfordert werden.","Kritiker wenden ein, dass Kinder werden dadurch überfordert.","Kritiker überfordert.","einwenden — e'tiroz bildirmoq."]],
+4:[
+["W","Wer viel pendelt, ___ jeden Tag Stunden im Zug.","verbringt","verbraucht","verbreitet","Vaqt o'tkazmoq."],
+["W","Die ___ der Arbeitnehmer wird immer wichtiger.","Mobilität","Motivität","Moralität","Mobillik."],
+["W","Er hat seinen ___ ins Ausland verlegt.","Wohnsitz","Wohnzimmer","Wohnwagen","Doimiy yashash joyi."],
+["K","Sie wägen Vor- und Nachteile ab: ___","Dem Vorteil der Flexibilität steht ein höherer Stress gegenüber.","Dem Vorteil der Flexibilität steht gegenüber ein höherer Stress gegen.","Vorteil Stress.","gegenüberstehen."],
+["K","Sie führen ein Argument an: ___","Hinzu kommt, dass Pendeln die Umwelt belastet.","Hinzu kommt, dass Pendeln belastet die Umwelt.","Hinzu Umwelt.","Hinzu kommt — bundan tashqari."],
+["K","Sie schließen eine Diskussion ab: ___","Letztlich muss das jeder für sich entscheiden.","Letztlich jeder muss das für sich entscheiden.","Letztlich entscheiden.","Xulosa."]],
+5:[
+["W","Meditation kann helfen, innere ___ zu finden.","Ruhe","Rüge","Runde","Ichki xotirjamlik."],
+["W","Körper und Geist ___ sich gegenseitig.","beeinflussen","beeindrucken","beerdigen","Bir-biriga ta'sir qilmoq."],
+["W","Die Wirkung ist wissenschaftlich nicht ___.","belegt","beliebt","belebt","belegt — isbotlangan."],
+["K","Sie äußern sich skeptisch: ___","Ich stehe dem eher skeptisch gegenüber.","Ich stehe dem eher skeptisch gegen.","Skeptisch stehe.","gegenüberstehen."],
+["K","Sie verweisen auf eine Quelle: ___","Wie aus einer aktuellen Studie hervorgeht, …","Wie aus einer aktuellen Studie geht hervor, …","Studie hervor.","hervorgehen aus."],
+["K","Sie räumen etwas ein: ___","Zugegeben, die Ergebnisse sind nicht eindeutig.","Zugegeben, sind die Ergebnisse nicht eindeutig.","Zugegeben Ergebnis.","Zugegeben, + to'liq gap."]],
+6:[
+["W","Eine duale ___ verbindet Theorie und Praxis.","Ausbildung","Ausbildner","Ausbeute","Dual ta'lim."],
+["W","Viele Studierende ___ ihr Studium ab.","brechen","bringen","bauen","abbrechen — tashlab ketmoq."],
+["W","Nach dem Abschluss hat sie sich ___.","weitergebildet","weitergegeben","weitergeleitet","sich weiterbilden — malaka oshirmoq."],
+["K","Sie beraten jemanden: ___","An deiner Stelle würde ich mir das gut überlegen.","An deiner Stelle würde ich mich das gut überlegen.","Stelle überlege.","sich (Dat.) etwas überlegen."],
+["K","Sie stellen Alternativen gegenüber: ___","Während ein Studium theoretischer ist, ist die Ausbildung praxisnah.","Während ein Studium ist theoretischer, ist die Ausbildung praxisnah.","Während theoretisch.","während → fe'l oxirda."],
+["K","Sie erfragen Erfahrungen: ___","Inwiefern hat dich die Ausbildung auf den Beruf vorbereitet?","Inwiefern hat dich die Ausbildung auf den Beruf vorbereiten?","Inwiefern vorbereitet.","inwiefern — qay darajada."]],
+7:[
+["W","Wir sollten ___ mit Ressourcen umgehen.","sparsam","seltsam","sorgsam nicht","Tejamkor."],
+["W","Der ökologische ___ zeigt unseren Verbrauch.","Fußabdruck","Fußtritt","Fußweg","Ekologik iz."],
+["W","Viele Unternehmen betreiben nur ___.","Greenwashing","Brainwashing","Carwashing","Yolg'on ekologik reklama."],
+["K","Sie fordern Maßnahmen: ___","Es bedarf dringend verbindlicher Regeln.","Es bedarf dringend verbindliche Regeln.","Bedarf Regeln.","bedürfen + Genitiv."],
+["K","Sie äußern Zweifel an einer Studie: ___","Ich halte die Datenlage für nicht ausreichend.","Ich halte die Datenlage nicht für ausreichend genug.","Daten halte.","halten für."],
+["K","Sie nennen eine Konsequenz: ___","Das hat zur Folge, dass die Preise steigen.","Das hat zur Folge, dass steigen die Preise.","Folge Preise.","zur Folge haben."]],
+8:[
+["W","Im Alter möchte er ___ bleiben.","selbstbestimmt","selbstgemacht","selbstlos","Mustaqil."],
+["W","Die ___ der Bevölkerung steigt.","Lebenserwartung","Lebenserfahrung","Lebensgefahr","Umr davomiyligi."],
+["W","Junge und Alte leben im Mehrgenerationenhaus ___.","zusammen","zusammengezogen","zusammengestellt","Birgalikda."],
+["K","Sie zeigen Respekt vor Älteren: ___","Von ihrer Erfahrung können wir viel lernen.","Von ihre Erfahrung können wir viel lernen.","Erfahrung lernen.","von + Dativ: ihrer."],
+["K","Sie stellen eine rhetorische Frage: ___","Wer möchte nicht in Würde alt werden?","Wer möchte nicht in Würde alt geworden?","Würde alt.","Ritorik savol."],
+["K","Sie verallgemeinern vorsichtig: ___","Tendenziell lässt sich sagen, dass …","Tendenziell lässt sich gesagt, dass …","Tendenz sagen.","Ehtiyotkor umumlashtirish."]],
+9:[
+["W","Künstliches Licht stört den ___ von Tieren.","Biorhythmus","Biomüll","Bioladen","Biologik ritm."],
+["W","In Großstädten spricht man von ___.","Lichtverschmutzung","Lichtverschiebung","Lichtschutz","Yorug'lik ifloslanishi."],
+["W","Die Straßenbeleuchtung wird nachts ___.","gedimmt","gedämmt","gedeckt","dimmen — xiralashtirmoq."],
+["K","Sie stellen einen Zusammenhang her: ___","Das steht in direktem Zusammenhang mit dem Schlafmangel.","Das steht in direktem Zusammenhang zu dem Schlafmangel steht.","Zusammenhang Schlaf.","im Zusammenhang mit."],
+["K","Sie präsentieren Daten: ___","Wie die Grafik verdeutlicht, hat sich der Wert verdoppelt.","Wie die Grafik verdeutlicht, der Wert hat sich verdoppelt.","Grafik doppelt.","Grafikani tushuntirish."],
+["K","Sie fassen zusammen: ___","Zusammenfassend lässt sich festhalten, dass …","Zusammenfassend lässt sich festgehalten, dass …","Zusammen fest.","Xulosa iborasi."]],
+10:[
+["W","Fehler sollten nicht ___, sondern analysiert werden.","vertuscht","vertauscht","vertraut","vertuschen — yashirmoq."],
+["W","In der Firma herrscht eine offene ___.","Fehlerkultur","Fehlerquelle","Fehlzeit","Xatolarga ochiq munosabat."],
+["W","Er hat die ___ für den Fehler übernommen.","Verantwortung","Verantwortlichkeit nicht","Verwaltung","Mas'uliyat."],
+["K","Sie geben einen Fehler zu: ___","Das geht auf meine Kappe.","Das geht auf meinen Hut.","Kappe meine.","Bu mening aybim."],
+["K","Sie schlagen eine Lösung vor: ___","Um so etwas künftig zu vermeiden, sollten wir …","Um so etwas künftig vermeiden zu, sollten wir …","Vermeiden künftig.","um … zu."],
+["K","Sie beschwichtigen: ___","Halb so wild, das lässt sich korrigieren.","Halb so wild, das lässt sich korrigiert.","Wild korrigieren.","Halb so wild — unchalik yomon emas."]],
+11:[
+["W","Die Begegnung war ein ___ in meinem Leben.","Wendepunkt","Wendekreis","Wendeltreppe","Burilish nuqtasi."],
+["W","Er hat sein Leben grundlegend ___.","umgekrempelt","umgekippt","umgeknickt","umkrempeln — tubdan o'zgartirmoq."],
+["W","Nach der Krankheit hat sie neue ___ gesetzt.","Prioritäten","Proportionen","Provisionen","Ustuvorliklar."],
+["K","Sie erzählen von einem Wendepunkt: ___","Von da an sah ich die Dinge mit anderen Augen.","Von da an ich sah die Dinge mit anderen Augen.","Augen anders.","Inversiya: sah ich."],
+["K","Sie fragen tiefergehend nach: ___","Was genau hat Sie damals dazu bewogen?","Was genau hat Sie damals dazu bewegt worden?","Bewogen was.","bewegen (bewog) — undamoq."],
+["K","Sie bewerten rückblickend: ___","Im Nachhinein bin ich froh, dass es so gekommen ist.","Im Nachhinein bin ich froh, dass es so ist gekommen.","Nachhinein froh.","im Nachhinein — keyinchalik."]],
+12:[
+["W","Viele medizinische Studien ___ Frauen nicht ausreichend.","berücksichtigen","berühren","berufen","berücksichtigen — hisobga olmoq."],
+["W","Das führt zu einer ___ Verzerrung der Daten.","systematischen","systematische","systematischer","zu einer … → -en."],
+["W","Die ___ wurde geschlossen: Jetzt gibt es Daten.","Lücke","Lüge","Luke","Bo'shliq — Lücke."],
+["K","Sie belegen eine Aussage: ___","Dies lässt sich anhand zahlreicher Beispiele belegen.","Dies lässt sich anhand zahlreicher Beispiele belegt.","Belege Beispiele.","anhand + Genitiv."],
+["K","Sie problematisieren: ___","Problematisch ist dabei vor allem, dass …","Problematisch ist dabei vor allem, dass ist …","Problem dass.","Muammoni ko'rsatish."],
+["K","Sie fordern auf: ___","Hier besteht dringender Handlungsbedarf.","Hier besteht dringend Handlungsbedarf.","Bedarf handeln.","dringender (sifat)."]],
+13:[
+["W","Beruflich ist es wichtig, ein gutes ___ aufzubauen.","Netzwerk","Netzteil","Netzhaut","Netzwerk."],
+["W","Durch Kontakte bin ich an die Stelle ___.","gekommen","bekommen","angekommen","an etwas kommen — qo'lga kiritmoq."],
+["W","Vitamin B bedeutet umgangssprachlich: ___","Beziehungen","Gesundheit","Bildung","Tanish-bilish."],
+["K","Auf einer Fachkonferenz: ___","Darf ich mich kurz vorstellen? Ich arbeite im Bereich …","Darf ich kurz vorstellen mich?","Vorstellen Bereich.","O'zini tanishtirish."],
+["K","Sie bleiben in Kontakt: ___","Es wäre schön, wenn wir in Verbindung blieben.","Es wäre schön, wenn wir blieben in Verbindung.","Verbindung schön.","wenn → fe'l oxirda."],
+["K","Sie bedanken sich für einen Kontakt: ___","Vielen Dank, dass Sie mich weiterempfohlen haben.","Vielen Dank, dass Sie haben mich weiterempfohlen.","Empfohlen danke.","dass → fe'l oxirda."]],
+14:[
+["W","Sie ___ sich für Geflüchtete.","engagiert","engagieren","engagierte sich für","sich engagieren für."],
+["W","Die Bürger haben eine ___ gestartet.","Petition","Position","Partition","Petitsiya."],
+["W","Man muss nicht tatenlos ___.","zusehen","zusagen","zustellen","zusehen — qarab turmoq."],
+["K","Sie mobilisieren andere: ___","Wenn wir jetzt nicht handeln, wann dann?","Wenn wir handeln jetzt nicht, wann dann?","Handeln wann.","Chaqiriq."],
+["K","Sie begründen Ihr Engagement: ___","Mir liegt viel daran, etwas zurückzugeben.","Mir liegt viel daran, etwas zurück zu gegeben.","Zurück liegt.","jdm. liegt an — muhim."],
+["K","Sie zeigen sich solidarisch: ___","Ihr könnt auf meine Unterstützung zählen.","Ihr könnt meine Unterstützung zählen.","Zählt Unterstützung.","zählen auf."]],
+15:[
+["W","In der Pandemie zeigte sich große ___.","Solidarität","Solidität","Sozialität","Birdamlik."],
+["W","Niemand sollte ___ gelassen werden.","im Stich","im Stoß","im Stand","im Stich lassen — tashlab ketmoq."],
+["W","Die Kosten werden auf alle ___.","umgelegt","umgelenkt","umgeleitet","umlegen — taqsimlamoq."],
+["K","Sie appellieren: ___","Wir alle sind gefordert, unseren Beitrag zu leisten.","Wir alle sind gefordert, unseren Beitrag leisten zu.","Beitrag fordern.","einen Beitrag leisten."],
+["K","Sie widersprechen entschieden: ___","Dem muss ich entschieden widersprechen.","Das muss ich entschieden widersprechen.","Widersprechen ich.","widersprechen + Dativ."],
+["K","Sie räumen ein: ___","Es mag sein, dass das teuer ist, aber …","Es mag sein, dass das ist teuer, aber …","Mag teuer.","Tan olish + aber."]],
+16:[
+["W","Er konnte seine Wut kaum ___.","zügeln","zögern","zählen","zügeln — jilovlamoq."],
+["W","Sie ließ sich ihre Enttäuschung nicht ___.","anmerken","anmelden","anmachen","sich etwas anmerken lassen — sezdirmoq."],
+["W","Mir ist ein ___ vom Herzen gefallen.","Stein","Stern","Stück","Ko'nglim taskin topdi."],
+["K","Sie sprechen Gefühle an: ___","Ich habe den Eindruck, dass dich etwas bedrückt.","Ich habe den Eindruck, dass dich bedrückt etwas.","Eindruck bedrückt.","dass → fe'l oxirda."],
+["K","Sie grenzen sich ab: ___","Das möchte ich so nicht stehen lassen.","Das möchte ich so nicht stehen gelassen.","Stehen lassen.","Rozi emaslik."],
+["K","Sie entschuldigen sich aufrichtig: ___","Es tut mir aufrichtig leid, wenn ich dich gekränkt habe.","Es tut mir aufrichtig leid, wenn ich habe dich gekränkt.","Gekränkt leid.","wenn → fe'l oxirda."]],
+17:[
+["W","Viele wünschen sich eine bessere ___ von Beruf und Familie.","Vereinbarkeit","Vereinbarung","Verein","Moslash — Vereinbarkeit."],
+["W","Er hat eine ___ bekommen: mehr Gehalt!","Gehaltserhöhung","Gehaltsabrechnung","Gehaltskürzung","Maosh oshishi."],
+["W","Sie hat ihren Job ___.","gekündigt","gekündet","gekannt","kündigen — ishdan bo'shamoq."],
+["K","Im Gehaltsgespräch: ___","Angesichts meiner Leistungen halte ich eine Anpassung für angemessen.","Angesichts meine Leistungen halte ich Anpassung angemessen.","Leistung Anpassung.","angesichts + Genitiv."],
+["K","Sie lehnen eine Aufgabe ab: ___","Das kann ich zeitlich leider nicht stemmen.","Das kann ich zeitlich leider nicht gestemmt.","Stemmen nicht.","stemmen — uddalamoq."],
+["K","Sie bitten um Rückmeldung: ___","Ich würde mich über ein kurzes Feedback freuen.","Ich würde mich auf ein kurzes Feedback gefreut.","Feedback freue.","sich freuen über."]],
+18:[
+["W","Alle Menschen sind vor dem Gesetz ___.","gleich","gleichgültig","gleichzeitig","Teng."],
+["W","Es geht um die gerechte ___ von Vermögen.","Verteilung","Verteidigung","Verteuerung","Taqsimot."],
+["W","Er hat gegen das Urteil ___ eingelegt.","Berufung","Beruf","Berufsschule","Apellyatsiya."],
+["K","Sie diskutieren Gerechtigkeit: ___","Gerecht ist nicht, wenn alle dasselbe bekommen, sondern wenn …","Gerecht ist nicht, wenn alle bekommen dasselbe, sondern …","Gerecht dasselbe.","nicht … sondern."],
+["K","Sie präzisieren: ___","Genauer gesagt geht es um Chancengleichheit.","Genauer gesagt es geht um Chancengleichheit.","Genau Chancen.","Inversiya."],
+["K","Sie stellen eine Bedingung: ___","Vorausgesetzt, dass alle zustimmen, können wir beginnen.","Vorausgesetzt, dass alle stimmen zu, können wir beginnen.","Voraussetzung zu.","vorausgesetzt, dass."]],
+19:[
+["W","Er hat sich umfassendes ___ angeeignet.","Fachwissen","Fachwerk","Fachhandel","Mutaxassislik bilimi."],
+["W","Wissen ist heute ständig ___.","verfügbar","verführbar","vergänglich nicht","Mavjud."],
+["W","Fake News lassen sich oft nur schwer ___.","entlarven","entlasten","entlassen","fosh qilmoq."],
+["K","Sie zweifeln eine Quelle an: ___","Wie seriös ist diese Quelle eigentlich?","Wie seriös ist eigentlich diese Quelle ist?","Seriös Quelle.","Manbaga shubha."],
+["K","Sie geben Halbwissen zu: ___","Soweit ich weiß, ist das umstritten.","Soweit ich weiß, das ist umstritten.","Soweit umstritten.","soweit ich weiß + fe'l."],
+["K","Sie bitten um Belege: ___","Woran machst du das fest?","Woran machst du das an?","Fest machst.","festmachen an — asoslamoq."]],
+20:[
+["W","Kinder sind von Natur aus ___.","neugierig","neuartig","neidisch","Qiziquvchan."],
+["W","Die Forscherin ging der Frage ___.","nach","vor","aus","einer Frage nachgehen."],
+["W","Seine Neugier wurde ___.","geweckt","gewickelt","gewackelt","Neugier wecken — qiziqish uyg'otmoq."],
+["K","Sie wecken Interesse in einem Vortrag: ___","Haben Sie sich schon einmal gefragt, warum …?","Haben Sie schon einmal sich gefragt, warum …?","Gefragt warum.","Kirish savoli."],
+["K","Sie fragen weiter: ___","Mich würde interessieren, wie Sie darauf gekommen sind.","Mich würde interessieren, wie Sie sind darauf gekommen.","Interessiert gekommen.","Bilvosita savol."],
+["K","Sie zeigen Begeisterung: ___","Das finde ich unglaublich faszinierend!","Das finde ich unglaublich fasziniert!","Faszinierend finde.","Sifat: faszinierend."]],
+21:[
+["W","Algorithmen ___, welche Inhalte wir sehen.","bestimmen","bestimmt","stimmen ab","bestimmen — belgilamoq."],
+["W","Wir bewegen uns oft in einer ___.","Filterblase","Filterkaffee","Filtertüte","Axborot pufagi."],
+["W","Die Daten werden ___ ausgewertet.","automatisiert","automatisch gemacht","autonomisiert","Avtomatlashtirilgan."],
+["K","Sie warnen vor Risiken: ___","Man sollte die Gefahren nicht unterschätzen.","Man sollte die Gefahren nicht unterschätzt.","Gefahr unterschätzen.","unterschätzen — yetarlicha baholamaslik."],
+["K","Sie nehmen Stellung: ___","Meiner Ansicht nach überwiegen die Vorteile.","Meiner Ansicht nach die Vorteile überwiegen.","Ansicht Vorteile.","Meiner Ansicht nach + fe'l."],
+["K","Sie leiten zum Schluss über: ___","Abschließend möchte ich noch auf einen Punkt eingehen.","Abschließend möchte ich noch einen Punkt eingehen.","Punkt eingehen.","eingehen auf."]],
+22:[
+["W","Die Ergebnisse der Studie sind ___.","aussagekräftig","ausgesagt","aussichtslos","Ishonchli, mazmunli."],
+["W","Die Forscher haben eine ___ aufgestellt.","Hypothese","Hypothek","Hysterie","Gipoteza."],
+["W","Das Experiment wurde mehrfach ___.","wiederholt","widerholt","wiedergeholt","Takrorlangan."],
+["K","Sie beschreiben das Vorgehen: ___","Im Rahmen der Studie wurden 500 Personen befragt.","Im Rahmen der Studie 500 Personen wurden befragt.","Rahmen befragt.","Passiv Präteritum."],
+["K","Sie schränken ein: ___","Allerdings ist die Stichprobe relativ klein.","Allerdings die Stichprobe ist relativ klein.","Stichprobe klein.","allerdings + fe'l."],
+["K","Sie ziehen Schlussfolgerungen: ___","Daraus lässt sich schließen, dass weitere Forschung nötig ist.","Daraus lässt sich schließen, dass ist weitere Forschung nötig.","Schließen nötig.","dass → fe'l oxirda."]],
+23:[
+["W","Jede Region hat ihre eigenen ___.","Spezialitäten","Spezialisten","Spezifikationen","Mahalliy taomlar."],
+["W","Gemeinsames Essen ___ Gemeinschaft.","stiftet","stiftelt","stützt nicht","Gemeinschaft stiften — birdamlik yaratmoq."],
+["W","Das Gericht wird nach einem alten ___ zubereitet.","Rezept","Rezeption","Rezession","Retsept."],
+["K","Sie beschreiben eine Esskultur: ___","Bei uns ist es üblich, dass der Gast zuerst bedient wird.","Bei uns ist es üblich, dass der Gast wird zuerst bedient.","Üblich Gast.","dass → fe'l oxirda."],
+["K","Sie lehnen etwas taktvoll ab: ___","Das sieht köstlich aus, aber ich bin wirklich satt.","Das sieht köstlich, aber ich bin wirklich aus satt.","Köstlich satt.","aussehen — ajraluvchi."],
+["K","Sie vergleichen Kulturen: ___","Im Vergleich zu Deutschland wird bei uns später gegessen.","Im Vergleich mit Deutschland bei uns wird später gegessen.","Vergleich später.","im Vergleich zu."]],
+24:[
+["W","Vielfalt ___ eine Gesellschaft.","bereichert","bereichern","berechnet","bereichern — boyitmoq."],
+["W","Es gilt, Unterschiede nicht nur zu tolerieren, sondern ___.","wertzuschätzen","wert zu schätzen nicht","wertschätzen zu","wertschätzen — qadrlamoq."],
+["W","Er hat einen ___ Horizont: Er kennt viele Kulturen.","weiten","weite","weiter","einen … Horizont → -en."],
+["K","Sie halten eine Schlussrede: ___","Lassen Sie mich mit einem Zitat schließen.","Lassen Sie mich mit einem Zitat geschlossen.","Zitat schließen.","Nutqni yakunlash."],
+["K","Sie bedanken sich beim Publikum: ___","Ich danke Ihnen für Ihre Aufmerksamkeit.","Ich danke Sie für Ihre Aufmerksamkeit.","Danke Aufmerksamkeit.","danken + Dativ: Ihnen."],
+["K","Sie eröffnen die Diskussion: ___","Ich bin gespannt auf Ihre Fragen und Anmerkungen.","Ich bin gespannt für Ihre Fragen.","Gespannt Fragen.","gespannt auf."]]
+};
+
 /* ================= BLITZ RALLY 3D — real-time multiplayer race ================= */
 const Race3D=(()=>{
 const T3URL='https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
@@ -3643,7 +4508,10 @@ const vcol=(k,c)=>{c=Number(c);if(!(c>=0))return VEH[num(k)%NV].col;return COLS[
 const BOOKS={mA1:{n:'Momente A1',lv:'A1',d:BK_MA1},mA2:{n:'Momente A2',lv:'A2',d:BK_MA2},mB1:{n:'Momente B1',lv:'B1',d:BK_MB1},vB2:{n:'Vielfalt B2',lv:'B2',d:BK_VB2},vC1:{n:'Vielfalt C1',lv:'C1',d:BK_VC1}};
 const lvlOf=c=>c.src&&BOOKS[c.src]?BOOKS[c.src].lv:c.lvl;
 function srcName(c){const B=BOOKS[c.src];if(!B)return c.lvl;const ls=(c.les||[]).slice().sort((a,b)=>a-b);if(ls.length)return B.n+' · Lektion '+ls.join(', ');const ms=(c.mods||[]).slice().sort((a,b)=>a-b);return B.n+(ms.length?' · Modul '+ms.join(', '):'')}
-function bookPool(c){const B=BOOKS[c.src];if(!B)return null;const ms=Array.isArray(c.mods)?c.mods:[],ls=Array.isArray(c.les)?c.les:[];const out=[];B.d.forEach(([l,t,qs])=>{if(ls.length){if(!ls.includes(l))return}else if(ms.length&&!ms.includes(Math.ceil(l/3)))return;qs.forEach(q=>out.push({t:'mc',q:q[0],o:q.slice(1,-1),tip:q[q.length-1],c:'B',les:l}))});return out}
+const BXS=()=>({mA1:typeof BX_MA1!=='undefined'?BX_MA1:{},mA2:typeof BX_MA2!=='undefined'?BX_MA2:{},mB1:typeof BX_MB1!=='undefined'?BX_MB1:{},vB2:typeof BX_VB2!=='undefined'?BX_VB2:{},vC1:typeof BX_VC1!=='undefined'?BX_VC1:{}});
+const FUNCW=/^(Der|Die|Das|Den|Dem|Des|Ein|Eine|Einen|Einem|Einer|Er|Sie|Es|Ihr|Ihnen|Ihre|Wir|Ich|Du|Mein|Meine|Dein|Deine|Sein|Seine|Woher|Wo|Wohin|Wie|Was|Wer|Wen|Wem|Wann|Warum|Welche|Welcher|Welches|Doch|Ja|Nein|Als|Wenn|Weil|Dass|Ob|Trotzdem|Deshalb|Obwohl|Seit|Am|Im|Um|Euch|Uns|Man|Kein|Keine|Nicht|Damit|Darauf|Daran|Davon|Dafür|Worauf|Woran|Wofür|Je|Desto|Sowohl|Weder|Entweder|Zwar)$/;
+function clsQ(q){const o=q.slice(1,-1),t=q[0];if(/ – ___|___ – |Was sagen Sie|Was sagt man|Welche Antwort/.test(t)||o.every(x=>x.split(' ').length>=3))return'K';const r=o[0];if(r.split(' ').length===1&&/^[A-ZÄÖÜ]/.test(r)&&!FUNCW.test(r))return'W';return'G'}
+function bookPool(c){const B=BOOKS[c.src];if(!B)return null;const ms=Array.isArray(c.mods)?c.mods:[],ls=Array.isArray(c.les)?c.les:[];const out=[];B.d.forEach(([l,t,qs])=>{if(ls.length){if(!ls.includes(l))return}else if(ms.length&&!ms.includes(Math.ceil(l/3)))return;qs.forEach(q=>out.push({t:'mc',q:q[0],o:q.slice(1,-1),tip:q[q.length-1],c:'B',fc:clsQ(q),les:l}));((BXS()[c.src]||{})[l]||[]).forEach(q=>out.push({t:'mc',q:q[1],o:q.slice(2,-1),tip:q[q.length-1],c:'B',fc:q[0],les:l}))});const fc=c.cat;if(fc&&fc!=='mix'){const f=out.filter(q=>q.fc===fc);if(f.length>=3)return f}return out}
 const GAPS={A1:430,A2:390,B1:350,B2:320,C1:300},gapOf=c=>GAPS[lvlOf(c)]||280,nGates=c=>{let n=Math.max(3,Math.floor((c.len-420)/gapOf(c)));const p=bookPool(c);if(p&&p.length>=3)n=Math.min(n,p.length);return n};
 const RATE={A1:8,A2:10,B1:12,B2:14,C1:16};
 function readT(q,cfg){const txt=String(q.text).replace(/<[^>]+>|\*\*|„|“|—/g,'');const ch=txt.length+q.opts.join(' ').length;let t=2.2+ch/(RATE[lvlOf(cfg)]||11);
@@ -3666,13 +4534,13 @@ const clean=s=>String(s==null?'':s).replace(/[\u0000-\u001f​-‏‪-‮]/g,'')
 /* ---------- questions (existing DB + location content) ---------- */
 function buildQs(cfg,seed,n){
  const r=rng(seed),sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
- const lv=cfg.lvl,cat=cfg.cat,ok=q=>cat==='mix'||(cat==='W'?(q.t==='art'||q.c==='W'):(q.c==='G'||q.t==='ord'));
- let pool=bookPool(cfg);if(!pool||!pool.length){pool=DB[lv].filter(ok);Object.values(LOCQ).forEach(a=>a.forEach(q=>{if(q.lv===lv&&ok(q))pool.push(q)}))}pool=sh(pool);
+ const lv=cfg.lvl,cat=cfg.cat==='K'?'mix':cfg.cat,ok=q=>cat==='mix'||(cat==='W'?(q.t==='art'||q.c==='W'):(q.c==='G'||q.t==='ord'));
+ let pool=bookPool(cfg);if(!pool||!pool.length){pool=DB[lv].filter(ok);Object.values(LOCQ).forEach(a=>a.forEach(q=>{if(q.lv===lv&&ok(q))pool.push(q)}))}pool=sh(pool);if(pool[0]&&pool[0].fc){const g={G:[],W:[],K:[]};pool.forEach(q=>(g[q.fc]||g.G).push(q));const rr=[];const ks=sh(['G','W','K']);while(rr.length<pool.length)ks.forEach(k=>{const x=g[k].shift();if(x)rr.push(x)});pool=rr}
  const out=[];for(let k=0;k<n;k++){const q=pool[k%pool.length];let text,opts,right;
   if(q.t==='art'){text=`Welcher Artikel? ___ ${q.n}`;opts=['der','die','das'];right=q.a}
   else if(q.t==='ord'){const tk=q.s.replace(/[.?!]$/,'').split(' '),pn=(q.s.match(/[.?!]$/)||[''])[0];right=tk.join(' ')+pn;const c=[];for(let i=0;i<tk.length-1;i++){const t=tk.slice();[t[i],t[i+1]]=[t[i+1],t[i]];const s=t.join(' ')+pn;if(s!==right&&!c.includes(s))c.push(s)}opts=sh([right,...sh(c).slice(0,2)]);text='Welcher Satz ist richtig?'}
   else{opts=sh(q.o);right=q.o[0];text=q.ann?`📢 ${q.ann} — ${q.q}`:q.say?`„${q.say}“ — ${q.q||'Was antwortest du?'}`:q.q}
-  out.push({les:q.les||0,text,opts,right,tip:q.t==='art'?artTipUz(q.n,q.a):tipUz(q),isG:q.t==='ord'||q.c==='G',art:q.t==='art',uz:q.t==='art'&&NOUN_UZ[q.n]?`${q.a} ${q.n} — ${NOUN_UZ[q.n]}`:''})}
+  out.push({les:q.les||0,text,opts,right,tip:q.t==='art'?artTipUz(q.n,q.a):tipUz(q),isG:q.t==='ord'||q.c==='G'||q.fc==='G',fc:q.fc||'',art:q.t==='art',uz:q.t==='art'&&NOUN_UZ[q.n]?`${q.a} ${q.n} — ${NOUN_UZ[q.n]}`:''})}
  return out;
 }
 
@@ -4211,7 +5079,7 @@ function qResult(q,ln,ok,none){const el=G.root.querySelector('#r3q');const ri=q.
  clearTimeout(G.qHoldT);G.qHold=1;G.qHoldT=setTimeout(()=>{if(!G)return;G.qHold=0;renderQ()},ok?(info?1300:900):(info?2700:1600))}
 function renderQ(){const el=G.root.querySelector('#r3q'),k=G.me.nextGate;if(k>=G.qs.length||G.me.fin){el.classList.add('hide');return}const q=G.qs[k];el.classList.remove('hide');if(G.lastQ!==k&&G.phase==='race'){G.lastQ=k;play('ui_q',.3)}
  const n=q.opts.length,mx=Math.max(...q.opts.map(o=>o.length)),narrow=innerWidth<700;const cols=mx>26?1:(narrow?(n===3?(mx<=9?3:1):(n===4?2:n)):(mx>18?2:n));G.qCols=cols;
- el.innerHTML=`<div class="qcard"><div class="qh">${ic(q.art?'book':q.isG?'cap':'chat','sm')} <span class="qcat">${q.les?'Lektion '+q.les:q.art?'Artikel':q.isG?'Grammatik':'Wortschatz'}</span> <span class="qn">${k+1}/${G.qs.length}</span><span class="qsec" id="r3qs">⏱ –</span></div><div class="qt">${fmt(q.text)}</div><div class="qbar"><i id="r3qb"></i></div></div>
+ el.innerHTML=`<div class="qcard"><div class="qh">${ic(q.fc==='W'||q.art?'book':q.fc==='K'?'chat':q.isG?'cap':'chat','sm')} <span class="qcat">${q.fc?(q.les?'L'+q.les+' · ':'')+{G:'Grammatik',W:'Wortschatz',K:'Kommunikation'}[q.fc]:q.les?'Lektion '+q.les:q.art?'Artikel':q.isG?'Grammatik':'Wortschatz'}</span> <span class="qn">${k+1}/${G.qs.length}</span><span class="qsec" id="r3qs">⏱ –</span></div><div class="qt">${fmt(q.text)}</div><div class="qbar"><i id="r3qb"></i></div></div>
   <div class="qo" style="grid-template-columns:repeat(${cols},1fr)">${q.opts.map((o,i)=>`<button tabindex="-1" data-i="${i}" style="--gc:${GCOL[i]}"><i>${G.touch?GL[i]:i+1}</i><span>${esc(o)}</span></button>`).join('')}</div>`;
  el.classList.remove('lock','done','in');void el.offsetWidth;el.classList.add('in','arm');G.qArm=performance.now()+450;clearTimeout(G.armT);G.armT=setTimeout(()=>el.classList.remove('arm'),450)}
 function botAI(b,dt){const k=b.nextGate;let tx=b.x;if(k<G.gateS.length){const d=G.gateS[k]-b.s,q=G.qs[k],n=q.opts.length;if(d<170){if(b.pick==null||b.pickG!==k){b.pickG=k;const ri=q.opts.indexOf(q.right);b.pick=Math.random()<(b.acc+(b.s>G.me.s+60?-.2:b.s<G.me.s-120?.1:0))?ri:(ri+1+Math.floor(Math.random()*(n-1)))%n}tx=HW-(b.pick+.5)*RW/n}}
@@ -4382,7 +5250,7 @@ function onNet(){if(!NET.r)return;const peers=NET.r.peers(),h=hostPeer();
  if(!h&&performance.now()-NET.joinedAt>2500&&peers.length){const first=peers.slice().sort((a,b)=>a.peer<b.peer?-1:1)[0];if(first.isMe&&first.sameTab&&!NET.host){NET.host=true;NET.r.presence({h:1,ph:'lobby',cfg:ST.cfg}).catch(()=>{})}}
  if(h&&!(h.isMe&&h.sameTab)&&NET.host){NET.host=false;NET.r.presence({h:null,ph:null,cfg:null}).catch(()=>{})}
  if(h&&!(h.isMe&&h.sameTab)){const hp=h.presence;
-  if(hp.cfg&&typeof hp.cfg==='object'){const c=hp.cfg;if(TRACKS[c.city]&&LENS[c.len]&&LVLS.includes(c.lvl)&&['mix','W','G'].includes(c.cat)&&TODS[c.tod])ST.cfg=Object.assign({},c,{team:!!c.team,src:BOOKS[c.src]?c.src:'',mods:Array.isArray(c.mods)?c.mods.map(Number).filter(m=>m>=1&&m<=8).slice(0,8):[],les:Array.isArray(c.les)?c.les.map(Number).filter(m=>m>=1&&m<=24).slice(0,24):[]})}
+  if(hp.cfg&&typeof hp.cfg==='object'){const c=hp.cfg;if(TRACKS[c.city]&&LENS[c.len]&&LVLS.includes(c.lvl)&&['mix','W','G','K'].includes(c.cat)&&TODS[c.tod])ST.cfg=Object.assign({},c,{team:!!c.team,src:BOOKS[c.src]?c.src:'',mods:Array.isArray(c.mods)?c.mods.map(Number).filter(m=>m>=1&&m<=8).slice(0,8):[],les:Array.isArray(c.les)?c.les.map(Number).filter(m=>m>=1&&m<=24).slice(0,24):[]})}
   if(hp.ph==='cd'&&num(hp.seed)&&hp.seed!==NET.lastSeed&&!G&&App.view==='race'){NET.lastSeed=hp.seed;startRace({mode:'online',cfg:Object.assign({},ST.cfg),seed:hp.seed,goIn:Math.max(500,num(hp.go,4000))});return}
   if(hp.ph==='lobby'&&G&&G.mode==='online'&&G.done){exit();return}}
  if(SPEC)return;if(!G&&App.view==='race'){renderNet();renderSet();renderDrv()}}
@@ -4499,11 +5367,11 @@ function renderSet(){const el=document.getElementById('r3set');if(!el)return;con
  el.innerHTML=`<div class="lbl">Strecke ${ro?'· vom Host gewählt':''}</div><div class="${ro?'ro':''}"><div class="citypick">${Object.entries(TRACKS).map(([k,n])=>`<button class="${c.city===k?'on':''}" style="background-image:url(${Pano.thumb(city2pano[k],c.tod==='day'?'day':c.tod==='dusk'?'dusk':'night','clear',300,170)})" onclick="Race3D.cfg('city','${k}')"><span>${n}</span></button>`).join('')}</div>
   <div class="lbl">Fragen aus</div><div class="seg wrap"><button class="${!c.src?'on':''}" onclick="Race3D.cfg('src','')">Allgemein<small>A1–B2 Mix</small></button>${Object.entries(BOOKS).map(([k,B])=>`<button class="${c.src===k?'on':''}" onclick="Race3D.cfg('src','${k}')">${B.n}<small>Lektion 1–24</small></button>`).join('')}</div>
   ${c.src&&BOOKS[c.src]?`<div class="lbl">Modul <span class="muted" style="text-transform:none;letter-spacing:0">(bir nechtasini tanlash mumkin)</span></div><div class="modpick"><button class="${!(c.mods||[]).length?'on':''}" onclick="Race3D.mod(0)">Alle</button>${[1,2,3,4,5,6,7,8].map(m=>`<button class="${(c.mods||[]).includes(m)?'on':''}" onclick="Race3D.mod(${m})"><b>M${m}</b><small>L${m*3-2}–${m*3}</small></button>`).join('')}</div>
-   <div class="lbl">Lektion <span class="muted" style="text-transform:none;letter-spacing:0">(bitta mavzuni alohida o'ynash uchun bosing)</span></div><div class="lespick">${BOOKS[c.src].d.filter(([l])=>!(c.mods||[]).length||(c.mods||[]).includes(Math.ceil(l/3))).map(([l,t,qs])=>`<button class="${(c.les||[]).includes(l)?'on':''}" onclick="Race3D.les(${l})"><b>L${l}</b><span>${esc(t)}</span><small>${qs.length}</small></button>`).join('')}</div>
+   <div class="lbl">Lektion <span class="muted" style="text-transform:none;letter-spacing:0">(bitta mavzuni alohida o'ynash uchun bosing)</span></div><div class="lespick">${BOOKS[c.src].d.filter(([l])=>!(c.mods||[]).length||(c.mods||[]).includes(Math.ceil(l/3))).map(([l,t,qs])=>`<button class="${(c.les||[]).includes(l)?'on':''}" onclick="Race3D.les(${l})"><b>L${l}</b><span>${esc(t)}</span><small>${qs.length+((BXS()[c.src]||{})[l]||[]).length}</small></button>`).join('')}</div>
    <div class="lessum">${(c.les||[]).length?`🎯 ${srcName(c).split(' · ')[1]} · ${(bookPool(c)||[]).length} ta savol <button onclick="Race3D.les(0)">✕ hammasi</button>`:`${(bookPool(c)||[]).length} ta savol tanlangan`}</div>`:
   `<div class="lbl">Niveau</div><div class="seg">${LVLS.map(l=>`<button class="${c.lvl===l?'on':''}" onclick="Race3D.cfg('lvl','${l}')">${l}</button>`).join('')}</div>`}
   <div class="lbl">Distanz</div><div class="seg">${Object.entries(LENS).map(([m,n])=>`<button class="${c.len==m?'on':''}" onclick="Race3D.cfg('len',${m})">${n}<small>${nGates(Object.assign({},c,{len:+m}))} Fragen</small></button>`).join('')}</div>
-  ${c.src?'':`<div class="lbl">Fragen</div><div class="seg">${[['mix','Mix'],['W','Wortschatz'],['G','Grammatik']].map(([k,n])=>`<button class="${c.cat===k?'on':''}" onclick="Race3D.cfg('cat','${k}')">${n}</button>`).join('')}</div>`}
+  <div class="lbl">Fokus</div><div class="seg fseg">${(c.src?[['mix','Mix'],['G','Grammatik'],['W','Wortschatz'],['K','Kommunikation']]:[['mix','Mix'],['W','Wortschatz'],['G','Grammatik']]).map(([k,n])=>`<button class="${(c.cat===k||(!c.src&&k==='mix'&&c.cat==='K'))?'on':''}" onclick="Race3D.cfg('cat','${k}')">${n}</button>`).join('')}</div>
   <div class="lbl">Tageszeit</div><div class="seg">${Object.entries(TODS).map(([k,n])=>`<button class="${c.tod===k?'on':''}" onclick="Race3D.cfg('tod','${k}')">${n}</button>`).join('')}</div>
   <div class="lbl">Modus</div><div class="seg"><button class="${!c.team?'on':''}" onclick="Race3D.cfg('team',false)">Jeder gegen jeden</button><button class="${c.team?'on':''}" onclick="Race3D.cfg('team',true)">Team Blau vs. Rot<small>Punkte zählen fürs Team</small></button></div></div>`}
 
