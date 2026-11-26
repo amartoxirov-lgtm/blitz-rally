@@ -842,6 +842,14 @@ body.raceonly main#view{padding-bottom:20px}
 .lesinfo{display:flex;flex-direction:column;gap:3px;margin-top:8px;max-height:150px;overflow:auto;font-size:12.5px;opacity:.85;padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.04)}
 .lesinfo b{color:#5BC8FA;display:inline-block;min-width:30px}
 @media (max-width:560px){.modpick{grid-template-columns:repeat(5,1fr)}.seg.wrap button{flex:1 1 45%}}
+.acts4{grid-template-columns:repeat(5,1fr)}
+.acts4 .act.daily{border-color:rgba(192,132,252,.45)}
+.acts4 .drow{display:flex;justify-content:space-between;gap:6px;font-size:12px;opacity:.85;flex-wrap:wrap}
+.acts4 .d2{display:grid;grid-template-columns:1fr 1.3fr;gap:6px}.acts4 .d2 .btn{padding:9px 6px;font-size:13px}
+.vehpick button.lock{opacity:.5;cursor:not-allowed}
+@media (max-width:1200px){.acts4{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:980px){.acts4{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.acts4{grid-template-columns:1fr}.acts4 .act.daily{order:-1}.acts4 .act.daily .drow,.acts4 .act.daily .d2{grid-column:1/-1}}
 </style>
 </head>
 <body>
@@ -3487,6 +3495,7 @@ const TRACKS={berlin:'Berlin',muenchen:'München',frankfurt:'Frankfurt'};
 const LENS={2000:'Sprint',3600:'Grand Prix',5200:'Marathon'};
 const KV=[{f:'vehicle-truck-red',n:'Pickup Rot',col:'#ef4444'},{f:'vehicle-truck-yellow',n:'Pickup Gelb',col:'#eab308'},{f:'vehicle-truck-green',n:'Pickup Grün',col:'#22c55e'},{f:'vehicle-truck-purple',n:'Pickup Lila',col:'#a855f7'},{f:'vehicle-motorcycle',n:'Motorrad',col:'#f97316'}];
 const VEH=[...KV.map(v=>({n:v.n,d:v.f.includes('moto')?'Wendig':'Kenney 3D',glb:1,col:v.col})),...CARS.map(c=>({n:c.n,d:c.d}))],NV=VEH.length;
+const VLOCK=[1,1,1,1,6,2,3,4,5],vLocked=k=>plevel()<(VLOCK[k]||1);
 const vcol=(k,c)=>k<KV.length?KV[k].col:COLS[num(c)%COLS.length];
 const BOOKS={mA1:{n:'Momente A1',lv:'A1',d:BK_MA1},mA2:{n:'Momente A2',lv:'A2',d:BK_MA2},mB1:{n:'Momente B1',lv:'B1',d:BK_MB1},vB2:{n:'Vielfalt B2',lv:'B2',d:BK_VB2},vC1:{n:'Vielfalt C1',lv:'C1',d:BK_VC1}};
 const lvlOf=c=>c.src&&BOOKS[c.src]?BOOKS[c.src].lv:c.lvl;
@@ -3763,7 +3772,7 @@ async function startRace(opts){
  renderer.setPixelRatio(Math.min(devicePixelRatio,touch?1.5:2));renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=cfg.tod==='night'?1.15:1;renderer.shadowMap.enabled=!touch;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
  const scene=new THREE.Scene(),cam=new THREE.PerspectiveCamera(64,1,.3,6000);
  const T=makeTrack(cfg.len,seed);const nG=opts.qs?opts.qs.length:nGates(cfg),GP=gapOf(cfg);
- G={mode:opts.mode,cfg,seed,T,renderer,scene,cam,root,touch,phase:'load',goAt:0,t0:0,keys:{},me:null,bots:[],remote:new Map(),qs:opts.qs||buildQs(cfg,seed,nG),gateS:null,fehler:!!opts.qs,leadS:0,lastPos:0,parts:[],lastHit:0,mist:[],lastPub:0,lastHud:0,firstFin:0,camPos:null,shake:0,done:false,xpGiven:false,raf:0,lastT:0,fbT:0,qArm:0,qHold:0};G.gateS=gatePos(cfg,G.qs);
+ G={mode:opts.mode,cfg,seed,T,renderer,scene,cam,root,touch,phase:'load',goAt:0,t0:0,keys:{},me:null,bots:[],remote:new Map(),qs:opts.qs||buildQs(cfg,seed,nG),gateS:null,fehler:!!opts.qs,daily:opts.daily||'',leadS:0,lastPos:0,parts:[],lastHit:0,mist:[],lastPub:0,lastHud:0,firstFin:0,camPos:null,shake:0,done:false,xpGiven:false,raf:0,lastT:0,fbT:0,qArm:0,qHold:0};G.gateS=gatePos(cfg,G.qs);
  const W0=buildWorld(scene,T,cfg,seed,renderer);G.sun=W0.sun;G.sunDir=W0.sunDir;
  if(renderer.shadowMap.enabled){const s=G.sun;s.castShadow=true;s.shadow.mapSize.set(2048,2048);const sc=s.shadow.camera;sc.left=-40;sc.right=40;sc.top=40;sc.bottom=-40;sc.near=1;sc.far=320;s.shadow.bias=-.0004}
  G.gates=buildGates(scene,T,G.qs);
@@ -3777,7 +3786,7 @@ async function startRace(opts){
  bindInput();
  G.goAt=performance.now()+(opts.goIn||4500);G.phase='cd';renderQ();
  root.querySelector('#r3load').style.opacity='0';setTimeout(()=>{const l=root.querySelector('#r3load');if(l)l.remove()},500);
- {const a=ac();if(a&&a.state!=='running')a.resume().then(()=>{if(G){engOn();MUS.stop();MUS.start()}}).catch(()=>{})}engOn();MUS.start();G.lastT=performance.now();G.raf=requestAnimationFrame(loop);
+ {const a=ac();if(a&&a.state!=='running')a.resume().then(()=>{if(G){engOn();MUS.stop();MUS.start()}}).catch(()=>{})}engOn();MUS.start();wakeOn();G.lastT=performance.now();G.raf=requestAnimationFrame(loop);
 }
 function onlineRacers(){if(!NET.r||!G)return[];return NET.r.peers().filter(p=>!(p.isMe&&p.sameTab)&&p.presence&&p.presence.rs===G.seed)}
 function bindInput(){
@@ -3794,7 +3803,12 @@ function bindInput(){
 function pickAns(i){if(!G||(G.phase!=='race'&&G.phase!=='cd')||G.me.fin||G.qHold||performance.now()<G.qArm)return;const c=G.me,k=c.nextGate,q=G.qs[k];if(!q||i<0||i>=q.opts.length)return;
  if(G.gateS[k]-c.s<LOCKD)return;if(c.pick===i&&c.pickG===k)return;c.pick=i;c.pickG=k;c.pickS=c.s;click3();
  G.root.querySelectorAll('#r3q [data-i]').forEach(e=>e.classList.toggle('sel',+e.dataset.i===i))}
-function stopRace(silent){if(!G)return;cancelAnimationFrame(G.raf);engOff();MUS.stop();removeEventListener('keydown',G.kd);removeEventListener('resize',G.onRs);
+function perf(now,dt){const P2=G.pf||(G.pf={t:now,n:0,sum:0,pr:G.renderer.getPixelRatio(),max:G.renderer.getPixelRatio()});P2.n++;P2.sum+=dt;if(now-P2.t<2000)return;const avg=P2.sum/P2.n;P2.t=now;P2.n=0;P2.sum=0;if(G.phase==='load')return;
+ let pr=P2.pr;if(avg>.034&&pr>.7)pr=Math.max(.7,pr-.25);else if(avg<.019&&pr<P2.max)pr=Math.min(P2.max,pr+.25);if(pr!==P2.pr){P2.pr=pr;G.renderer.setPixelRatio(pr);const c=G.root;G.renderer.setSize(c.clientWidth,c.clientHeight,false)}}
+let WL=null;async function wakeOn(){try{if(navigator.wakeLock&&!WL){WL=await navigator.wakeLock.request('screen');WL.addEventListener('release',()=>{WL=null})}}catch(e){}}
+function wakeOff(){try{if(WL)WL.release()}catch(e){}WL=null}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&G)wakeOn()});
+function stopRace(silent){if(!G)return;wakeOff();cancelAnimationFrame(G.raf);engOff();MUS.stop();removeEventListener('keydown',G.kd);removeEventListener('resize',G.onRs);
  try{G.renderer.dispose();G.renderer.forceContextLoss()}catch(e){}if(G.root)G.root.remove();G=null;document.body.classList.remove('racing');
  if(NET.r)NET.r.presence({rs:null,s:null,x:null,v:null,b:null,w:null,f:null,a:null,nt:null,sc:null,cr:null}).catch(()=>{})}
 function exit(){stopRace();Pano.start();lobby()}
@@ -3874,7 +3888,7 @@ function loop(now){if(!G)return;const dt=Math.min(.05,(now-G.lastT)/1000);G.last
   if(NET.host){pt.ph=G.done?'res':G.phase==='cd'?'cd':'race';pt.go=Math.max(0,Math.round(G.goAt-now));hostCheck(now)}NET.r.presence(pt).catch(()=>{})}
  if(G.mode==='online'&&!NET.host&&!G.done){const h=hostPeer();if((h&&h.presence.ph==='res'&&G.phase!=='cd')||(G.phase==='fin'&&now-G.myFinAt>45000))showRes()}
  if(G.mode==='solo'&&G.phase==='fin'&&!G.done){if(G.bots.every(b=>b.fin)||now-G.myFinAt>12000)showRes()}
- G.raf=requestAnimationFrame(loop);
+ perf(now,dt);G.raf=requestAnimationFrame(loop);
 }
 let SMK=null;
 function smoke(all,now,dt){if(!SMK){const t=new THREE.TextureLoader().load(ASSET+'smoke.png');SMK=new THREE.SpriteMaterial({map:t,color:0xbfc5cc,transparent:true,depthWrite:false,opacity:.7})}
@@ -3909,6 +3923,8 @@ function hostCheck(now){if(!G||G.done)return;const rs=onlineRacers();const fins=
 function showRes(){if(!G||G.done)return;G.done=true;MUS.hype(false);const st=standings(),me=G.me,pos=st.findIndex(e=>e.me)+1,n=st.length;
  if(!G.xpGiven){G.xpGiven=true;const xp=Math.round(me.score/6)+(me.fin?(pos===1?120:pos===2?70:40):20);P.stats.races++;if(pos===1&&n>1)P.stats.wins++;bumpMission('race');markPlayedToday();const r=addXP(xp,false);G.xp=xp;G.lv=r;saveP();checkAch();refreshTop()}
  if(NET.host&&NET.r)NET.r.presence({ph:'res'}).catch(()=>{});
+ if(G.daily&&!G.dailyDone){G.dailyDone=1;const [d,l]=G.daily.split('|');const b=myBest(d,l),cur={p:pid(),n:clean(ST.name||P.name||'Spieler'),sc:me.score,cr:me.correct,tot:me.total,t:Date.now()};const better=!b||cur.sc>b.sc;if(better)try{localStorage.setItem(bestKey(d,l),JSON.stringify(cur))}catch(e){}
+  setTimeout(async()=>{const list=await dailyBoard(d,l,better?cur:null);const el=document.getElementById('dlb');if(el)el.innerHTML=boardHTML(list,cur.p)},50)}
  const top=st.slice(0,3),order=[top[1],top[0],top[2]].filter(Boolean),hh={0:110,1:80,2:60};
  const div=document.createElement('div');div.className='res';div.innerHTML=`<div class="box gl3"><div class="eyebrow">Rennen beendet · ${TRACKS[G.cfg.city]}</div><h2 style="margin-top:6px">${pos===1?'🏆 Du hast gewonnen!':`Platz ${pos} von ${n}`}</h2>
   ${G.cfg.team?(()=>{const tt=[0,0];st.forEach(e=>tt[e.tm||0]+=e.sc||0);const w=tt[0]===tt[1]?-1:tt[0]>tt[1]?0:1;return `<div class="teamres">${TEAMS.map((t,i)=>`<div style="--c:${t.c}" class="${w===i?'win':''}"><small>${t.n}</small><b>${tt[i]}</b>${w===i?'<span>🏆 Sieger</span>':''}</div>`).join('')}</div>`})():''}
@@ -3916,6 +3932,7 @@ function showRes(){if(!G||G.done)return;G.done=true;MUS.hype(false);const st=sta
   <table><thead><tr><th>#</th><th>Fahrer</th><th>Zeit</th><th>Punkte</th><th>Richtig</th></tr></thead><tbody>${st.map((e,i)=>`<tr class="${e.me?'me':''}"><td>${i+1}</td><td><span style="color:${e.col}">●</span> ${esc(e.n)}${e.bot?' 🤖':''}${G.cfg.team?` <small class="muted">${TEAMS[e.tm||0].n.replace('Team ','')}</small>`:''}</td><td>${e.fin?fmtT(e.fin):'–'}</td><td>${e.sc||0}</td><td>${e.cr||0}${e.tot?'/'+e.tot:''}</td></tr>`).join('')}</tbody></table>
   <div class="xpgain" style="margin-top:14px"><div class="top"><span>${ic('bolt','sm')} Erfahrung</span><b>+${G.xp||0} XP</b></div></div>
   ${G.mist.length?`<div class="mistbox"><div class="mh"><b>Xatolar ustida ishlash (${G.mist.length})</b>${G.mode==='solo'?`<button class="btn gold sm" onclick="Race3D.fehler()">🔁 Fehler-Rennen</button>`:''}</div>${G.mode==='solo'?'<p class="muted" style="font-size:12.5px;margin:4px 0 6px">Fehler-Rennen — faqat xato qilgan savollaringiz bilan qisqa poyga. Har bir xato savol 2 marta keladi.</p>':''}${G.mist.map(m=>`<div class="mitem"><div class="q">${fmt(m.q)}</div><div class="y">✗ ${esc(m.y)}</div><div class="r">✓ ${esc(m.r)}</div>${m.t?`<div class="t">💡 ${esc(m.t)}</div>`:''}</div>`).join('')}</div>`:G.total?'<div class="mistbox ok"><b>🎉 Hech qanday xato yo\'q!</b></div>':''}
+  ${G.daily?`<div class="mistbox"><div class="mh"><b>🏆 Tagesrennen – Rangliste</b></div><div id="dlb"><p class="netnote">Lade Rangliste …</p></div></div>`:''}
   <div class="acts">${G.mode==='solo'?`<button class="btn primary" onclick="Race3D.again()">${ic('refresh')} Nochmal</button>`:NET.host?`<button class="btn primary" onclick="Race3D.newRace()">${ic('refresh')} Neues Rennen</button>`:''}<button class="btn glass" onclick="Race3D.exit()">${ic('left')} Zur Lobby</button></div></div>`;
  G.root.appendChild(div);if(pos===1)FX.big();if(G.lv&&G.lv.after>G.lv.before)setTimeout(()=>levelUp(G.lv.before,G.lv.after),1600)}
 function menu(){if(!G)return;if(G.root.querySelector('.pmenu3'))return G.root.querySelector('.pmenu3').remove();const d=document.createElement('div');d.className='pmenu3';
@@ -3952,7 +3969,12 @@ const MQ=(()=>{const qs=new URLSearchParams(location.search);const URLS=qs.get('
  let lp=null;function load(){if(window.mqtt)return Promise.resolve();return lp||(lp=addScript('mqtt.min.js').catch(()=>addScript('https://cdn.jsdelivr.net/npm/mqtt@5/dist/mqtt.min.js')).catch(e=>{lp=null;throw e}))}
  function conn1(u){return new Promise((res,rej)=>{let c;try{c=mqtt.connect(u,{connectTimeout:6000,reconnectPeriod:2500,keepalive:20,clean:true})}catch(e){return rej(e)}const to=setTimeout(()=>{try{c.end(true)}catch(e){}rej(new Error('timeout'))},7000);c.once('connect',()=>{clearTimeout(to);res(c)});c.on('error',()=>{})})}
  async function connect(){await load();for(const u of URLS){try{return await conn1(u)}catch(e){}}throw new Error('net')}
- return{async join(name){const cli=await connect();const me='p'+Math.random().toString(36).slice(2,10),topic=PFX+name.replace(/[^a-z0-9-]/gi,'');const map=new Map();let mine=Object.freeze({}),subs=new Set(),arr=[],lastSend=0,sendT=0,notT=0,dead=false;
+ async function board(d,l,mine){const cli=await connect();const base=PFX+'daily/'+d.replace(/[^0-9-]/g,'')+'/'+l.replace(/[^A-C12]/g,'')+'/';const res=new Map();
+  cli.on('message',(t,b)=>{try{const m=JSON.parse(b.toString());if(m&&typeof m.p==='string'&&typeof m.sc==='number')res.set(m.p,m)}catch(e){}});
+  if(mine)await new Promise(r=>{cli.publish(base+mine.p,JSON.stringify(mine),{qos:1,retain:true},()=>r());setTimeout(r,2500)});
+  await new Promise((r,j)=>cli.subscribe(base+'+',{qos:0},e=>e?j(e):r()));await new Promise(r=>setTimeout(r,2200));try{cli.end(true)}catch(e){}
+  if(mine)res.set(mine.p,mine);return [...res.values()].slice(0,300)}
+ return{board,async join(name){const cli=await connect();const me='p'+Math.random().toString(36).slice(2,10),topic=PFX+name.replace(/[^a-z0-9-]/gi,'');const map=new Map();let mine=Object.freeze({}),subs=new Set(),arr=[],lastSend=0,sendT=0,notT=0,dead=false;
   const rebuild=()=>{arr=[{peer:me,isMe:true,sameTab:true,presence:mine},...[...map.entries()].map(([id,e])=>e.o)]};
   const notify=()=>{rebuild();if(notT)return;notT=setTimeout(()=>{notT=0;if(dead)return;const a=arr.slice();subs.forEach(f=>{try{f({peers:a})}catch(e){}})},40)};
   const send=()=>{sendT=0;lastSend=Date.now();if(!dead)cli.publish(topic,JSON.stringify({i:me,p:mine}),{qos:0})};
@@ -3986,11 +4008,22 @@ function onNet(){if(!NET.r)return;const peers=NET.r.peers(),h=hostPeer();
  if(SPEC)return;if(!G&&App.view==='race'){renderNet();renderSet();renderDrv()}}
 function hostStart(){if(!NET.host||!NET.r)return;const seed=1+Math.floor(Math.random()*2e9);NET.lastSeed=seed;NET.r.presence({ph:'cd',seed,cfg:ST.cfg,go:NET.spec?6000:5000}).catch(()=>{});if(NET.spec)return specStart(seed);startRace({mode:'online',cfg:Object.assign({},ST.cfg),seed,goIn:5000})}
 function newRace(){if(NET.r)NET.r.presence({ph:'lobby',seed:null}).catch(()=>{});exit()}
+const DLY_CITY=['berlin','muenchen','frankfurt'];
+function dailyCfg(){const lvl=LVLS.includes(ST.cfg.lvl)?ST.cfg.lvl:'A1',d=today();return{d,lvl,cfg:{city:DLY_CITY[hashStr(d)%3],len:3600,lvl,cat:'mix',tod:['day','dusk','night'][hashStr(d+'t')%3],team:false,src:'',mods:[]},seed:1+hashStr('blitz-daily-'+d+'-'+lvl)%2e9}}
+function daily(){unlockAudio();const D=dailyCfg();startRace({mode:'solo',cfg:D.cfg,seed:D.seed,goIn:4500,daily:D.d+'|'+D.lvl})}
+function pid(){let p='';try{p=localStorage.getItem('blitzPid')||''}catch(e){}if(!p){p='u'+Math.random().toString(36).slice(2,10);try{localStorage.setItem('blitzPid',p)}catch(e){}}return p}
+function bestKey(d,l){return 'blitzDaily_'+d+'_'+l}
+function myBest(d,l){try{return JSON.parse(localStorage.getItem(bestKey(d,l))||'null')}catch(e){return null}}
+async function dailyBoard(d,l,mine){try{return await MQ.board(d,l,mine)}catch(e){return null}}
+function boardHTML(list,me){if(!list)return '<p class="netnote">Rangliste gerade nicht erreichbar.</p>';if(!list.length)return '<p class="netnote">Noch niemand – du bist der Erste!</p>';
+ const top=list.slice().sort((a,b)=>b.sc-a.sc||a.t-b.t).slice(0,10);return `<table class="stats"><thead><tr><th>#</th><th>Name</th><th>Punkte</th><th>Richtig</th></tr></thead><tbody>${top.map((e,i)=>`<tr class="${e.p===me?'me':''}"><td>${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</td><td>${esc(clean(e.n)||'?')}</td><td><b>${num(e.sc)}</b></td><td>${num(e.cr)}/${num(e.tot)}</td></tr>`).join('')}</tbody></table>`}
+async function showBoard(){const D=dailyCfg();modal(`<button class="iconbtn x" onclick="closeModal()">${ic('x')}</button><h2>Tagesrennen · ${D.lvl}</h2><p class="muted" style="margin-top:4px">${D.d} · ${TRACKS[D.cfg.city]} · alle fahren heute dieselbe Strecke mit denselben Fragen</p><div id="dlbm" style="margin-top:12px"><p class="netnote">Lade Rangliste …</p></div>`);
+ const l=await dailyBoard(D.d,D.lvl,null);const el=document.getElementById('dlbm');if(el)el.innerHTML=boardHTML(l,pid())}
 function fehler(){if(!G||!G.mist.length)return;const cfg=Object.assign({},G.cfg),seen=new Set(),u=[];G.mist.forEach(m=>{if(m.qo&&!seen.has(m.qo.text)){seen.add(m.qo.text);u.push(m.qo)}});
  const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
  const s1=sh(u),s2=sh(u);if(u.length>1&&s2[0]===s1[s1.length-1])s2.push(s2.shift());let list=[...s1,...s2];while(list.length<3)list.push(...sh(u));list=list.slice(0,10).map(q=>Object.assign({},q,{opts:sh(q.opts)}));
  stopRace();startRace({mode:'solo',cfg,seed:1+Math.floor(Math.random()*2e9),goIn:4000,qs:list})}
-function again(){const cfg=Object.assign({},G.cfg);if(G.fehler)cfg.len=ST.cfg.len;stopRace();startRace({mode:'solo',cfg,seed:1+Math.floor(Math.random()*2e9),goIn:4000})}
+function again(){if(G.daily){stopRace();return daily()}const cfg=Object.assign({},G.cfg);if(G.fehler)cfg.len=ST.cfg.len;stopRace();startRace({mode:'solo',cfg,seed:1+Math.floor(Math.random()*2e9),goIn:4000})}
 function solo(){unlockAudio();saveST();startRace({mode:'solo',cfg:Object.assign({},ST.cfg),seed:1+Math.floor(Math.random()*2e9),goIn:4500})}
 
 /* ---------- teacher / projector mode ---------- */
@@ -4029,6 +4062,7 @@ function copyRep(){const t=SPEC&&SPEC.report;if(!t)return;(navigator.clipboard?n
 
 /* ---------- lobby UI ---------- */
 function lobby(){
+ if(vLocked(ST.car)){ST.car=0;saveST()}
  if(!ST.cfg.lvl)ST.cfg.lvl=P.lvl;if(!ST.name)ST.name=P.name||'';specStop();
  const inRoom=!!NET.r;
  V().innerHTML=`<div class="wrap view-in">
@@ -4043,7 +4077,7 @@ function lobby(){
 function renderDrv(){const el=document.getElementById('r3drv');if(!el)return;if(NET.spec&&NET.r){el.innerHTML=`<div class="lbl">Lehrer-Modus</div><p class="netnote" style="margin-top:0">Du fährst nicht mit. Dein Bildschirm (z. B. Beamer) zeigt den Raum-Code, das Live-Rennen und am Ende den Klassenbericht: welche Fragen schwer waren und wer wie viele richtig hatte.</p>`;return}
  const k=ST.car,proc=k>=KV.length;
  el.innerHTML=`<div class="lbl">Fahrer</div><div class="field" style="margin-top:0"><input id="r3name" maxlength="16" placeholder="Dein Name" value="${esc(ST.name)}" oninput="Race3D.setName(this.value)"></div>
-  <div class="lbl">Fahrzeug</div><div class="vehpick">${VEH.map((v,i)=>`<button class="${k===i?'on':''}" onclick="Race3D.setCar(${i})"><i style="background:${v.col||COLS[ST.col]}"></i>${v.n}<small>${v.d}</small></button>`).join('')}</div>
+  <div class="lbl">Fahrzeug</div><div class="vehpick">${VEH.map((v,i)=>vLocked(i)?`<button class="lock" onclick="toast('Gesperrt','Level ${VLOCK[i]} erreichen, um ${v.n} freizuschalten',{c:['#475569','#94a3b8'],ic:'lock'})"><i style="background:#475569"></i>🔒 ${v.n}<small>ab Level ${VLOCK[i]}</small></button>`:`<button class="${k===i?'on':''}" onclick="Race3D.setCar(${i})"><i style="background:${v.col||COLS[ST.col]}"></i>${v.n}<small>${v.d}</small></button>`).join('')}</div>
   ${proc?`<div class="lbl">Lackfarbe</div><div class="swatch" style="justify-content:flex-start">${COLS.map((c,i)=>`<button class="${ST.col===i?'on':''}" style="background:${c}" onclick="Race3D.setCol(${i})"></button>`).join('')}</div>`:''}
   ${ST.cfg.team?`<div class="lbl">Dein Team</div><div class="seg">${TEAMS.map((t,i)=>`<button class="${num(ST.tm)%2===i?'on':''}" style="${num(ST.tm)%2===i?`background:${t.c};border-color:${t.c}`:''}" onclick="Race3D.setTeam(${i})">${t.n}</button>`).join('')}</div>`:''}`}
 function renderNet(){const el=document.getElementById('r3net');if(!el)return;
@@ -4055,6 +4089,9 @@ function renderNet(){const el=document.getElementById('r3net');if(!el)return;
    ${online?`<button class="btn glass block" onclick="Race3D.teacher()">Klassenraum öffnen</button>`:'<small class="off">Online nur in Claude verfügbar</small>'}</div>
   <div class="act panel"><div class="ai" style="background:linear-gradient(135deg,#b45309,#FFC93C)">${ic('flag')}</div><b>Raum erstellen & mitfahren</b><small>Für Freunde: du bist Host und fährst selbst mit.</small>
    ${online?`<button class="btn glass block" onclick="Race3D.create()">Raum erstellen</button>`:'<small class="off">Online nur in Claude verfügbar</small>'}</div>
+  <div class="act panel daily"><div class="ai" style="background:linear-gradient(135deg,#7c3aed,#c084fc)">${ic('trophy')}</div><b>Tagesrennen</b><small>Jeden Tag neue Fragen – für alle gleich. Wer schafft die meisten Punkte?</small>
+   ${(()=>{const D=dailyCfg(),b=myBest(D.d,D.lvl);return `<div class="drow"><span>${D.lvl} · ${TRACKS[D.cfg.city]}</span><span>${b?'Dein Rekord: <b>'+b.sc+'</b>':'Noch nicht gefahren'}</span></div>`})()}
+   <div class="d2"><button class="btn glass" onclick="Race3D.board()">Rangliste</button><button class="btn primary" onclick="Race3D.daily()">${ic('play')} Fahren</button></div></div>
   <div class="act panel hot"><div class="ai" style="background:linear-gradient(135deg,#be123c,#FF4D6D)">${ic('bot')}</div><b>Training</b><small>Gegen Bots – jederzeit, auch offline.</small>
    <div class="seg mini">${[0,1,3,5].map(n=>`<button class="${ST.bots===n?'on':''}" onclick="Race3D.setBots(${n})">${n?n+(n>1?' Bots':' Bot'):'Allein'}</button>`).join('')}</div><button class="btn gold block" onclick="Race3D.solo()">${ic('play')} Training starten</button></div>`;return}
  el.className='panel roomp';const peers=NET.r.peers(),h=hostPeer();const hp=h&&h.presence;const drivers=peers.filter(p=>!(p.presence&&p.presence.sp));
@@ -4090,9 +4127,9 @@ function startShow(){stopShow();const cv=document.getElementById('r3show');if(!c
   const a=t*.0004,wide=cam.aspect>1.6&&innerWidth>760;cam.fov=cam.aspect<1.4?34:24;cam.updateProjectionMatrix();cam.position.set(Math.sin(a)*13,3.4,Math.cos(a)*13);cam.lookAt(0,.8,0);if(wide){cam.setViewOffset(w,h,-w*.27,0,w,h)}else cam.clearViewOffset();if(car.userData.glb)car.userData.wheels.forEach(wh=>wh.rotation.x+=.03);else car.userData.wheels.forEach(wh=>wh.children.forEach(c=>c.rotation.x+=.03));r.render(sc,cam);S.raf=requestAnimationFrame(step)};S.raf=requestAnimationFrame(step)}).catch(()=>{})}
 function stopShow(){if(SHOW){cancelAnimationFrame(SHOW.raf);try{SHOW.r.dispose();SHOW.r.forceContextLoss()}catch(e){}SHOW=null}}
 
-return{lobby,solo,again,fehler,exit,menu,start:hostStart,newRace,create:createRoom,join:c=>joinRoom(c,false),leave:leaveRoom,
+return{lobby,solo,again,fehler,daily,board:showBoard,exit,menu,start:hostStart,newRace,create:createRoom,join:c=>joinRoom(c,false),leave:leaveRoom,
  sound(){if(G){P.settings.sound?(engOn(),MUS.start()):(engOff(),MUS.stop());menu();menu()}},music(){P.settings.music=P.settings.music===false;saveP();if(G){P.settings.music?MUS.start():MUS.stop();if(G.root.querySelector('.pmenu3')){menu();menu()}}},
- setName(v){ST.name=clean(v);saveST();pubLobby()},setCar(i){ST.car=i;saveST();pubLobby();click3();renderDrv()},setCol(i){ST.col=i;saveST();pubLobby();renderDrv()},setBots(n){ST.bots=n;saveST();renderNet()},
+ setName(v){ST.name=clean(v);saveST();pubLobby()},setCar(i){if(vLocked(i))return;ST.car=i;saveST();pubLobby();click3();renderDrv()},setCol(i){ST.col=i;saveST();pubLobby();renderDrv()},setBots(n){ST.bots=n;saveST();renderNet()},
  cfg(k,v){if(NET.r&&!NET.host)return;ST.cfg[k]=v;if(k==='src')ST.cfg.mods=[];saveST();if(NET.host&&NET.r)NET.r.presence({cfg:ST.cfg}).catch(()=>{});renderSet();if(k==='team'){renderDrv();renderNet()}},mod(m){if(NET.r&&!NET.host)return;let ms=(ST.cfg.mods||[]).slice();if(!m)ms=[];else ms=ms.includes(m)?ms.filter(x=>x!==m):[...ms,m];ST.cfg.mods=ms;saveST();if(NET.host&&NET.r)NET.r.presence({cfg:ST.cfg}).catch(()=>{});renderSet()},setTeam(i){ST.tm=i;saveST();pubLobby();renderDrv()},teacher:hostTeacher,specEnd,specNew,copyRep,
  leaveView(){stopShow();specStop();if(G)stopRace()},pickCity(c){ST.cfg.city={berlin:'berlin',muenchen:'muenchen',frankfurt:'frankfurt',heidelberg:'frankfurt',koeln:'frankfurt',hamburg:'berlin'}[c]||'berlin';saveST()},_G:()=>G,_NET:NET};
 })();
