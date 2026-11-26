@@ -859,6 +859,56 @@ body.raceonly main#view{padding-bottom:20px}
 .hitfx{background:radial-gradient(ellipse at center,transparent 35%,rgba(255,30,60,.65));transition:opacity .4s}
 .r3d .coinfly{position:absolute;z-index:9;font-size:26px;filter:drop-shadow(0 0 8px #ffb02e);transition:transform .6s cubic-bezier(.5,-.3,.6,1),opacity .6s;pointer-events:none}
 .r3d .nbtn.fire{transform:scale(1.18)}
+/* ---- v10 game hub ---- */
+.home{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:14px;padding:6px 0 18px}
+.hm-head{text-align:center}
+.hm-head small{display:block;font:800 11px Manrope,system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--gold,#FFC93C)}
+.hm-head h1{font:900 clamp(30px,8vw,44px)/1.05 Unbounded,Manrope,sans-serif;margin:6px 0 0;background:linear-gradient(90deg,#fff,#bfe6ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hm-head h1 span{background:linear-gradient(90deg,#FFC93C,#ff8a00);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hm-stage{position:relative;height:min(40vh,340px);min-height:230px;border-radius:28px;overflow:hidden;background:radial-gradient(ellipse at 50% 85%,#2a3bb8 0%,#121a5a 45%,#070b24 80%);border:1px solid rgba(255,255,255,.12);box-shadow:inset 0 -40px 80px rgba(0,0,0,.35),0 20px 50px rgba(3,10,40,.45)}
+.hm-stage canvas{position:absolute;inset:0;width:100%;height:100%}
+.hm-arr{position:absolute;top:42%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(10,15,40,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;font:700 28px/1 Manrope,sans-serif;cursor:pointer;z-index:2;touch-action:manipulation}
+.hm-arr.l{left:10px}.hm-arr.r{right:10px}
+.hm-car{position:absolute;left:0;right:0;bottom:12px;text-align:center;z-index:2;pointer-events:none}
+.hm-car b{display:block;font:800 18px Unbounded,Manrope,sans-serif}
+.hm-car small{display:block;font-size:12.5px;opacity:.85;margin-top:2px}
+.hm-car.locked small{color:#fca5a5;opacity:1}
+.hm-car .dots{display:flex;justify-content:center;gap:5px;margin-top:8px}
+.hm-car .dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.3)}
+.hm-car .dots i.lk{background:rgba(255,255,255,.12)}.hm-car .dots i.on{background:#FFC93C;width:18px;border-radius:4px}
+.hm-hub{display:flex;flex-direction:column;gap:12px}
+.playbtn{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:84px;border:0;border-radius:24px;cursor:pointer;color:#1a1200;background:linear-gradient(180deg,#ffe27a,#ffb703 55%,#f48c06);box-shadow:0 6px 0 #b45309,0 14px 40px rgba(255,170,0,.45);touch-action:manipulation;transition:transform .1s,box-shadow .1s;animation:pbpulse 2.2s ease-in-out infinite}
+.playbtn span{font:900 30px/1 Unbounded,Manrope,sans-serif;letter-spacing:.04em}
+.playbtn small{font:800 12.5px Manrope,sans-serif;opacity:.75}
+.playbtn:active{transform:translateY(5px);box-shadow:0 1px 0 #b45309,0 8px 24px rgba(255,170,0,.4)}
+@keyframes pbpulse{50%{box-shadow:0 6px 0 #b45309,0 14px 60px rgba(255,190,40,.7)}}
+.setchip{display:flex;align-items:center;gap:10px;width:100%;padding:12px 14px;border-radius:16px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:inherit;font:700 13.5px Manrope,system-ui,sans-serif;cursor:pointer;text-align:left}
+.setchip span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.setchip b{color:#5BC8FA;font-size:12.5px}.setchip svg{width:16px;height:16px;flex:none;opacity:.8}
+.setchip.ro{cursor:default}
+.hm-modes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.hm-modes button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 6px 12px;border-radius:20px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:inherit;cursor:pointer;font-family:Manrope,system-ui,sans-serif;touch-action:manipulation}
+.hm-modes button:active{transform:scale(.97)}
+.hm-modes button:disabled{opacity:.4}
+.hm-modes i{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;color:#fff;margin-bottom:2px}.hm-modes i svg{width:22px;height:22px}
+.hm-modes b{font:800 13.5px Manrope,sans-serif}.hm-modes small{font-size:11px;opacity:.7}
+.hm-how{text-align:center;font-size:12px;opacity:.7;margin:0}
+.hm-rank{align-self:center;font-size:13px}
+.sheet{position:fixed;inset:0;z-index:380;background:rgba(3,6,20,.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:flex;align-items:flex-end;justify-content:center;animation:shfade .2s}
+.sheet-p{position:relative;width:min(560px,100%);max-height:88vh;overflow:auto;background:#0e1430;border:1px solid rgba(255,255,255,.12);border-radius:26px 26px 0 0;padding:14px 18px calc(18px + env(safe-area-inset-bottom));animation:shup .28s cubic-bezier(.2,1,.3,1)}
+.sheet-p h3{font:800 20px Unbounded,Manrope,sans-serif;margin:6px 0 10px}
+.sheet-p .grab{width:44px;height:5px;border-radius:3px;background:rgba(255,255,255,.25);margin:0 auto 6px}
+.sheet-p .iconbtn.x{position:absolute;right:12px;top:12px}
+@keyframes shup{from{transform:translateY(60px);opacity:.4}}@keyframes shfade{from{opacity:0}}
+@media (min-width:761px){.sheet{align-items:center}.sheet-p{border-radius:26px}}
+.codein{width:100%;text-align:center;font:900 34px Unbounded,Manrope,sans-serif;letter-spacing:.3em;padding:14px;border-radius:18px;border:2px solid rgba(91,200,250,.5);background:rgba(255,255,255,.06);color:#fff;text-transform:uppercase}
+.optcard{display:flex;gap:12px;align-items:center;width:100%;text-align:left;padding:14px;margin-top:10px;border-radius:18px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:inherit;cursor:pointer;font-family:Manrope,system-ui,sans-serif}
+.optcard .oi{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;color:#fff;flex:none}.optcard .oi svg{width:22px;height:22px}
+.optcard b{display:block;font-size:15px}.optcard small{display:block;font-size:12.5px;opacity:.75;margin-top:2px}
+.sheet-p #r3drv,.sheet-p #r3set{background:none;border:0;padding:0;margin:0}
+@media (min-width:980px){.home{max-width:1100px;display:grid;grid-template-columns:1.25fr 1fr;grid-template-areas:"head head" "stage hub";column-gap:28px;align-items:center}
+ .hm-head{grid-area:head}.hm-stage{grid-area:stage;height:440px}#r3net{grid-area:hub}}
+@media (max-width:979px){.home{padding-left:12px;padding-right:12px}}
 </style>
 </head>
 <body>
@@ -3505,6 +3555,7 @@ const LENS={2000:'Sprint',3600:'Grand Prix',5200:'Marathon'};
 const KV=[{f:'vehicle-truck-red',n:'Pickup Rot',col:'#ef4444'},{f:'vehicle-truck-yellow',n:'Pickup Gelb',col:'#eab308'},{f:'vehicle-truck-green',n:'Pickup Grün',col:'#22c55e'},{f:'vehicle-truck-purple',n:'Pickup Lila',col:'#a855f7'},{f:'vehicle-motorcycle',n:'Motorrad',col:'#f97316'}];
 const VEH=[...KV.map(v=>({n:v.n,d:v.f.includes('moto')?'Wendig':'Kenney 3D',glb:1,col:v.col})),...CARS.map(c=>({n:c.n,d:c.d}))],NV=VEH.length;
 const VLOCK=[1,1,1,1,6,2,3,4,5],vLocked=k=>plevel()<(VLOCK[k]||1);
+const vlocked2=k=>vLocked(k);
 const vcol=(k,c)=>k<KV.length?KV[k].col:COLS[num(c)%COLS.length];
 const BOOKS={mA1:{n:'Momente A1',lv:'A1',d:BK_MA1},mA2:{n:'Momente A2',lv:'A2',d:BK_MA2},mB1:{n:'Momente B1',lv:'B1',d:BK_MB1},vB2:{n:'Vielfalt B2',lv:'B2',d:BK_VB2},vC1:{n:'Vielfalt C1',lv:'C1',d:BK_VC1}};
 const lvlOf=c=>c.src&&BOOKS[c.src]?BOOKS[c.src].lv:c.lvl;
@@ -4100,44 +4151,58 @@ function specNew(){specStop();if(NET.r)NET.r.presence({ph:'lobby',seed:null}).ca
 function copyRep(){const t=SPEC&&SPEC.report;if(!t)return;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('Kopiert','Bericht in der Zwischenablage',{c:['#16a34a','#4ade80'],ic:'check',id:'cp'})).catch(()=>{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast('Kopiert','Bericht in der Zwischenablage',{c:['#16a34a','#4ade80'],ic:'check',id:'cp'})}catch(e){}ta.remove()})}
 
 /* ---------- lobby UI ---------- */
+let VIEWK=-1;
+function setupLine(){const c=ST.cfg;return `${TRACKS[c.city]} · ${srcName(c)} · ${LENS[c.len]}${c.team?' · Teams':''}`}
 function lobby(){
- if(vLocked(ST.car)){ST.car=0;saveST()}
+ if(vLocked(ST.car)){ST.car=0;saveST()}VIEWK=ST.car;closeSheet();
  if(!ST.cfg.lvl)ST.cfg.lvl=P.lvl;if(!ST.name)ST.name=P.name||'';specStop();
- const inRoom=!!NET.r;
- V().innerHTML=`<div class="wrap view-in">
- <div class="rs-hero"><canvas id="r3show"></canvas><div class="ht"><div class="eyebrow" style="color:var(--gold)">Online-Multiplayer · 3D · Wortschatz & Grammatik</div><h1>Blitz Rally 3D</h1><p>Wähle das richtige Antwort-Tor, sammle Nitro und zünde es im richtigen Moment. Wer zuerst im Ziel ist, gewinnt.</p>
-  <div class="how"><span><b>1</b> Frage lesen</span><span><b>2</b> Antwort antippen – das Auto lenkt selbst</span><span><b>3</b> Richtig = Nitro ⚡ · Falsch = Bremse</span></div></div></div>
- <section id="r3net"></section>
- <div class="rs-grid"><div class="col"><section class="panel" id="r3drv"></section></div><div class="col"><section class="panel" id="r3set"></section></div></div>
- <p class="netnote" style="text-align:center;margin:18px 0 4px">Steuerung: Antwort antippen oder Taste 1–4 – das Auto lenkt selbst in die richtige Spur. Leertaste / NITRO-Knopf = Turbo.</p></div>`;
- renderNet();renderDrv();renderSet();startShow();
+ V().innerHTML=`<div class="home view-in">
+  <div class="hm-head"><small>Deutsch lernen im Rennen</small><h1>Blitz Rally <span>3D</span></h1></div>
+  <div class="hm-stage"><canvas id="r3show"></canvas>
+   <button class="hm-arr l" aria-label="Vorheriges Auto" onclick="Race3D.carStep(-1)">‹</button><button class="hm-arr r" aria-label="Nächstes Auto" onclick="Race3D.carStep(1)">›</button>
+   <div class="hm-car" id="hmCar"></div></div>
+  <section id="r3net"></section>
+ </div>`;
+ renderCar();renderNet();startShow();
  getRoom().then(()=>{if(App.view==='race'&&!G&&!SPEC)renderNet()});
 }
+function renderCar(){const el=document.getElementById('hmCar');if(!el)return;const k=VIEWK<0?ST.car:VIEWK,v=VEH[k],lk=vLocked(k);
+ el.innerHTML=`<b>${v.n}</b><small>${lk?`🔒 ab Level ${VLOCK[k]} · du bist Level ${plevel()}`:k===ST.car?'✓ Ausgewählt':v.d}</small><div class="dots">${VEH.map((_,i)=>`<i class="${i===k?'on':''} ${vLocked(i)?'lk':''}"></i>`).join('')}</div>`;el.classList.toggle('locked',lk)}
+function carStep(d){VIEWK=((VIEWK<0?ST.car:VIEWK)+d+NV)%NV;if(!vLocked(VIEWK)){ST.car=VIEWK;saveST();pubLobby()}click3();renderCar()}
+function closeSheet(){const o=document.getElementById('hmSheet');if(o)o.remove()}
+function sheet(kind){closeSheet();const o=document.createElement('div');o.id='hmSheet';o.className='sheet';o.onclick=e=>{if(e.target===o)closeSheet()};
+ let body='';
+ if(kind==='set')body=`<h3>Einstellungen</h3><section id="r3drv"></section><section id="r3set"></section><div class="lbl">Bots im Training</div><div class="seg">${[0,1,3,5].map(n=>`<button class="${ST.bots===n?'on':''}" onclick="Race3D.setBots(${n});Race3D.sheet('set')">${n?n+(n>1?' Bots':' Bot'):'Allein'}</button>`).join('')}</div><button class="btn primary lg block" style="margin-top:16px" onclick="Race3D.closeSheet();Race3D.lobby()">Fertig</button>`;
+ if(kind==='join')body=`<h3>Mit Code beitreten</h3><p class="muted">Den Code zeigt dein Lehrer oder dein Freund.</p><input id="r3code" class="codein" maxlength="6" placeholder="CODE" autocomplete="off" autocapitalize="characters" onkeydown="if(event.key==='Enter')Race3D.join(this.value)"><div class="field" style="margin-top:10px"><input maxlength="16" placeholder="Dein Name" value="${esc(ST.name)}" oninput="Race3D.setName(this.value)"></div><button class="btn gold lg block" style="margin-top:12px" onclick="Race3D.join(document.getElementById('r3code').value)">Beitreten</button>`;
+ if(kind==='host')body=`<h3>Raum für die Klasse</h3>
+  <button class="optcard" onclick="Race3D.teacher()"><span class="oi" style="background:linear-gradient(135deg,#0f766e,#16C47F)">${ic('grid')}</span><span><b>Als Lehrer hosten</b><small>Beamer zeigt Code, Live-Rennen und Klassenbericht. Du fährst nicht mit.</small></span></button>
+  <button class="optcard" onclick="Race3D.create()"><span class="oi" style="background:linear-gradient(135deg,#b45309,#FFC93C)">${ic('flag')}</span><span><b>Raum erstellen & mitfahren</b><small>Für Freunde: du bist Host und fährst selbst mit.</small></span></button>`;
+ o.innerHTML=`<div class="sheet-p"><div class="grab"></div><button class="iconbtn x" onclick="Race3D.closeSheet()">${ic('x')}</button>${body}</div>`;document.body.appendChild(o);
+ if(kind==='set'){renderDrv();renderSet()}if(kind==='join')setTimeout(()=>{const i=document.getElementById('r3code');if(i)i.focus()},250)}
 function renderDrv(){const el=document.getElementById('r3drv');if(!el)return;if(NET.spec&&NET.r){el.innerHTML=`<div class="lbl">Lehrer-Modus</div><p class="netnote" style="margin-top:0">Du fährst nicht mit. Dein Bildschirm (z. B. Beamer) zeigt den Raum-Code, das Live-Rennen und am Ende den Klassenbericht: welche Fragen schwer waren und wer wie viele richtig hatte.</p>`;return}
  const k=ST.car,proc=k>=KV.length;
  el.innerHTML=`<div class="lbl">Fahrer</div><div class="field" style="margin-top:0"><input id="r3name" maxlength="16" placeholder="Dein Name" value="${esc(ST.name)}" oninput="Race3D.setName(this.value)"></div>
-  <div class="lbl">Fahrzeug</div><div class="vehpick">${VEH.map((v,i)=>vLocked(i)?`<button class="lock" onclick="toast('Gesperrt','Level ${VLOCK[i]} erreichen, um ${v.n} freizuschalten',{c:['#475569','#94a3b8'],ic:'lock'})"><i style="background:#475569"></i>🔒 ${v.n}<small>ab Level ${VLOCK[i]}</small></button>`:`<button class="${k===i?'on':''}" onclick="Race3D.setCar(${i})"><i style="background:${v.col||COLS[ST.col]}"></i>${v.n}<small>${v.d}</small></button>`).join('')}</div>
+  ${''&&VEH.map((v,i)=>vLocked(i)?`<button class="lock" onclick="toast('Gesperrt','Level ${VLOCK[i]} erreichen, um ${v.n} freizuschalten',{c:['#475569','#94a3b8'],ic:'lock'})"><i style="background:#475569"></i>🔒 ${v.n}<small>ab Level ${VLOCK[i]}</small></button>`:`<button class="${k===i?'on':''}" onclick="Race3D.setCar(${i})"><i style="background:${v.col||COLS[ST.col]}"></i>${v.n}<small>${v.d}</small></button>`).join('')}
   ${proc?`<div class="lbl">Lackfarbe</div><div class="swatch" style="justify-content:flex-start">${COLS.map((c,i)=>`<button class="${ST.col===i?'on':''}" style="background:${c}" onclick="Race3D.setCol(${i})"></button>`).join('')}</div>`:''}
   ${ST.cfg.team?`<div class="lbl">Dein Team</div><div class="seg">${TEAMS.map((t,i)=>`<button class="${num(ST.tm)%2===i?'on':''}" style="${num(ST.tm)%2===i?`background:${t.c};border-color:${t.c}`:''}" onclick="Race3D.setTeam(${i})">${t.n}</button>`).join('')}</div>`:''}`}
 function renderNet(){const el=document.getElementById('r3net');if(!el)return;
  const online=NET.checked&&NET.room;
- if(!NET.r){el.className='acts4';el.innerHTML=`
-  <div class="act panel"><div class="ai" style="background:linear-gradient(135deg,#2529D8,#0389FF)">${ic('users')}</div><b>Mit Code beitreten</b><small>Der Lehrer oder ein Freund hat einen Raum erstellt.</small>
-   ${online?`<div class="joinrow"><input id="r3code" maxlength="6" placeholder="CODE" autocomplete="off" onkeydown="if(event.key==='Enter')Race3D.join(this.value)"><button class="btn primary" onclick="Race3D.join(document.getElementById('r3code').value)">Los</button></div>`:`<small class="off">${NET.checked?'Online nur in Claude verfügbar':'Verbindung wird geprüft …'}</small>`}</div>
-  <div class="act panel"><div class="ai" style="background:linear-gradient(135deg,#0f766e,#16C47F)">${ic('grid')}</div><b>Als Lehrer hosten</b><small>Beamer-Ansicht mit Live-Statistik und Klassenbericht.</small>
-   ${online?`<button class="btn glass block" onclick="Race3D.teacher()">Klassenraum öffnen</button>`:'<small class="off">Online nur in Claude verfügbar</small>'}</div>
-  <div class="act panel"><div class="ai" style="background:linear-gradient(135deg,#b45309,#FFC93C)">${ic('flag')}</div><b>Raum erstellen & mitfahren</b><small>Für Freunde: du bist Host und fährst selbst mit.</small>
-   ${online?`<button class="btn glass block" onclick="Race3D.create()">Raum erstellen</button>`:'<small class="off">Online nur in Claude verfügbar</small>'}</div>
-  <div class="act panel daily"><div class="ai" style="background:linear-gradient(135deg,#7c3aed,#c084fc)">${ic('trophy')}</div><b>Tagesrennen</b><small>Jeden Tag neue Fragen – für alle gleich. Wer schafft die meisten Punkte?</small>
-   ${(()=>{const D=dailyCfg(),b=myBest(D.d,D.lvl);return `<div class="drow"><span>${D.lvl} · ${TRACKS[D.cfg.city]}</span><span>${b?'Dein Rekord: <b>'+b.sc+'</b>':'Noch nicht gefahren'}</span></div>`})()}
-   <div class="d2"><button class="btn glass" onclick="Race3D.board()">Rangliste</button><button class="btn primary" onclick="Race3D.daily()">${ic('play')} Fahren</button></div></div>
-  <div class="act panel hot"><div class="ai" style="background:linear-gradient(135deg,#be123c,#FF4D6D)">${ic('bot')}</div><b>Training</b><small>Gegen Bots – jederzeit, auch offline.</small>
-   <div class="seg mini">${[0,1,3,5].map(n=>`<button class="${ST.bots===n?'on':''}" onclick="Race3D.setBots(${n})">${n?n+(n>1?' Bots':' Bot'):'Allein'}</button>`).join('')}</div><button class="btn gold block" onclick="Race3D.solo()">${ic('play')} Training starten</button></div>`;return}
+ if(!NET.r){el.className='hm-hub';const D=dailyCfg(),db=myBest(D.d,D.lvl);el.innerHTML=`
+  <button class="playbtn" onclick="Race3D.solo()"><span>SPIELEN</span><small>Training · ${ST.bots?ST.bots+(ST.bots>1?' Bots':' Bot'):'allein'}</small></button>
+  <button class="setchip" onclick="Race3D.sheet('set')">${ic('sliders','sm')}<span>${esc(setupLine())}</span><b>ändern</b></button>
+  <div class="hm-modes">
+   <button onclick="Race3D.daily()"><i style="background:linear-gradient(135deg,#7c3aed,#c084fc)">${ic('trophy')}</i><b>Tagesrennen</b><small>${db?'Rekord '+db.sc:D.lvl+' · neu heute'}</small></button>
+   <button onclick="Race3D.sheet('join')" ${online?'':'disabled'}><i style="background:linear-gradient(135deg,#2529D8,#0389FF)">${ic('users')}</i><b>Mit Code</b><small>Raum beitreten</small></button>
+   <button onclick="Race3D.sheet('host')" ${online?'':'disabled'}><i style="background:linear-gradient(135deg,#0f766e,#16C47F)">${ic('grid')}</i><b>Klasse</b><small>Raum erstellen</small></button>
+  </div>
+  <p class="hm-how">Antwort antippen → Auto lenkt selbst · Richtig = ⚡ Nitro · Falsch = Bremse</p>
+  <button class="link hm-rank" onclick="Race3D.board()">🏆 Tagesrangliste ansehen</button>`;return}
  el.className='panel roomp';const peers=NET.r.peers(),h=hostPeer();const hp=h&&h.presence;const drivers=peers.filter(p=>!(p.presence&&p.presence.sp));
  const tcount=[0,0];drivers.forEach(p=>tcount[num(p.presence&&p.presence.tm)%2]++);
  el.innerHTML=`<div class="roomgrid"><div><div class="codebox ${NET.spec?'big':''}"><div><small>RAUM-CODE</small><b>${esc(NET.code)}</b></div><div style="margin-left:auto;text-align:right"><small>Fahrer</small><b style="font-size:26px;letter-spacing:0">${drivers.length}</b></div></div>
    ${NET.spec?`<p class="netnote">Schüler: Spiel öffnen → <b>Mit Code beitreten</b> → <b>${esc(NET.code)}</b></p>`:''}
    ${NET.host?`<button class="btn gold lg block" style="margin-top:12px" ${NET.spec&&!drivers.length?'disabled':''} onclick="Race3D.start()">${ic('flag')} Rennen starten${drivers.length?` (${drivers.length} Fahrer)`:''}</button>`:`<p class="netnote" style="text-align:center;margin-top:14px">${hp&&(hp.ph==='race'||hp.ph==='cd')?'Ein Rennen läuft gerade – du fährst beim nächsten mit.':'Warte, bis der Host das Rennen startet …'}</p>`}
+   ${NET.host?`<button class="setchip" style="margin-top:10px" onclick="Race3D.sheet('set')">${ic('sliders','sm')}<span>${esc(setupLine())}</span><b>ändern</b></button>`:`<div class="setchip ro">${ic('flag','sm')}<span>${esc(setupLine())}</span></div>`}
    <button class="link" style="margin-top:10px" onclick="Race3D.leave()">${ic('x','sm')} Raum verlassen</button></div>
   <div><div class="lbl" style="margin-top:0">Im Raum${ST.cfg.team?` · <span style="color:${TEAMS[0].c}">${tcount[0]} Blau</span> / <span style="color:${TEAMS[1].c}">${tcount[1]} Rot</span>`:''}</div><div class="plist">${peers.map(p=>{const pr=p.presence||{};const kk=num(pr.k)%NV,tm=num(pr.tm)%2;return `<div class="pl"><span class="c" style="background:${pr.sp?'#16C47F':ST.cfg.team?TEAMS[tm].c:vcol(kk,pr.c)}"></span><span>${esc(clean(pr.n)||'…')}</span><small class="muted">${pr.sp?'Beamer':VEH[kk].n}</small>${pr.h===1?`<span class="tg">${pr.sp?'LEHRER':'HOST'}</span>`:''}${p.isMe&&p.sameTab?'<span class="tg y">DU</span>':''}${pr.rs?'<span class="tg y">FÄHRT</span>':''}</div>`}).join('')}</div></div></div>`}
 function renderSet(){const el=document.getElementById('r3set');if(!el)return;const ro=NET.r&&!NET.host;const c=ST.cfg;const city2pano={berlin:'berlin',muenchen:'muenchen',frankfurt:'frankfurt'};
@@ -4161,15 +4226,15 @@ function startShow(){stopShow();const cv=document.getElementById('r3show');if(!c
  const fl=new THREE.Mesh(new THREE.CircleGeometry(4.2,48),new THREE.MeshBasicMaterial({map:glowTex('rgba(37,41,216,.55)'),transparent:true,depthWrite:false}));fl.rotation.x=-Math.PI/2;sc.add(fl);
  const ring=new THREE.Mesh(new THREE.RingGeometry(3.3,3.42,64),new THREE.MeshBasicMaterial({color:0x5BC8FA,transparent:true,opacity:.9}));ring.rotation.x=-Math.PI/2;ring.position.y=.01;sc.add(ring);
  let car=null,ck='';const S={r,sc,cam,raf:0};SHOW=S;
- const step=t=>{if(SHOW!==S)return;const key=ST.car+'|'+ST.col+'|'+Object.keys(GLB).length;if(key!==ck){ck=key;if(car)sc.remove(car);car=makeCar(ST.car,vcol(ST.car,ST.col),null);sc.add(car)}
+ const step=t=>{if(SHOW!==S)return;const vk=VIEWK<0?ST.car:VIEWK;const key=vk+'|'+ST.col+'|'+Object.keys(GLB).length;if(key!==ck){ck=key;if(car)sc.remove(car);car=makeCar(vk,vlocked2(vk)?'#475569':vcol(vk,ST.col),null);if(vlocked2(vk))car.traverse(o=>{if(o.isMesh&&o.material){o.material=o.material.clone();o.material.color&&o.material.color.multiplyScalar(.25)}});sc.add(car)}
   const w=cv.clientWidth,h=cv.clientHeight;if(cv.width!==Math.round(w*r.getPixelRatio())){r.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}
-  const a=t*.0004,wide=cam.aspect>1.6&&innerWidth>760;cam.fov=cam.aspect<1.4?34:24;cam.updateProjectionMatrix();cam.position.set(Math.sin(a)*11,2.4,Math.cos(a)*11);cam.lookAt(0,1.05,0);if(wide){cam.setViewOffset(w,h,-w*.27,0,w,h)}else cam.clearViewOffset();if(car.userData.glb)car.userData.wheels.forEach(wh=>wh.rotation.x+=.03);else car.userData.wheels.forEach(wh=>wh.children.forEach(c=>c.rotation.x+=.03));r.render(sc,cam);S.raf=requestAnimationFrame(step)};S.raf=requestAnimationFrame(step)}).catch(()=>{})}
+  const a=t*.0004,wide=false;cam.fov=cam.aspect<1.4?30:24;cam.updateProjectionMatrix();cam.position.set(Math.sin(a)*11,2.4,Math.cos(a)*11);cam.lookAt(0,1.05,0);if(wide){cam.setViewOffset(w,h,-w*.27,0,w,h)}else cam.clearViewOffset();if(car.userData.glb)car.userData.wheels.forEach(wh=>wh.rotation.x+=.03);else car.userData.wheels.forEach(wh=>wh.children.forEach(c=>c.rotation.x+=.03));r.render(sc,cam);S.raf=requestAnimationFrame(step)};S.raf=requestAnimationFrame(step)}).catch(()=>{})}
 function stopShow(){if(SHOW){cancelAnimationFrame(SHOW.raf);try{SHOW.r.dispose();SHOW.r.forceContextLoss()}catch(e){}SHOW=null}}
 
-return{lobby,solo,again,fehler,daily,board:showBoard,exit,menu,start:hostStart,newRace,create:createRoom,join:c=>joinRoom(c,false),leave:leaveRoom,
+return{sheet,closeSheet,carStep,lobby,solo,again,fehler,daily,board:showBoard,exit,menu,start:hostStart,newRace,create:createRoom,join:c=>joinRoom(c,false),leave:leaveRoom,
  sound(){if(G){P.settings.sound?(engOn(),MUS.start()):(engOff(),MUS.stop());menu();menu()}},music(){P.settings.music=P.settings.music===false;saveP();if(G){P.settings.music?MUS.start():MUS.stop();if(G.root.querySelector('.pmenu3')){menu();menu()}}},
  setName(v){ST.name=clean(v);saveST();pubLobby()},setCar(i){if(vLocked(i))return;ST.car=i;saveST();pubLobby();click3();renderDrv()},setCol(i){ST.col=i;saveST();pubLobby();renderDrv()},setBots(n){ST.bots=n;saveST();renderNet()},
- cfg(k,v){if(NET.r&&!NET.host)return;ST.cfg[k]=v;if(k==='src')ST.cfg.mods=[];saveST();if(NET.host&&NET.r)NET.r.presence({cfg:ST.cfg}).catch(()=>{});renderSet();if(k==='team'){renderDrv();renderNet()}},mod(m){if(NET.r&&!NET.host)return;let ms=(ST.cfg.mods||[]).slice();if(!m)ms=[];else ms=ms.includes(m)?ms.filter(x=>x!==m):[...ms,m];ST.cfg.mods=ms;saveST();if(NET.host&&NET.r)NET.r.presence({cfg:ST.cfg}).catch(()=>{});renderSet()},setTeam(i){ST.tm=i;saveST();pubLobby();renderDrv()},teacher:hostTeacher,specEnd,specNew,copyRep,
+ cfg(k,v){if(NET.r&&!NET.host)return;ST.cfg[k]=v;if(k==='src')ST.cfg.mods=[];saveST();if(NET.host&&NET.r)NET.r.presence({cfg:ST.cfg}).catch(()=>{});renderSet();renderNet();if(k==='team')renderDrv()},mod(m){if(NET.r&&!NET.host)return;let ms=(ST.cfg.mods||[]).slice();if(!m)ms=[];else ms=ms.includes(m)?ms.filter(x=>x!==m):[...ms,m];ST.cfg.mods=ms;saveST();if(NET.host&&NET.r)NET.r.presence({cfg:ST.cfg}).catch(()=>{});renderSet()},setTeam(i){ST.tm=i;saveST();pubLobby();renderDrv()},teacher:hostTeacher,specEnd,specNew,copyRep,
  leaveView(){stopShow();specStop();if(G)stopRace()},pickCity(c){ST.cfg.city={berlin:'berlin',muenchen:'muenchen',frankfurt:'frankfurt',heidelberg:'frankfurt',koeln:'frankfurt',hamburg:'berlin'}[c]||'berlin';saveST()},_G:()=>G,_NET:NET};
 })();
 function viewRace(){Race3D.lobby()}
