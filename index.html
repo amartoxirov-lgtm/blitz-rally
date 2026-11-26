@@ -834,6 +834,14 @@ body.raceonly main#view{padding-bottom:20px}
 .mistbox .mh{display:flex;align-items:center;justify-content:space-between;gap:10px;position:sticky;top:-12px;background:inherit}
 .mistbox .btn.sm{padding:8px 12px;font-size:13px;white-space:nowrap}
 @media (max-width:760px){.r3d .qtip{font-size:13.5px}.mistbox{max-height:34vh}}
+.seg.wrap{flex-wrap:wrap}.seg.wrap button{flex:1 1 30%}
+.modpick{display:grid;grid-template-columns:repeat(9,1fr);gap:6px}
+.modpick button{padding:8px 2px;border-radius:12px;border:1.5px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:inherit;font:700 12px Manrope,system-ui,sans-serif;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px}
+.modpick button b{font-size:14px}.modpick button small{font-size:10px;opacity:.65}
+.modpick button.on{border-color:#5BC8FA;background:rgba(3,137,255,.25)}
+.lesinfo{display:flex;flex-direction:column;gap:3px;margin-top:8px;max-height:150px;overflow:auto;font-size:12.5px;opacity:.85;padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.04)}
+.lesinfo b{color:#5BC8FA;display:inline-block;min-width:30px}
+@media (max-width:560px){.modpick{grid-template-columns:repeat(5,1fr)}.seg.wrap button{flex:1 1 45%}}
 </style>
 </head>
 <body>
@@ -2726,6 +2734,746 @@ const QTIP_UZ={
 };
 function tipUz(q){if(q.tip)return q.tip;const k=q.q||q.say||'';return QTIP_UZ[k]||QTIP_UZ[q.say]||''}
 
+/* ---------- Lektion-Fragen: Momente A1 + A2 ---------- */
+/* Format: [Lektion, 'Titel', [[Frage, richtig, falsch1, falsch2, (falsch3), 'Tipp uz'], ...]] */
+const BK_MA1=[
+[1,'Ich heiße Miriam.',[
+ ['Wie ___ du?','heißt','heiße','heißen','du → -st: du heißt.'],
+ ['Ich ___ aus Usbekistan.','komme','kommst','kommt','ich → -e: ich komme.'],
+ ['___ kommst du? – Aus Taschkent.','Woher','Wo','Wie','Woher? — qayerdan?'],
+ ['Wie geht es Ihnen? – ___','Danke, gut. Und Ihnen?','Ich heiße Anna.','Aus Berlin.','Holatni so\'rashganda: Danke, gut.'],
+ ['Er ___ Deutsch.','lernt','lerne','lernst','er/sie/es → -t: er lernt.']]],
+[2,'Was macht ihr beruflich?',[
+ ['Wir ___ in Samarkand.','wohnen','wohnt','wohnst','wir → -en: wir wohnen.'],
+ ['Ihr ___ Studenten, oder?','seid','sind','ist','sein: ihr seid.'],
+ ['Sie arbeitet ___ Ärztin.','als','bei','in','Kasb bilan: als (sifatida).'],
+ ['Er ist Lehrer, sie ist ___.','Lehrerin','Lehrer','Lehrerinnen','Ayol kasbi: -in qo\'shimchasi.'],
+ ['Ich bin ___ verheiratet. Ich bin ledig.','nicht','kein','keine','Fe\'l/sifatni inkor: nicht.']]],
+[3,'Das ist meine Schwester.',[
+ ['Das ist ___ Bruder.','mein','meine','meinen','der Bruder → mein.'],
+ ['Ist das ___ Mutter? – Ja.','deine','dein','deinen','die Mutter → deine.'],
+ ['Sprichst du nicht Englisch? – ___, ein bisschen.','Doch','Ja','Nein','Inkor savolga „ha“ javobi: doch.'],
+ ['Das ist ___ Auto.','Marias','Maria','der Maria','Ismlarda egalik: Marias (+s).'],
+ ['Er ___ drei Sprachen.','spricht','sprecht','sprechst','sprechen: e→i — er spricht.']]],
+[4,'Das Bild ist so schön.',[
+ ['___ Sofa ist bequem.','Das','Der','Die','das Sofa.'],
+ ['Wie teuer ist der Tisch? – ___ kostet 80 Euro.','Er','Es','Sie','der Tisch → er.'],
+ ['Die Lampe ist schön. ___ ist modern.','Sie','Er','Es','die Lampe → sie.'],
+ ['Was ___ das Regal?','kostet','kosten','kostest','Was kostet …? — narxi qancha?'],
+ ['1 500 = ___','eintausendfünfhundert','einhundertfünfzig','fünfzehntausend','1 500 — bir ming besh yuz.']]],
+[5,'Ist das ein Tisch?',[
+ ['Das ist ___ Stuhl.','ein','eine','einen','der Stuhl → ein.'],
+ ['Ist das eine Uhr? – Nein, das ist ___ Uhr.','keine','kein','nicht','die Uhr → keine.'],
+ ['Der Tisch ist ___ Holz.','aus','von','mit','Material: aus Holz (yog\'ochdan).'],
+ ['___ du das Haus? – Ja, es ist groß!','Siehst','Seht','Sehst','sehen: e→ie — du siehst.'],
+ ['Wie bitte? Können Sie das ___?','wiederholen','sehen','kosten','Takrorlashni so\'rash: wiederholen.']]],
+[6,'Wir haben einen Termin.',[
+ ['Ich brauche ___ Drucker.','einen','ein','eine','Akkusativ: der → einen.'],
+ ['Hast du ___ Kuli? – Nein.','einen','ein','einer','der Kuli → einen (Akkusativ).'],
+ ['Wir haben ___ Zeit.','keine','kein','keinen','die Zeit → keine.'],
+ ['Ein Computer, zwei ___.','Computer','Computers','Computeren','-er bilan tugagan otlar ko\'plikda o\'zgarmaydi.'],
+ ['Eine Datei, zwei ___.','Dateien','Datei','Dateis','die Datei → die Dateien.']]],
+[7,'Sie können super tanzen!',[
+ ['Ich ___ gut schwimmen.','kann','könne','kannst','ich kann (oxiri -e yo\'q).'],
+ ['Kannst du Gitarre ___?','spielen','spielst','spielt','Modal fe\'l + oxirida infinitiv.'],
+ ['Er ___ gern Bücher.','liest','lest','lesst','lesen: e→ie — er liest.'],
+ ['Wir ___ am Wochenende Freunde.','treffen','trefft','trifft','wir treffen.'],
+ ['Du ___ oft Fahrrad.','fährst','fahrst','fährt','fahren: a→ä — du fährst.']]],
+[8,'Ich habe leider keine Zeit.',[
+ ['Wir treffen uns ___ Montag.','am','um','im','Hafta kuni: am Montag.'],
+ ['Der Film beginnt ___ 20 Uhr.','um','am','im','Soat: um 20 Uhr.'],
+ ['Am Samstag ___ ich ins Kino.','gehe','ich gehe','gehen','Fe\'l 2-o\'rinda: Am Samstag gehe ich.'],
+ ['Weißt du, wie spät es ist? – Nein, ich ___ es nicht.','weiß','weißt','wisse','wissen: ich weiß.'],
+ ['Hast du Zeit? – ___, ich muss arbeiten.','Leider nicht','Ja, gern','Gute Idee','Rad etish: Leider nicht.']]],
+[9,'Ich mag Hamburger.',[
+ ['Ich ___ keinen Fisch.','mag','möge','magst','mögen: ich mag.'],
+ ['Was ___ du? – Eine Pizza, bitte.','nimmst','nehmst','nimmt','nehmen: du nimmst.'],
+ ['Er ___ gern Salat.','isst','esst','eßt','essen: er isst.'],
+ ['Ich ___ einen Tee, bitte.','möchte','möchten','möchtest','ich möchte.'],
+ ['die Tomate + die Suppe = ___','die Tomatensuppe','das Tomatensuppe','der Tomatensuppe','Qo\'shma so\'z: artikl oxirgi so\'zdan.']]],
+[10,'Wann kommst du denn an?',[
+ ['Der Zug ___ um 9 Uhr ___.','kommt … an','ankommt … –','kommt … ab','Ajraladigan fe\'l: kommt … an.'],
+ ['Ich ___ dich am Bahnhof ___.','hole … ab','abhole … –','hole … an','abholen → ich hole … ab.'],
+ ['Bitte ___ Sie jetzt ___!','steigen … ein','einsteigen … –','steigen … an','einsteigen → Steigen Sie ein!'],
+ ['Ruf mich bitte ___!','an','ab','ein','anrufen → Ruf mich an!'],
+ ['Ich fahre mit ___ Bus.','dem','den','der','mit + Dativ: der Bus → dem.']]],
+[11,'Was haben Sie gestern gemacht?',[
+ ['Gestern ___ ich Fußball gespielt.','habe','bin','hat','spielen → Perfekt haben bilan.'],
+ ['Was hast du am Wochenende ___?','gemacht','gemachen','macht','machen → gemacht.'],
+ ['Er hat einen Brief ___.','geschrieben','geschreibt','schreibt','schreiben → geschrieben.'],
+ ['Der Supermarkt ist ___ 8 ___ 20 Uhr geöffnet.','von … bis','ab … bis','um … bis','von … bis — …dan …gacha.'],
+ ['___ Woche war ich in Berlin.','Letzte','Letzten','Letzter','die Woche → letzte Woche.']]],
+[12,'Im Frühling bin ich nach Hamburg gefahren.',[
+ ['Wir ___ nach Hamburg gefahren.','sind','haben','seid','Harakat fe\'llari (fahren) → sein.'],
+ ['Gestern ___ ich krank.','war','bin','hatte','sein → Präteritum: ich war.'],
+ ['Letztes Jahr ___ ich viel Arbeit.','hatte','habe','war','haben → Präteritum: ich hatte.'],
+ ['___ Sommer fahren wir ans Meer.','Im','Am','Um','Fasl/oy: im Sommer.'],
+ ['Ich lerne ___ zwei Jahren Deutsch.','seit','vor','ab','seit — …dan beri (hozir ham davom etadi).']]],
+[13,'Berlin gefällt mir.',[
+ ['In Berlin gibt es ___ großen Bahnhof.','einen','ein','eine','es gibt + Akkusativ: der → einen.'],
+ ['Die Stadt gefällt ___ sehr.','mir','mich','ich','gefallen + Dativ: mir.'],
+ ['Wie gefällt ___ Taschkent? (du)','dir','dich','du','du → Dativ: dir.'],
+ ['Das Museum gehört ___ Stadt.','der','die','den','gehören + Dativ: die Stadt → der.'],
+ ['Wo kann man Briefmarken kaufen? – ___','auf der Post','im Kino','im Park','Pochta: die Post.']]],
+[14,'Vor dem Kaufhaus nach rechts.',[
+ ['Die Bank ist neben ___ Post.','der','die','dem','Wo? + Dativ: die → der.'],
+ ['Wir treffen uns vor ___ Kino.','dem','den','das','das Kino → vor dem Kino.'],
+ ['Gehen Sie hier ___ links.','nach','zu','in','Yo\'nalish: nach links / nach rechts.'],
+ ['Das Café ist an ___ Ecke.','der','die','dem','die Ecke → an der Ecke.'],
+ ['Entschuldigung, wie komme ich ___ Bahnhof?','zum','zur','nach','der Bahnhof → zum (zu + dem).']]],
+[15,'Ich finde ihr Zimmer schön.',[
+ ['Lena wohnt in Köln. ___ Wohnung ist hell.','Ihre','Seine','Ihr','Lena (u, ayol) → ihr; die Wohnung → ihre.'],
+ ['Tom hat ein Zimmer. ___ Zimmer ist klein.','Sein','Seine','Ihr','Tom → sein; das Zimmer → sein.'],
+ ['Wo ist das Sofa? – Im ___.','Wohnzimmer','Badezimmer','Flur','Divan — mehmonxona (Wohnzimmer).'],
+ ['Die Wohnung hat einen ___. Dort kann man draußen sitzen.','Balkon','Keller','Flur','der Balkon — balkon.'],
+ ['Hast du ___ Schlüssel? (er)','seinen','sein','seine','Akkusativ: der Schlüssel → seinen.']]],
+[16,'Wir haben hier ein Problem.',[
+ ['Der Techniker kommt ___ einer Stunde.','in','vor','seit','Kelajak: in einer Stunde (bir soatdan keyin).'],
+ ['___ dem Essen gehe ich spazieren.','Nach','In','Seit','nach dem Essen — ovqatdan keyin.'],
+ ['Ich trinke Kaffee ___ Zucker.','ohne','mit','aus','ohne — …siz.'],
+ ['Können wir den Termin ___?','verschieben','verkaufen','verstehen','verschieben — boshqa vaqtga ko\'chirmoq.'],
+ ['Kann ich Ihnen ___?','helfen','hilft','geholfen','Yordam taklif: Kann ich Ihnen helfen?']]],
+[17,'Ich will Pilot werden.',[
+ ['Ich ___ später Ärztin werden.','will','wollen','willst','wollen: ich will.'],
+ ['Mein Bruder ___ Lehrer.','wird','werdet','wirst','werden: er wird.'],
+ ['Du ___ bestimmt eine gute Ingenieurin.','wirst','wird','werdest','werden: du wirst.'],
+ ['Wir ___ eine Weltreise machen.','wollen','will','wollt','wir wollen.'],
+ ['Was ist dir wichtig? – Meine Familie ist mir ___ wichtig.','sehr','viel','gern','sehr wichtig — juda muhim.']]],
+[18,'Ich soll diese Übung machen.',[
+ ['Der Arzt sagt, ich ___ viel trinken.','soll','will','sollst','sollen: ich soll (birovning maslahati).'],
+ ['___ Sie bitte jeden Tag!','Laufen','Laufe','Lauft','Imperativ Sie: Laufen Sie!'],
+ ['Mir tut der ___ weh.','Rücken','Rückens','Rücke','der Rücken — bel.'],
+ ['Ich habe ___. Mein Kopf tut weh.','Kopfschmerzen','Bauchschmerzen','Fieber','Kopfschmerzen — bosh og\'rig\'i.'],
+ ['Was ___ ich tun?','soll','sollt','sollen','Maslahat so\'rash: Was soll ich tun?']]],
+[19,'Jetzt sei doch nicht gleich sauer!',[
+ ['___ bitte das Fenster! (du)','Mach … auf','Machst … auf','Macht … auf','Imperativ du: mach auf!'],
+ ['Kinder, ___ eure Zimmer auf!','räumt','räum','räumen','Imperativ ihr: räumt auf!'],
+ ['___ doch nicht so laut! (du)','Sei','Bist','Seid','sein → Imperativ du: sei!'],
+ ['Kannst du bitte die Wäsche ___?','waschen','kochen','putzen','Kir: die Wäsche waschen.'],
+ ['Wer ___ heute den Müll raus?','bringt','bringen','bringst','den Müll rausbringen — axlatni chiqarmoq.']]],
+[20,'Das Team sieht sehr sympathisch aus!',[
+ ['Kennst du Herrn Weber? – Ja, ich kenne ___.','ihn','ihm','er','er → Akkusativ: ihn.'],
+ ['Ich rufe ___ morgen an. (du)','dich','dir','du','du → Akkusativ: dich.'],
+ ['Der Film hat mir gut ___.','gefallen','gegefallen','gefällt','ge- yo\'q: gefallen → gefallen.'],
+ ['Er ist nicht freundlich, er ist ___.','unfreundlich','nichtfreundlich','keinfreundlich','un- = inkor: unfreundlich.'],
+ ['Sie hat lange, blonde ___.','Haare','Augen','Nase','die Haare — soch.']]],
+[21,'Darf man das?',[
+ ['Hier ___ man nicht rauchen.','darf','dürft','muss','Taqiq: nicht dürfen.'],
+ ['Ich ___ heute bis 18 Uhr arbeiten.','muss','musst','müssen','müssen: ich muss.'],
+ ['Bei Rot ___ du warten.','musst','darfst','muss','Majburiyat: müssen.'],
+ ['Im Park ___ Hunde nicht ohne Leine laufen.','dürfen','darf','dürft','Hunde (ko\'plik) → dürfen.'],
+ ['Den Müll ___ wir trennen.','müssen','muss','müsst','wir müssen.']]],
+[22,'Mehr, mehr, mehr?',[
+ ['Die Jacke ist ___ als der Mantel.','billiger','billig','am billigsten','Qiyoslash: billiger als.'],
+ ['Dieses Kleid gefällt mir ___.','besser','guter','gutter','gut → besser → am besten.'],
+ ['___ Hose möchtest du? – Die blaue.','Welche','Welcher','Welches','die Hose → welche.'],
+ ['Ich nehme ___ Pullover hier.','diesen','dieser','dieses','Akkusativ: der → diesen.'],
+ ['Der Rock ist so teuer ___ die Bluse.','wie','als','wenn','Teng: so … wie.']]],
+[23,'Es regnet. Na und?',[
+ ['Ich nehme einen Schirm mit, ___ es regnet.','denn','weil','dann','denn + oddiy so\'z tartibi.'],
+ ['Heute ist es ___ und kalt.','windig','Wind','winden','der Wind → windig.'],
+ ['Das Buch liegt auf ___ Tisch.','dem','den','der','Wo? + Dativ: auf dem Tisch.'],
+ ['Ich lege das Buch auf ___ Tisch.','den','dem','der','Wohin? + Akkusativ: auf den Tisch.'],
+ ['Ohne Wolken: Der Himmel ist ___.','wolkenlos','wolkig','bewölkt','-los = …siz.']]],
+[24,'Der erste Oktober war mein Glückstag!',[
+ ['Heute ist der ___ Mai.','erste','eins','einte','Tartib son: der erste.'],
+ ['Ich habe am ___ März Geburtstag.','dritten','dritte','drei','am + -ten: am dritten März.'],
+ ['Ich ___ gern nach Paris fahren.','würde','werde','wurde','Istak: würde gern.'],
+ ['Herzlichen ___ zum Geburtstag!','Glückwunsch','Dank','Gruß','Tabrik: Herzlichen Glückwunsch!'],
+ ['Wann ist Silvester? – Am ___ Dezember.','31.','13.','30.','Silvester — 31-dekabr.']]]
+];
+
+const BK_MA2=[
+[1,'Mein Vater Vittorio war der Erste hier!',[
+ ['Als Kind ___ ich oft im Garten gespielt.','habe','bin','hatte','spielen → Perfekt haben.'],
+ ['Wir ___ jeden Sommer ans Meer gefahren.','sind','haben','waren','fahren → Perfekt sein.'],
+ ['Früher ___ ich keinen Computer.','hatte','habe','war','Präteritum: ich hatte.'],
+ ['___ Woche besuche ich meine Oma.','Nächste','Nächster','Nächsten','die Woche → nächste Woche.'],
+ ['Ich gehe ___ Tag joggen.','jeden','jede','jedes','der Tag → jeden Tag (Akkusativ).']]],
+[2,'Weil meine Arbeit wirklich wichtig ist.',[
+ ['Ich arbeite gern hier, weil die Kollegen nett ___.','sind','sein','ist','weil → fe\'l gap oxirida.'],
+ ['Sie ist müde, weil sie lange gearbeitet ___.','hat','habe','ist','weil-gap: … gearbeitet hat.'],
+ ['Warum lernst du Deutsch? – ___ ich in Deutschland studieren will.','Weil','Denn','Deshalb','Sabab: weil … (fe\'l oxirida).'],
+ ['Vielen Dank ___ deine Hilfe!','für','von','mit','danken für — … uchun rahmat.'],
+ ['Ich ___ dir viel Erfolg!','wünsche','danke','gratuliere','jemandem etwas wünschen.']]],
+[3,'Unsere WG fehlt mir.',[
+ ['Wir haben eine Katze. ___ Katze heißt Mia.','Unsere','Unser','Unseren','die Katze → unsere.'],
+ ['Ist das ___ Auto? (ihr)','euer','eure','euren','das Auto → euer.'],
+ ['Wir fahren mit ___ Kindern in die Berge.','unseren','unsere','unser','mit + Dativ Plural: unseren Kindern.'],
+ ['Hamburg liegt im ___ von Deutschland.','Norden','Süden','Osten','Gamburg — shimolda (Norden).'],
+ ['Im Wald leben viele ___.','Tiere','Berge','Seen','das Tier → die Tiere.']]],
+[4,'Deshalb haben wir jetzt sehr viel Arbeit.',[
+ ['Der Kollege ist krank, deshalb ___ ich heute länger.','arbeite','ich arbeite','arbeiten','deshalb + fe\'l darhol keyin.'],
+ ['Es regnet. ___ bleiben wir zu Hause.','Deshalb','Weil','Denn','Natija: deshalb.'],
+ ['Könnten Sie bitte die E-Mail ___?','beantworten','antworten','fragen','eine E-Mail beantworten.'],
+ ['Ich muss noch Kopien ___.','machen','tun','geben','Kopien machen — nusxa olmoq.'],
+ ['Kein Problem, das ___ ich sofort.','mache','mache ich','machen','Topshiriqqa javob: Das mache ich sofort.']]],
+[5,'Ach, komm schon! Das macht bestimmt Spaß!',[
+ ['Das Festival dauert ___ eine Woche.','über','seit','ab','über eine Woche — bir haftadan ko\'p.'],
+ ['Ich wohne ___ einem Jahr hier.','seit','vor','über','seit + Dativ: seit einem Jahr.'],
+ ['Die Ausstellung ist vom 1. ___ 10. Mai.','bis zum','bis','zum','vom … bis zum …'],
+ ['Wollen wir zusammen ins Konzert gehen? – ___','Gute Idee!','Ich weiß nicht.','Schade.','Taklifga rozilik: Gute Idee!'],
+ ['Komm doch mit! Das ___ bestimmt Spaß!','macht','gibt','hat','Spaß machen — maroqli bo\'lmoq.']]],
+[6,'Du solltest mehr trainieren.',[
+ ['Du ___ mehr Sport machen.','solltest','solltet','sollte','Maslahat: du solltest.'],
+ ['Wir ___ zusammen joggen gehen.','könnten','konnten','können','Taklif: wir könnten.'],
+ ['Sie ___ weniger Kaffee trinken.','sollten','sollte','solltet','Sie (siz) → sollten.'],
+ ['Was ___ ich tun? Ich bin immer müde.','könnte','kann','konnte','Maslahat so\'rash: Was könnte ich tun?'],
+ ['Ich habe ___ Lust auf Sport.','keine','nicht','kein','die Lust → keine Lust.']]],
+[7,'Super, dass es da auch Pizza gibt!',[
+ ['Ich finde, ___ Fast Food ungesund ist.','dass','weil','denn','Fikr: Ich finde, dass … (fe\'l oxirida).'],
+ ['Er sagt, dass er keinen Hunger ___.','hat','habe','haben','dass-gap: fe\'l oxirida.'],
+ ['Super, dass ihr ___!','kommt','kommen','gekommen','ihr kommt.'],
+ ['Eine Currywurst mit Pommes, ___.','bitte','danke','gern','Buyurtma: …, bitte.'],
+ ['Zum Mitnehmen oder zum ___?','Hieressen','Hierbleiben','Essen','Shu yerda yeysizmi: zum Hieressen.']]],
+[8,'Wenn ich tanze, vergesse ich alles!',[
+ ['Wenn ich Zeit habe, ___ ich ins Kino.','gehe','ich gehe','gehen','wenn-gap birinchi → keyin fe\'l.'],
+ ['Wenn es regnet, ___ wir zu Hause.','bleiben','wir bleiben','bleibt','Asosiy gap: fe\'l + ega.'],
+ ['Ich bin glücklich, wenn die Sonne ___.','scheint','scheinen','geschienen','wenn → fe\'l oxirida.'],
+ ['wohnen → die ___','Wohnung','Wohnheit','Wohnen','Fe\'l + -ung → ot (die).'],
+ ['In der Mittagspause gehe ich in die ___.','Kantine','Küche','Kasse','die Kantine — oshxona (ish joyida).']]],
+[9,'Nicht schon wieder!',[
+ ['Ich ___ das Buch ins Regal.','stelle','stehe','stellen','Wohin? stellen (tik qo\'ymoq).'],
+ ['Das Bild ___ an der Wand.','hängt','hängen','gehängt','Wo? hängen (osilib turibdi).'],
+ ['Leg die Zeitung auf ___ Tisch!','den','dem','der','Wohin? + Akkusativ.'],
+ ['Die Schlüssel liegen in ___ Tasche.','der','die','den','Wo? + Dativ: in der Tasche.'],
+ ['Was, schon wieder? Das ___ ich nicht!','glaube','denke','meine','Hayrat: Das glaube ich nicht!']]],
+[10,'Auf keinen Fall! Ohne mich!',[
+ ['Ich fahre ___ Arbeit mit dem Fahrrad.','zur','zum','zu','die Arbeit → zur (zu + der).'],
+ ['Ich komme gerade ___ Arzt.','vom','von','von der','der Arzt → vom (von + dem).'],
+ ['Ich wohne ___ meinen Eltern.','bei','zu','mit','bei — …nikida.'],
+ ['Fährst du mit dem Bus? – Auf ___ Fall! Ich nehme das Rad.','keinen','keine','nicht','Auf keinen Fall — hech qachon!'],
+ ['Na gut, du hast mich ___.','überredet','überrascht','übersetzt','jemanden überreden — ko\'ndirmoq.']]],
+[11,'Da wäre ich jetzt auch gern mit dabei!',[
+ ['Ich ___ gern mehr Urlaub.','hätte','habe','würde','Istak: ich hätte gern.'],
+ ['Am liebsten ___ ich jetzt am Strand.','wäre','war','bin','Istak: ich wäre.'],
+ ['Ich würde ___ ans Meer als in die Berge fahren.','lieber','gerner','am liebsten','gern → lieber → am liebsten.'],
+ ['Vergiss deinen ___ nicht! Du fliegst ins Ausland.','Reisepass','Regenschirm','Schlüssel','der Reisepass — pasport.'],
+ ['Laut der Grafik reisen ___ Deutsche ins Ausland.','viele','vieler','vielen','viele Deutsche.']]],
+[12,'Kopf hoch!',[
+ ['Können Sie mir sagen, ___ der Kurs beginnt?','wann','was','ob','Bilvosita savol: wann … (fe\'l oxirida).'],
+ ['Weißt du, ___ der Laden heute geöffnet ist?','ob','wenn','dass','Ha/yo\'q savoli → ob.'],
+ ['Ich möchte wissen, wie lange das Praktikum ___.','dauert','dauern','dauert es','Bilvosita savol: fe\'l oxirida.'],
+ ['Schade! Ich bin so ___.','enttäuscht','begeistert','glücklich','enttäuscht — hafsalasi pir.'],
+ ['Kopf ___! Das wird schon.','hoch','oben','auf','„Kopf hoch!“ — tushkunlikka tushma!']]],
+[13,'Moment, ich helfe Ihnen.',[
+ ['Der ___ Schrank ist zu schwer.','große','großer','großen','der + Adj -e: der große Schrank.'],
+ ['Ich nehme die ___ Lampe.','neue','neuen','neuer','Akk. die → die neue Lampe.'],
+ ['Wir wohnen in dem ___ Haus.','alten','alte','altes','Dativ: dem alten Haus.'],
+ ['Soll ich Ihnen ___? – Ja, das ist sehr nett.','helfen','hilfe','geholfen','Yordam taklifi.'],
+ ['Nein danke, das ___ ich allein.','schaffe','helfe','mache mich','schaffen — uddalamoq.']]],
+[14,'Ich drück\' die Daumen!',[
+ ['Das ist ein ___ Tag.','wichtiger','wichtige','wichtigen','ein + der-ot: wichtiger.'],
+ ['Ich habe einen ___ Kollegen.','netten','nette','netter','Akk. der → einen netten.'],
+ ['Sie hat eine ___ Idee.','gute','guten','guter','eine + die-ot: gute.'],
+ ['Viel ___ bei der Prüfung!','Erfolg','Glück haben','Dank','Viel Erfolg! — omad!'],
+ ['Ich ___ dir die Daumen!','drücke','halte','mache','Die Daumen drücken — omad tilamoq.']]],
+[15,'Rund ums Haus',[
+ ['die Sonne → ___','sonnig','sonnlich','sonnisch','Ot + -ig → sifat: sonnig.'],
+ ['der Hunger → ___','hungrig','hungerig','hungerlich','der Hunger → hungrig.'],
+ ['Mein Arbeitstag beginnt um acht. Zuerst lese ich meine ___.','E-Mails','Kantine','Pause','E-Mails lesen.'],
+ ['Was würdest du an meiner Stelle ___?','machen','gemacht','machst','Maslahat so\'rash.'],
+ ['Danke für den ___!','Tipp','Hilfe','Rat geben','der Tipp — maslahat.']]],
+[16,'Ich hab\' mich so geärgert!',[
+ ['Ich ärgere ___ über den Film.','mich','mir','ich','ich → mich (reflexiv).'],
+ ['Wir freuen ___ auf das Wochenende.','uns','euch','sich','wir → uns.'],
+ ['Er interessiert ___ für Serien.','sich','ihn','ihm','er → sich.'],
+ ['Hast du dich schon ___?','entschieden','entscheidet','entscheiden','sich entscheiden → entschieden.'],
+ ['Die Serie ist total ___! Ich habe sie an einem Tag gesehen.','spannend','langweilig','nervig','spannend — qiziqarli.']]],
+[17,'Teamarbeit',[
+ ['Ich warte ___ den Bus.','auf','für','an','warten auf + Akk.'],
+ ['Wir sprechen ___ das Projekt.','über','von','mit','sprechen über + Akk.'],
+ ['Sie denkt oft ___ ihre Familie.','an','über','von','denken an + Akk.'],
+ ['Ich bin zufrieden ___ meiner Arbeit.','mit','über','von','zufrieden mit + Dat.'],
+ ['Wer kümmert sich ___ die Präsentation?','um','für','über','sich kümmern um + Akk.']]],
+[18,'Muss nur noch schnell …',[
+ ['___ wartest du? – Auf meine Freundin.','Auf wen','Worauf','Wofür','Odam haqida: Auf wen? Narsa haqida: Worauf?'],
+ ['___ interessierst du dich? – Für Musik.','Wofür','Für was','Worüber','Narsa: wo(r) + Präposition.'],
+ ['Ich freue mich auf den Urlaub. – Ich freue mich auch ___.','darauf','davor','davon','Narsaga ishora: da(r) + Präposition.'],
+ ['Ich bin müde. ___ gehe ich noch ins Fitnessstudio.','Trotzdem','Deshalb','Weil','trotzdem — shunga qaramay.'],
+ ['Ich surfe oft ___ Internet.','im','in','am','im Internet.']]],
+[19,'Wann hast du zum ersten Mal …?',[
+ ['Als Kind ___ ich nicht schwimmen.','konnte','kann','könnte','können → Präteritum: konnte.'],
+ ['Wir ___ früh ins Bett gehen.','mussten','müssen','musste','müssen → Präteritum: mussten.'],
+ ['Er ___ Pilot werden.','wollte','will','wolltet','wollen → Präteritum: wollte.'],
+ ['Durftest du als Kind lange fernsehen? – Nein, ich ___ nicht.','durfte','darf','dürfte','dürfen → durfte.'],
+ ['Wirklich? Das ___ ich nicht!','wusste','wisste','weißte','wissen → Präteritum: wusste.']]],
+[20,'Ich hab\' alles richtig gemacht!',[
+ ['Gehen Sie am Rathaus ___.','vorbei','durch','gegenüber','an … vorbei — yonidan o\'tib.'],
+ ['Die Apotheke ist ___ der Bank.','gegenüber','vorbei','durch','gegenüber (von) — ro\'parasida.'],
+ ['Wir laufen ___ den Park.','durch','über','um','durch + Akk — orqali.'],
+ ['Er fährt um den See ___.','herum','vorbei','gegenüber','um … herum — atrofida.'],
+ ['arbeiten → der ___','Arbeiter','Arbeitung','Arbeiten','Fe\'l + -er → kasb/shaxs.']]],
+[21,'Tun und Lassen',[
+ ['Ich ___ mein Auto reparieren.','lasse','lässt','lassen','lassen: ich lasse.'],
+ ['Er lässt sich die Haare ___.','schneiden','schneidet','geschnitten','lassen + infinitiv.'],
+ ['___ mich bitte in Ruhe!','Lass','Lässt','Lasst','Imperativ du: lass!'],
+ ['Wir sollten weniger Plastik ___.','verwenden','verwendet','zu verwenden','sollten + infinitiv.'],
+ ['Wer nachhaltig lebt, ___ die Umwelt.','schützt','schützen','geschützt','die Umwelt schützen.']]],
+[22,'Was ist ein gutes Leben?',[
+ ['Das ist der Mann, ___ neben mir wohnt.','der','den','dem','Nominativ: der Mann → der.'],
+ ['Das ist die Frau, ___ ich gestern getroffen habe.','die','der','den','Akkusativ: die Frau → die.'],
+ ['Das Buch, ___ ich lese, ist spannend.','das','den','der','Akkusativ: das Buch → das.'],
+ ['Der Film, ___ du empfohlen hast, war super.','den','der','dem','Akkusativ: der Film → den.'],
+ ['Ich weiß es nicht ___.','genau','richtig','sicher sein','Bilmaslik: Ich weiß es nicht genau.']]],
+[23,'Am Anfang war der kleine Elefant.',[
+ ['Ich kenne den ___ nicht.','Kunden','Kunde','Kundes','n-Deklination: der Kunde → den Kunden.'],
+ ['Sprich mit dem ___!','Kollegen','Kollege','Kolleg','der Kollege → dem Kollegen.'],
+ ['1950 ___ mein Opa die Firma.','gründete','gründet','gegründet','Präteritum: gründete.'],
+ ['Damals ___ er nur drei Mitarbeiter.','hatte','hat','hätte','Präteritum: hatte.'],
+ ['Sie ___ 1990 nach Berlin.','zog','zieht','ziehte','ziehen → Präteritum: zog.']]],
+[24,'Die Lichter werden ausgemacht.',[
+ ['Das Geschäft ___ heute geschlossen.','wird','ist worden','werden','Passiv: wird + Partizip II.'],
+ ['Die Waren ___ verkauft.','werden','wird','worden','Ko\'plik: werden verkauft.'],
+ ['Hier ___ Deutsch gesprochen.','wird','ist','hat','Passiv Präsens.'],
+ ['Die Lichter werden ___.','ausgemacht','ausmachen','machen aus','werden + Partizip II.'],
+ ['Wir könnten doch ein Café ___!','eröffnen','eröffnet','zu eröffnen','könnten + infinitiv.']]]
+];
+
+/* ---------- Lektion-Fragen: Momente B1 ---------- */
+const BK_MB1=[
+[1,'Das weiß ich noch genau!',[
+ ['___ ich zehn Jahre alt war, sind wir umgezogen.','Als','Wenn','Wann','O\'tmishda bir marta: als.'],
+ ['Immer ___ ich Oma besuchte, backte sie Kuchen.','wenn','als','wann','O\'tmishda takroriy: (immer) wenn.'],
+ ['___ ich Zeit habe, lese ich.','Wenn','Als','Wann','Hozirgi/takroriy: wenn.'],
+ ['Als ich klein war, ___ ich Angst vor Hunden.','hatte','habe','hätte','als + Präteritum.'],
+ ['die Kindheit, die Jugend, das ___','Erwachsenenalter','Erwachsenheit','Erwachsensein','Hayot bosqichlari.']]],
+[2,'Beste Freunde',[
+ ['Sie ist meine beste Freundin, ___ vertraue ich ihr.','darum','weil','denn','darum + fe\'l darhol keyin.'],
+ ['Er hat viel gelernt, ___ hat er die Prüfung bestanden.','deswegen','weil','obwohl','Natija: deswegen.'],
+ ['Ein ___ hat mir geholfen. (bekannt)','Bekannter','Bekannte','Bekannten','Sifatdan ot: ein Bekannter.'],
+ ['Ich habe einen ___ getroffen. (bekannt)','Bekannten','Bekannter','Bekannte','Akk.: einen Bekannten.'],
+ ['Ich bin mir da nicht so ___.','sicher','sichern','gesichert','Shubha: Ich bin mir nicht sicher.']]],
+[3,'Das ist genau mein Ding!',[
+ ['Das ist die ___ Idee von allen.','beste','besten','bester','die + Superlativ -e: die beste.'],
+ ['Ich suche eine ___ Wohnung.','größere','größer','größeren','eine + Komparativ + -e.'],
+ ['der Freund → ___','freundlich','freundig','freundisch','Ot + -lich → sifat.'],
+ ['Eine meiner ___ ist Geduld.','Stärken','Stärke','Starken','die Stärke → die Stärken.'],
+ ['Ich kann gut ___ Menschen umgehen.','mit','zu','für','umgehen mit — muomala qilmoq.']]],
+[4,'Morgen, morgen …!',[
+ ['Ich lerne Deutsch, ___ ich in Wien arbeiten kann.','damit','um','dass','Ega har xil → damit.'],
+ ['Ich spare Geld, ___ ein Auto zu kaufen.','um','damit','für','Ega bir xil → um … zu.'],
+ ['Er fährt Rad, ___ fit zu bleiben.','um','damit','weil','um … zu + infinitiv.'],
+ ['Zuerst möchte ich Ihnen das Thema ___.','vorstellen','vorstellt','vorzustellen','Taqdimot boshi: vorstellen.'],
+ ['Haben Sie noch ___?','Fragen','Frage','Fragens','Taqdimot oxiri: Haben Sie noch Fragen?']]],
+[5,'Wär\' das etwas für dich?',[
+ ['Wenn ich mehr Geld ___, würde ich ein Haus kaufen.','hätte','habe','hatte','Irreal: wenn … hätte.'],
+ ['Wenn ich du ___, würde ich das machen.','wäre','war','bin','Irreal: wäre.'],
+ ['Wenn es nicht so teuer wäre, ___ wir dort wohnen.','würden','werden','wurden','würden + infinitiv.'],
+ ['das Haus + das Dach = ___','das Hausdach','die Hausdach','das Hausesdach','Qo\'shma so\'z.'],
+ ['die Wohnung + der Markt = ___','der Wohnungsmarkt','der Wohnungmarkt','die Wohnungsmarkt','-ung + s + ot.']]],
+[6,'Ich war ja vorher so aufgeregt!',[
+ ['Ich gehe joggen, ___ es regnet.','obwohl','weil','deshalb','Qarshi sabab: obwohl.'],
+ ['Es regnet. ___ gehe ich joggen.','Trotzdem','Obwohl','Weil','trotzdem + fe\'l darhol.'],
+ ['Obwohl er müde ___, arbeitet er weiter.','ist','sein','war es','obwohl → fe\'l oxirida.'],
+ ['Du schaffst das! Nur ___!','Mut','Angst','Sorge','Nur Mut! — dadil bo\'l!'],
+ ['Er möchte sich beruflich neu ___.','orientieren','orientiert','Orientierung','sich neu orientieren.']]],
+[7,'Allein unterwegs',[
+ ['Wir trinken ___ Kaffee.','heißen','heiße','heißer','Artiklsiz Akk. der → -en.'],
+ ['Ich esse gern ___ Brot.','frisches','frische','frischen','Artiklsiz das → -es.'],
+ ['Bei ___ Wetter gehen wir wandern.','gutem','gutes','guten','Artiklsiz Dativ das → -em.'],
+ ['das Haus → das ___ (klein)','Häuschen','Hauschen','Häusle','-chen: kichraytish, umlaut, das.'],
+ ['Ich reise am liebsten ___.','allein','einsam','eins','allein — yolg\'iz (o\'zi).']]],
+[8,'Soziales Pflichtjahr – ja oder nein?',[
+ ['Es ist wichtig, anderen ___.','zu helfen','helfen','helfen zu','Infinitiv mit zu.'],
+ ['Ich habe keine Lust, ___.','aufzuräumen','zu aufräumen','aufräumen zu','Ajraladigan fe\'l: auf-zu-räumen.'],
+ ['Hast du Zeit, mir ___?','zu helfen','helfen','hilfst','Zeit haben + zu.'],
+ ['Da bin ich ganz ___ Meinung.','Ihrer','Ihre','Ihren','Rozilik: Da bin ich Ihrer Meinung.'],
+ ['Darf ich kurz etwas ___?','sagen','zu sagen','gesagt','So\'z olish: Darf ich kurz etwas sagen?']]],
+[9,'Trotzdem eine super Erfahrung!',[
+ ['___ des Regens sind wir gewandert.','Trotz','Wegen','Weil','trotz + Genitiv — …ga qaramay.'],
+ ['___ der Prüfung bin ich nervös.','Wegen','Trotz','Damit','wegen + Genitiv — …sababli.'],
+ ['Das ist das Auto ___ Lehrers.','des','dem','den','Genitiv: der → des …s.'],
+ ['Wegen des ___ Wetters bleiben wir hier.','schlechten','schlechte','schlechtes','Genitiv: des …-en.'],
+ ['Sehr geehrte Damen und ___,','Herren','Herrn','Männer','Rasmiy xat boshi.']]],
+[10,'Wie möchte ich arbeiten?',[
+ ['___ ich arbeite, höre ich Musik.','Während','Bevor','Bis','Bir vaqtda: während.'],
+ ['___ ich ins Bett gehe, putze ich die Zähne.','Bevor','Nachdem','Während','Oldin: bevor.'],
+ ['Warte hier, ___ ich zurückkomme.','bis','seit','während','…gacha: bis.'],
+ ['___ ich in Berlin wohne, fahre ich Rad.','Seit','Bis','Bevor','…dan beri: seit.'],
+ ['Laut der Statistik arbeiten 30 ___ im Homeoffice.','Prozent','Prozente','Prozents','30 Prozent.']]],
+[11,'Dinge, die den Alltag besser machen',[
+ ['Das ist der Freund, ___ ich geholfen habe.','dem','den','der','helfen + Dativ → dem.'],
+ ['Die Kollegin, ___ ich das Buch gegeben habe, …','der','die','dem','Dativ die → der.'],
+ ['Das ist das Messer, ___ man Brot schneidet.','mit dem','mit das','mit den','Präp. + Relativpronomen.'],
+ ['Die Freunde, ___ ich wohne, sind nett.','bei denen','bei den','bei die','Dativ Plural → denen.'],
+ ['Das Gerät ___ sich leicht reinigen.','lässt','ist','kann','sich lassen — …sa bo\'ladi.']]],
+[12,'Das Auge isst mit.',[
+ ['Es war so heiß, ___ wir schwimmen gingen.','dass','weil','damit','so … dass.'],
+ ['Es regnete stark, ___ das Spiel ausfiel.','sodass','damit','obwohl','Natija: sodass.'],
+ ['Die Suppe war ___ scharf, dass ich Wasser brauchte.','so','sehr','zu','so + Adj + dass.'],
+ ['kochen → das ___','Kochen','Kochung','Koch','Fe\'l → ot: das Kochen.'],
+ ['Das Gericht ___ nach Zimt.','schmeckt','riecht nach','isst','schmecken nach.']]],
+[13,'Tauben, meine Lieblingstiere!',[
+ ['Ich mag ___ Hunde noch Katzen.','weder','nicht','entweder','weder … noch — na … na.'],
+ ['Sie spricht ___ Deutsch als auch Englisch.','sowohl','weder','nicht nur','sowohl … als auch.'],
+ ['Er ist nicht nur klug, ___ auch fleißig.','sondern','aber','und','nicht nur … sondern auch.'],
+ ['ein Jahr lang → ___','jahrelang','jährlich','jahrlich','Ot + -lang → sifat.'],
+ ['Das finde ich wirklich ___!','bemerkenswert','bemerkt','merkwürdig sein','bemerkenswert — e\'tiborga loyiq.']]],
+[14,'Hast du dich schon beworben?',[
+ ['Das ist alles, ___ ich weiß.','was','das','wo','alles → was.'],
+ ['Das Beste, ___ du tun kannst, ist lernen.','was','das','der','Superlativ ot → was.'],
+ ['Die Stadt, ___ ich wohne, ist schön.','wo','was','die','Joy → wo.'],
+ ['Ich habe mich ___ die Stelle beworben.','auf','für','an','sich bewerben auf/um + Akk.'],
+ ['Ich freue mich auf ein persönliches ___.','Gespräch','Sprechen','Rede','Ariza oxiri.']]],
+[15,'Perfekte Partnerschaft!?',[
+ ['Ich ___ mir die Haare schneiden.','lasse','lassen','lässt','lassen + infinitiv.'],
+ ['Er lässt seinen Hund nicht allein ___.','spazieren','spazierte','zu spazieren','lassen + infinitiv.'],
+ ['___ uns ins Kino gehen!','Lass','Lasst','Lassen','Taklif: Lass uns …!'],
+ ['Sie haben sich ___ verliebt.','ineinander','miteinander','zueinander','sich ineinander verlieben.'],
+ ['Der Film war eine romantische ___.','Komödie','Komödien','Komisch','die Komödie.']]],
+[16,'Zwar nervig, aber wichtig',[
+ ['Je mehr du übst, ___ besser wirst du.','desto','als','so','je … desto.'],
+ ['Wir fahren ___ mit dem Zug oder mit dem Bus.','entweder','weder','sowohl','entweder … oder.'],
+ ['Die Versicherung ist ___ teuer, aber wichtig.','zwar','zwischen','weder','zwar … aber.'],
+ ['Ich möchte ein Konto ___.','eröffnen','öffnen machen','aufmachen lassen','ein Konto eröffnen.'],
+ ['Wie viel ___ bekommt man?','Zinsen','Zins','Zinse','die Zinsen (ko\'plik) — foiz.']]],
+[17,'Wenn Wände sprechen',[
+ ['Man lernt eine Sprache, ___ man viel spricht.','indem','damit','sodass','indem — …ish orqali.'],
+ ['Er entspannt sich, ___ er Musik hört.','indem','weil','obwohl','Usul: indem.'],
+ ['Das war ein ___verständnis.','Miss','Be','Ver','miss- = noto\'g\'ri: Missverständnis.'],
+ ['Ich habe dich ___verstanden.','miss','un','ver','missverstehen.'],
+ ['Das Graffiti ___ mir sehr.','gefällt','gefallen','gefiel es','gefallen + Dativ.']]],
+[18,'Was ist Ihre Rolle?',[
+ ['Nachdem ich gegessen ___, ging ich spazieren.','hatte','habe','hätte','Plusquamperfekt: hatte + P.II.'],
+ ['Nachdem er angekommen ___, rief er an.','war','ist','hatte','Harakat → war + P.II.'],
+ ['___ ich die Arbeit beendet hatte, ging ich nach Hause.','Nachdem','Bevor','Während','nachdem — …dan keyin.'],
+ ['Die Ärztin hat mir ein Medikament ___.','verschrieben','geschrieben','verschreiben','verschreiben — yozib bermoq.'],
+ ['Ich möchte noch etwas ___.','ergänzen','ergänzt','Ergänzung','ergänzen — to\'ldirmoq.']]],
+[19,'Mein Zeugnis wurde anerkannt.',[
+ ['Das Zeugnis ___ anerkannt.','wurde','wird worden','ist geworden','Passiv Präteritum: wurde + P.II.'],
+ ['Der Antrag ist schon bearbeitet ___.','worden','geworden','werden','Passiv Perfekt: ist … worden.'],
+ ['Die Formulare ___ gestern abgeschickt.','wurden','wurde','werden worden','Ko\'plik: wurden.'],
+ ['backen → die ___','Bäckerei','Backei','Backerei','Kasb + -ei: die Bäckerei.'],
+ ['die Politik → ___','politisch','politiklich','politig','-isch sifat.']]],
+[20,'Man braucht nur kurz nachzudenken.',[
+ ['Du brauchst nicht ___ kommen.','zu','–','um','brauchen + nicht + zu.'],
+ ['Er ging, ___ sich zu verabschieden.','ohne','damit','dass','ohne … zu.'],
+ ['___ zu lernen, spielt er den ganzen Tag. (o\'rniga)','Statt','Damit','Weil','(an)statt … zu.'],
+ ['Er kam, ohne ___ er angerufen hatte.','dass','zu','um','ohne dass (ega boshqa).'],
+ ['Das ___ ich so nicht bestätigen.','kann','muss','soll','Ehtiyotkor: Das kann ich so nicht bestätigen.']]],
+[21,'Schule neu denken',[
+ ['Die Hausaufgaben müssen heute ___ werden.','gemacht','machen','gemachten','Modal + P.II + werden.'],
+ ['Das Fenster ___ geöffnet werden.','muss','müssen','wird müssen','Passiv mit Modalverb.'],
+ ['Hier darf nicht ___ werden.','geraucht','rauchen','raucht','darf … werden.'],
+ ['Mein Lieblingsfach war ___.','Mathe','Lehrer','Klasse','das Schulfach.'],
+ ['Wie wäre es, ___ wir das Projekt teilen?','wenn','dass','ob','Taklif: Wie wäre es, wenn …'] ]],
+[22,'Ein politisches Leben',[
+ ['Er tut so, als ob er alles ___.','wüsste','weiß','wisse','als ob + Konj. II.'],
+ ['Sie sieht aus, als ob sie müde ___.','wäre','ist','war','als ob + wäre.'],
+ ['Er spricht, als ___ er Chef wäre.','ob','wenn','dass','als ob.'],
+ ['Der Bundestag ___ die Gesetze.','beschließt','beschließen','beschlossen','beschließen — qaror qabul qilmoq.'],
+ ['Wer wird Bundeskanzler? Das entscheidet die ___.','Wahl','Wahlen machen','Wähler sein','die Wahl — saylov.']]],
+[23,'Was wäre passiert, wenn …?',[
+ ['Wenn ich Zeit gehabt ___, wäre ich gekommen.','hätte','wäre','hatte','Irreal o\'tmish: hätte + P.II.'],
+ ['Wenn er früher losgefahren ___, wäre er pünktlich gewesen.','wäre','hätte','war','fahren → wäre.'],
+ ['Was ___ passiert, wenn die Mauer nicht gefallen wäre?','wäre','hätte','würde','passieren → wäre.'],
+ ['Die Mauer ist ___ gefallen.','1989','1961','1990','Berlin devori — 1989.'],
+ ['Wir sollten die Aufgaben ___.','verteilen','teilen sich','verteilt','Aufgaben verteilen.']]],
+[24,'Wahnsinn, wie die Zeit vergeht!',[
+ ['Morgen ___ es regnen.','wird','würde','wurde','Futur I: werden + infinitiv.'],
+ ['In zehn Jahren ___ wir alle E-Autos fahren.','werden','wird','würden','Futur I.'],
+ ['Ich werde dich ___.','anrufen','angerufen','rufe an','werden + infinitiv.'],
+ ['Er ___ wohl krank sein.','wird','würde','werde','Taxmin: wird wohl.'],
+ ['Wie schnell die Zeit ___!','vergeht','geht vor','verging es','Die Zeit vergeht.']]]
+];
+
+/* ---------- Vielfalt B2 ---------- */
+const BK_VB2=[
+[1,'Veränderungen: Das Leben neu gestalten',[
+ ['Ich habe ___ Freundin gestern das Buch gegeben.','meiner','meine','meinen','Wortstellung: Dativ (shaxs) + Akk (narsa).'],
+ ['Ich habe es ___ gestern gegeben.','ihr','sie','ihrer','Akk-Pronomen oldin: es ihr.'],
+ ['Er hat ___ Ziel erreicht.','sein','seinen','seines','das Ziel → sein.'],
+ ['Die Polizei hat die Zeugen ___.','befragt','gefragt an','beantwortet','be- + Verb: befragen — so\'roq qilmoq.'],
+ ['Ich habe ___ Bedenken.','gewisse','gewissen','gewiss','Bedenken (ko\'plik): gewisse Bedenken.']]],
+[2,'Migration: Ein neues Zuhause finden',[
+ ['Ich habe nicht kommen ___.','können','gekonnt','zu können','Modalverb Perfekt: Doppelinfinitiv.'],
+ ['Er hat das ___ wollen.','machen','gemacht','zu machen','haben + Inf + Modal-Inf.'],
+ ['Sie ___ das Land verlassen müssen.','hat','ist','wurde','Modalverb Perfekt → haben.'],
+ ['Er wanderte nach Kanada ___.','aus','ein','ab','auswandern — chet elga ko\'chib ketmoq.'],
+ ['Es ist ___, dass alle die Sprache lernen.','notwendig','nötigen','notwendigkeit','Muhimlik: Es ist notwendig, dass …']]],
+[3,'Berufsbiografien',[
+ ['Er war krank. ___ konnte er nicht kommen.','Deshalb','Weil','Obwohl','Natija: deshalb.'],
+ ['___ es regnete, blieben wir zu Hause.','Da','Deshalb','Daher','Sabab (ergash gap): da.'],
+ ['Aufgrund ___ Streiks fiel der Zug aus.','des','dem','den','aufgrund + Genitiv.'],
+ ['Er hat sich ___ Erfolg gefreut.','über den','an den','für den','sich freuen über (o\'tgan/hozir).'],
+ ['Wir haben gestern den Vertrag ___.','abgeschlossen','abgemacht','ausgeschlossen','einen Vertrag abschließen — shartnoma tuzmoq.']]],
+[4,'Familie: In die Fußstapfen der Eltern treten?',[
+ ['___ du Hilfe brauchst, ruf mich an.','Falls','Obwohl','Damit','Shart: falls / wenn.'],
+ ['___ guter Planung klappt alles.','Bei','Mit','Ohne','Shart: bei + Dativ.'],
+ ['___ Hilfe schaffe ich das nicht.','Ohne','Bei','Falls','ohne + Akk = agar … bo\'lmasa.'],
+ ['ergeben → das ___','Ergebnis','Ergebung','Ergebe','-nis: das Ergebnis.'],
+ ['eine Entscheidung ___','treffen','machen','geben','Nomen-Verb: eine Entscheidung treffen.']]],
+[5,'Soziale Medien: Das eigene Profil schärfen',[
+ ['Ich habe ___ im Park einen Freund getroffen.','gestern','gestrig','gestriger','Mittelfeld: temporal → lokal (te-ka-mo-lo).'],
+ ['Sie ist ___ erfolgreich.','äußerst','äußer','äußere','Adverb + Adjektiv: äußerst erfolgreich.'],
+ ['die Arbeit + der Platz = ___','der Arbeitsplatz','die Arbeitsplatz','der Arbeitplatz','Fugen-s + artikl oxirgi so\'zdan.'],
+ ['Er ___ sehr selbstbewusst.','wirkt','wirkst','gewirkt','wirken — taassurot qoldirmoq.'],
+ ['Am Ende des Videos: Danke fürs ___!','Zuschauen','Zuschau','Zuschauer','Videoni yakunlash.']]],
+[6,'Teamarbeit: Chefsache',[
+ ['Je länger ich arbeite, ___ müder werde ich.','desto','als','so','je … desto.'],
+ ['Er spricht ___ Englisch ___ Französisch.','sowohl … als auch','weder … sondern','zwar … oder','sowohl … als auch.'],
+ ['Er ist ___ klug, ___ faul.','zwar … aber','sowohl … noch','weder … sondern','zwar … aber.'],
+ ['informieren → die ___','Information','Informierung','Informanz','-ation: die Information.'],
+ ['die ___ übernehmen','Verantwortung','Verantwort','Antwortung','Verantwortung übernehmen.']]],
+[7,'Sport: Leben ist Bewegung',[
+ ['Ich trainiere, ___ ich fit bleibe.','damit','um','zu','damit + ergash gap.'],
+ ['Er läuft, ___ abzunehmen.','um','damit','zum','um … zu.'],
+ ['___ Entspannung mache ich Yoga.','Zur','Zu','Um','zu + Nominalisierung.'],
+ ['Komm ___! (zu mir)','her','hin','weg','her — so\'zlovchi tomonga.'],
+ ['in Form ___','bleiben','haben','geben','in Form bleiben — formada qolmoq.']]],
+[8,'Ernährung: Alles unter Kontrolle?',[
+ ['Das Restaurant ___ seit gestern geschlossen.','ist','wird','hat','Zustandspassiv: sein + P.II.'],
+ ['Das Essen wurde ___ den Koch zubereitet.','von','durch','mit','Shaxs → von.'],
+ ['Die Stadt wurde ___ ein Erdbeben zerstört.','durch','von','mit','Vosita/sabab → durch.'],
+ ['zucker + frei → ___','zuckerfrei','zuckerfreies','frei zucker','Qo\'shma sifat.'],
+ ['Das ist mir ___.','egal','gleich sein','egalisch','Befarqlik: Das ist mir egal.']]],
+[9,'Tagesrhythmus: So tickt unsere innere Uhr!',[
+ ['Er arbeitet nachts, ___ sie tagsüber arbeitet.','während','obwohl','damit','Qarama-qarshi: während.'],
+ ['___ ich früh aufstehe, schläft er lange.','Während','Bevor','Wenn','Gegensatz: während.'],
+ ['Ich bin ein Morgenmensch, mein Mann ___ ist ein Nachtmensch.','dagegen','deshalb','obwohl','dagegen — aksincha.'],
+ ['Er hat bis Mittag ___. (schlafen)','ausgeschlafen','geschlafen aus','verschlafen aus','ausschlafen — to\'yib uxlamoq.'],
+ ['Ich habe den Termin ___. (zu lange geschlafen)','verschlafen','ausgeschlafen','einschlafen','verschlafen — uxlab qolib o\'tkazib yubormoq.']]],
+[10,'Karriere: Erfolgreich scheitern',[
+ ['___ des Studiums jobbte er.','Während','Seit','Nach','während + Genitiv.'],
+ ['___ dem Abschluss fand sie einen Job.','Nach','Während','Vor','nach + Dativ.'],
+ ['___ seiner Kindheit lebt er hier.','Seit','Während','Bis','seit + Dativ.'],
+ ['reisend → der/die ___','Reisende','Reisend','Reisenden','Partizip → ot: der Reisende.'],
+ ['einen Fehler ___','machen','tun','geben','Nomen-Verb: einen Fehler machen.']]],
+[11,'Konsum: Weniger ist mehr!',[
+ ['Er spart Geld, ___ er weniger kauft.','indem','damit','sodass','Usul: indem.'],
+ ['___ Verzicht auf Plastik schützen wir die Umwelt.','Durch','Indem','Von','Vosita: durch.'],
+ ['Sie lebt glücklich, ___ viel zu besitzen.','ohne','damit','dass','ohne … zu.'],
+ ['Ich habe die alten Schuhe ___.','weggeworfen','geworfen weg','wegwerfen','wegwerfen → weggeworfen.'],
+ ['umgangssprachlich: „Kohle“ = ___','Geld','Essen','Auto','Kohle (so\'zlashuv) — pul.']]],
+[12,'Zusammenleben: Auf gute Nachbarschaft!',[
+ ['Das Problem ___ sich leicht lösen.','lässt','ist','hat','sich lassen = Passiversatz.'],
+ ['Die Aufgabe ist leicht zu ___.','lösen','gelöst','lösbar','sein + zu + Inf.'],
+ ['Das ist nicht ___. (man kann es nicht machen)','machbar','machlich','machfähig','-bar = mumkin.'],
+ ['Er ist ___ (kann im Team arbeiten).','teamfähig','teambar','teamlich','-fähig.'],
+ ['Das ärgert mich ___!','wirklich','wirklichen','Wirklichkeit','Jahl: Das ärgert mich wirklich!']]],
+[13,'Mobilität: Auf zwei Rädern',[
+ ['___ das macht, bekommt Ärger.','Wer','Wen','Der','Wer …, (der) …'],
+ ['___ man hilft, der ist dankbar.','Wem','Wer','Wen','Dativ: wem.'],
+ ['Er ist stolz ___ sein Fahrrad.','auf','über','von','stolz auf + Akk.'],
+ ['das Glück → das ___','Unglück','Nichtglück','Missglück','Un- prefiksi.'],
+ ['Ich bin abhängig ___ meinem Auto.','von','an','zu','abhängig von + Dat.']]],
+[14,'Natur: Grün in der Stadt',[
+ ['Wir gehen ___ Fluss entlang.','den','der','des','entlang (keyin) + Akk.'],
+ ['Die Kinder spielen ___ des Hauses.','innerhalb','gegenüber','entlang','innerhalb + Genitiv.'],
+ ['Er wohnt ___ der Stadt.','außerhalb','außer','aus','außerhalb + Genitiv.'],
+ ['Er ist ganz ___ vor Neid. (Farbe)','grün','blau','rot','grün vor Neid — hasaddan.'],
+ ['sich ___ ärgern (Farbe)','schwarz','rot','weiß','sich schwarzärgern — qattiq jahli chiqmoq.']]],
+[15,'Lärm und Stille: Ohren auf!',[
+ ['___ es laut ist, kann ich schlafen.','Obwohl','Weil','Damit','Konzessiv: obwohl.'],
+ ['___ des Lärms schlief er ein.','Trotz','Wegen','Obwohl','trotz + Genitiv.'],
+ ['Es war laut. ___ konnte ich mich konzentrieren.','Trotzdem','Obwohl','Deshalb','trotzdem.'],
+ ['Der Wasserhahn ___.','tropft','bellt','klingelt','Tovush fe\'li: tropfen.'],
+ ['reden → das ___ (ständig)','Gerede','Redung','Gereden','Ge- + Verbstamm + e.']]],
+[16,'Geheimnisse: Im Buchstabendschungel',[
+ ['Er ___ sehr reich sein. (man sagt)','soll','will','muss','sollen = mish-mish.'],
+ ['Sie ___ alles gewusst haben. (sie behauptet)','will','soll','darf','wollen = o\'zi da\'vo qiladi.'],
+ ['Er soll in Paris gewohnt ___.','haben','hat','sein','sollen + Inf. Perfekt.'],
+ ['glücklich + weise → ___','glücklicherweise','glücklichweise','glückweise','-weise ravish.'],
+ ['Mit freundlichen ___','Grüßen','Gruß','Grüße','Xat oxiri floskeli.']]],
+[17,'Dialog: Hallo, ist da jemand?',[
+ ['Wenn ich Zeit ___, käme ich mit.','hätte','habe','würde','Konj. II ohne würde.'],
+ ['Er tut so, als ___ er nichts gehört.','hätte','habe','hat','als + Konj. II (fe\'l darhol).'],
+ ['Es sieht aus, als ob es regnen ___.','würde','wird','wurde','als ob + würde.'],
+ ['die Kultur → ___','kulturell','kulturiv','kulturös','-ell.'],
+ ['die Aktion → ___','aktiv','aktionell','aktiös','-iv.']]],
+[18,'Diversität: Jeder Mensch ist vielfältig',[
+ ['Das ist etwas, ___ ich mich freue.','worauf','woran','wofür','wo(r) + Präposition.'],
+ ['Er hat nicht angerufen, ___ ich mich ärgere.','worüber','über das','wozu','Butun gapga: worüber.'],
+ ['Das ist alles, ___ ich dich bitte.','worum','woran','wofür','bitten um → worum.'],
+ ['die Toleranz → ___','tolerant','tolerent','toleriös','-ant.'],
+ ['die Religion → ___','religiös','religient','religant','-ös.']]],
+[19,'Glücklich sein: Nichts verpassen',[
+ ['Das ___ stimmen. (vielleicht)','kann','muss','soll','können = ehtimol.'],
+ ['Er ___ krank sein. (sicher)','muss','kann','darf','müssen = aniq taxmin.'],
+ ['Das ___ kein Problem sein. (wahrscheinlich)','dürfte','darf','durfte','dürfte = ehtimoli katta.'],
+ ['Hat ___ angerufen? (unbekannte Person)','irgendjemand','irgendwas','irgendwo','irgend-.'],
+ ['Ich habe Angst, etwas zu ___.','verpassen','passen','verpasst','FOMO: etwas verpassen.']]],
+[20,'Unter Druck: Wenn Sekunden entscheiden',[
+ ['Ich finde ___ gut, dass du hilfst.','es','das es','ihn','es → dass-gap o\'rnida.'],
+ ['___ ist wichtig, ruhig zu bleiben.','Es','Das ist','Er','es + Infinitivsatz.'],
+ ['Er ___ sein Versprechen.','hält','halt','behält es','ein Versprechen halten.'],
+ ['Kannst du dich ___ halten? (nicht einmischen)','heraus','her','hin','sich heraushalten.'],
+ ['Er hat den Druck nicht ___.','ausgehalten','gehalten aus','erhalten','aushalten — chidamoq.']]],
+[21,'Schlüsselerlebnis: Widerstand leisten',[
+ ['Ich habe ihn kommen ___.','sehen','gesehen','zu sehen','Doppelinfinitiv: sehen.'],
+ ['Sie hat das Auto reparieren ___.','lassen','gelassen','lässt','lassen → Doppelinfinitiv.'],
+ ['Ich habe sie singen ___.','hören','gehört','zu hören','hören → Doppelinfinitiv.'],
+ ['Widerstand ___','leisten','machen','tun','Widerstand leisten — qarshilik ko\'rsatmoq.'],
+ ['der Tourismus → der ___','Tourist','Touriker','Tourismer','-ismus / -ist.']]],
+[22,'Spielen: Vom Hobby zum Beruf',[
+ ['der ___ Mann (der lacht)','lachende','gelachte','lachte','Partizip I: lachend.'],
+ ['das ___ Buch (das man gelesen hat)','gelesene','lesende','gelesen','Partizip II.'],
+ ['die im Park ___ Kinder','spielenden','gespielten','spielende','Kengaytirilgan Partizip.'],
+ ['der Mut → ___','mutig','mutlich','mutsam','-ig.'],
+ ['Spiel und ___ (Kreativität)','Spaß','Freude haben','Lust machen','Spiel und Spaß.']]],
+[23,'In der Grauzone: Ghostwriting',[
+ ['Er sagt, er ___ krank.','sei','ist','wäre gewesen','Konjunktiv I: sei.'],
+ ['Sie sagte, sie ___ keine Zeit.','habe','hat','hatte','Konj. I: habe.'],
+ ['Sie sagten, sie ___ keine Zeit. (Konj. I = Indikativ)','hätten','haben','hatten','Konj. I = Indikativ bo\'lsa → Konj. II.'],
+ ['Er wurde wegen Betrugs ___.','verurteilt','geurteilt','beurteilt','verurteilen — hukm qilmoq.'],
+ ['die Politik → die ___','Politik','Politikum','Politismus','-ik.']]],
+[24,'Kunst: Die Goldenen 20er-Jahre',[
+ ['Hier ___ nicht geraucht.','wird','werden','ist','Subjektsiz Passiv: wird.'],
+ ['Am Sonntag wird nicht ___.','gearbeitet','arbeiten','arbeitet','wird + P.II.'],
+ ['Es wurde viel ___.','getanzt','tanzen','tanzte','Es wurde getanzt.'],
+ ['in den ___ Jahren','zwanziger','zwanzigsten','zwanzig','die zwanziger Jahre.'],
+ ['das Berliner ___','Museum','Muser','Museen','Shahar + -er (o\'zgarmaydi).']]]
+];
+
+/* ---------- Vielfalt C1 ---------- */
+const BK_VC1=[
+[1,'Freundschaft',[
+ ['___ ich das gewusst, wäre ich gekommen.','Hätte','Wenn','Falls','wenn tushib qolsa: fe\'l boshida.'],
+ ['Komm ___ mal vorbei!','doch','denn','ja','Modalpartikel: doch (undash).'],
+ ['Was ist ___ los?','denn','doch','eben','Savolda: denn.'],
+ ['Im ___, dass du Hilfe brauchst, ruf an.','Fall','Fälle','Falls','im Falle, dass … / im Fall.'],
+ ['Das ist ___ so. (nicht zu ändern)','eben','denn','etwa','Modalpartikel eben.']]],
+[2,'Selbstbilder',[
+ ['Mit ___ Mut schaffst du das.','etwas','etwasem','etwaigem','etwas — o\'zgarmaydi.'],
+ ['Wir sprachen über ___ wichtige Themen.','einige','einiger','einigen','Akk Pl: einige.'],
+ ['Er hat ___ guten Ideen.','viele','vieler','vielen','viele + -e.'],
+ ['selbst + bewusst → ___','selbstbewusst','selbstbewussen','Selbstbewusst','Komposita mit selbst.'],
+ ['Er neigt dazu, sich zu ___.','überschätzen','überschätzt','Überschätzung','sich überschätzen.']]],
+[3,'Mehrsprachigkeit',[
+ ['___ seiner Herkunft spricht er drei Sprachen.','Aufgrund','Obwohl','Deswegen','aufgrund + Genitiv.'],
+ ['Er kam nicht, ___ er krank war.','da','denn','weshalb','da — chunki (ergash gap).'],
+ ['___ Mangel an Zeit sagte er ab.','Aus','Von','Mit','aus Mangel an.'],
+ ['Er ist zweisprachig ___.','aufgewachsen','aufgewachst','wachsen auf','aufwachsen.'],
+ ['die Muttersprache ≠ die ___','Fremdsprache','Vatersprache','Zweitsprachig','Fremdsprache.']]],
+[4,'Mobilität',[
+ ['___ Angaben der Polizei war es ein Unfall.','Laut','Durch','Gemäß dem','laut + Dativ/Genitiv.'],
+ ['Er sagte, er ___ morgen kommen.','werde','wird','würde gekommen','Konj. I: werde.'],
+ ['Die Straße ___ gebaut.','wird','wurdet','werdet','Passiv.'],
+ ['in Betrieb ___','nehmen','machen','stellen','in Betrieb nehmen.'],
+ ['Experten zufolge ___ der Verkehr zunehmen.','wird','würde','werde es','Prognose: wird.']]],
+[5,'Körper und Geist',[
+ ['Nach dem ___ des Essens … (essen)','Verzehr','Essen','Verzehren','Nominalstil.'],
+ ['wenn man regelmäßig trainiert → bei regelmäßigem ___','Training','Trainieren','Trainierung','Nominalstil.'],
+ ['weil er krank war → wegen seiner ___','Krankheit','Krankung','Kranke','Nominalstil.'],
+ ['den Kopf ___ (nein sagen)','schütteln','geben','legen','den Kopf schütteln.'],
+ ['sich auf etwas ___','auswirken','wirken aus','gewirkt','sich auswirken auf.']]],
+[6,'Ausbildungswege',[
+ ['___ er wenig gelernt hatte, bestand er.','Obgleich','Trotzdem','Deshalb','obgleich = obwohl.'],
+ ['Er war müde, ___ arbeitete er.','dennoch','obwohl','sodass','dennoch = trotzdem.'],
+ ['So schwer es ___ ist, ich schaffe es.','auch','doch','eben','so … auch.'],
+ ['Er ist durch die Prüfung ___.','gefallen','gefallt','fallen','durchfallen.'],
+ ['Das ___ mir schwer. (ist schwierig)','fällt','gefällt','auffällt','schwerfallen.']]],
+[7,'Nachhaltigkeit',[
+ ['Wir sprechen mit ___ Experten.','mehreren','mehrere','mehrerer','Dat Pl: mehreren.'],
+ ['Er ist verantwortlich ___ das Projekt.','für','über','von','verantwortlich für.'],
+ ['Sie ist ___ Umweltschutz interessiert.','an','für','über','interessiert an + Dat.'],
+ ['Das ist ein guter Vorschlag, ___ …','allerdings','sondern','obwohl','Qisman rozilik: allerdings.'],
+ ['Wir sollten einen ___ finden.','Kompromiss','Komponente','Kompromisse','einen Kompromiss finden.']]],
+[8,'Altern',[
+ ['___ Alter ist er fit.','Trotz seines','Wegen seines','Statt seines','trotz + Genitiv.'],
+ ['Jung ist er, sein Bruder ___ alt.','hingegen','deshalb','folglich','hingegen = dagegen.'],
+ ['___ die einen arbeiten, ruhen die anderen.','Während','Indem','Obwohl','Adversativ: während.'],
+ ['das hohe ___','Alter','Älter','Altern','Adj.-Nomen: das hohe Alter.'],
+ ['Wir werden immer ___.','älter','alter','alt','Komparativ: immer älter.']]],
+[9,'Licht',[
+ ['Die ___ des Lichts (erfinden)','Erfindung','Erfinden','Erfindnis','Nominalstil.'],
+ ['Vor dem ___ der Wohnung Licht ausschalten! (verlassen)','Verlassen','Verlass','Verlassung','Nominalisierter Infinitiv: das Verlassen.'],
+ ['Licht ___ – Strom sparen','ausschalten','auszuschalten','schalten aus','Licht ausschalten.'],
+ ['Die Sonne ___ hell.','scheint','leuchtet aus','glänzt sich','scheinen.'],
+ ['Fortschritt ___ (erreichen)','erzielen','erzählen','zielen','Fortschritte erzielen.']]],
+[10,'Fehlerkultur',[
+ ['___ man Fehler analysiert, lernt man.','Indem','Damit','Obwohl','Modal: indem.'],
+ ['Er löste das Problem, ___ um Hilfe zu bitten.','ohne','indem','damit','ohne … zu.'],
+ ['___ Hilfe eines Kollegen gelang es.','Mithilfe','Mitsamt','Infolge','mithilfe + Genitiv.'],
+ ['Ich bitte vielmals um ___.','Entschuldigung','Entschuldigen','Schuld','um Entschuldigung bitten.'],
+ ['Das kann jedem ___.','passieren','passiert','geschehen sein','Kechirimni qabul.']]],
+[11,'Wendepunkte',[
+ ['Ich hätte früher kommen ___.','sollen','gesollt','zu sollen','Konj. II Vergangenheit + Modal.'],
+ ['Er hätte das wissen ___.','müssen','gemusst','muss','hätte + Inf + Modal-Inf.'],
+ ['Sie ___ das nicht tun dürfen.','hätte','wäre','würde','hätte … dürfen.'],
+ ['Die Mauer fiel ___ (unerwartet).','überraschend','überrascht','Überraschung','Adverb-Partizip.'],
+ ['Das war ein ___ (wichtiger) Wendepunkt.','entscheidender','entschieden','entscheidend','Partizip I sifat.']]],
+[12,'Datenlücken',[
+ ['Es regnete, ___ das Fest ausfiel.','sodass','damit','indem','konsekutiv: sodass.'],
+ ['Er war krank, ___ blieb er zu Hause.','folglich','obwohl','während','folglich.'],
+ ['Es war ___ kalt, dass wir froren.','derart','sodass','zu','derart … dass.'],
+ ['Die Hälfte ___ Befragten …','der','den','die','Genitiv Pl: der.'],
+ ['Doppelt so viele ___ früher','wie','als','dass','so viele wie.']]],
+[13,'Netzwerke',[
+ ['Hat ___ angerufen?','jemand','man','etwas','Indefinitpronomen.'],
+ ['Ich habe mit ___ gesprochen.','niemandem','niemand','niemanden','Dativ: niemandem.'],
+ ['Hast du ___ zu essen?','etwas','jemand','irgendeiner','etwas.'],
+ ['Vitamin B ___','haben','machen','tun','Vitamin B — tanish-bilish.'],
+ ['Darf ich Sie kurz ___? (anreden)','ansprechen','aussprechen','besprechen','jemanden ansprechen — murojaat qilmoq.']]],
+[14,'Aktivwerden',[
+ ['Das ist ___ schön! (Erstaunen)','aber','eben','denn','Modalpartikel aber.'],
+ ['___ ich weiß, ist er im Urlaub.','Soweit','Sofern','Sowie','restriktiv: soweit.'],
+ ['___ es nicht regnet, kommen wir.','Sofern','Soweit','Sobald','sofern = agar.'],
+ ['Ich beziehe mich ___ meine Vorrednerin.','auf','an','zu','sich beziehen auf.'],
+ ['sich ___ engagieren','ehrenamtlich','ehrenamt','Ehrenamt','ehrenamtlich — ixtiyoriy.']]],
+[15,'Solidarität',[
+ ['Wir sammeln Geld, ___ die Schule zu bauen.','um','damit','zu','um … zu.'],
+ ['Spenden ___ Unterstützung','zur','zu','für die','zu + Nominalisierung.'],
+ ['Wir helfen, ___ alle eine Chance haben.','damit','um','sodass','damit (ega boshqa).'],
+ ['Wie viele Leute haben am Kurs ___?','teilgenommen','teilgehabt','mitgeteilt','teilnehmen an — qatnashmoq.'],
+ ['der ___ (teilnehmen)','Teilnehmer','Teilhaber','Anteil','Wortfamilie -teil.']]],
+[16,'Gefühle',[
+ ['Er sagte: „Komm!“ → Er sagte, ich ___ kommen.','solle','sollte gekommen','soll es','Imperativ → sollen (Konj. I).'],
+ ['Sie sagte, sie ___ morgen anrufen.','werde','würde gerufen','wird es','Futur → werde.'],
+ ['Er bat mich, ihm zu ___.','helfen','hilft','geholfen','Höfliche Bitte.'],
+ ['Angst ___','haben','machen sich','sein','Angst haben.'],
+ ['jemandem Mut ___','machen','geben auf','sagen','Mut machen.']]],
+[17,'Arbeitsleben',[
+ ['Die Arbeit ___ zu erledigen.','ist','hat','wird','sein + zu (passiv ma\'no).'],
+ ['Du hast noch viel zu ___.','tun','getan','tun zu','haben + zu.'],
+ ['Er scheint müde zu ___.','sein','gewesen','ist','scheinen + zu.'],
+ ['Er behauptet, es gewusst zu ___.','haben','hatte','sein','Infinitiv Perfekt.'],
+ ['zufrieden ___ der Arbeit','mit','über','von','zufrieden mit.']]],
+[18,'Gerechtigkeit',[
+ ['Er ist reich, ___ ist er geizig.','zudem','obwohl','damit','präzisierend: zudem.'],
+ ['Die ___ Maßnahmen (die beschlossen wurden)','beschlossenen','beschließenden','beschlossen','Erweitertes Partizip.'],
+ ['das ___ Problem (das ständig wächst)','ständig wachsende','ständig gewachsene','wachsend ständig','Partizip I.'],
+ ['Wir müssen alle Optionen sorgfältig ___.','abwägen','abwiegen','wiegen ab','abwägen — tortib ko\'rmoq.'],
+ ['Das ist nicht ___! (nicht fair)','gerecht','richtig gemacht','Gerechtigkeit','gerecht — adolatli.']]],
+[19,'Wissen',[
+ ['Das ist nicht ___. (= möglich)','unmöglich','möglich','ungut','Doppelte Verneinung.'],
+ ['Nicht ___ wissen das.','wenige','viel','alle nicht','nicht wenige = viele.'],
+ ['___ ich das Buch las, verstand ich mehr.','Seitdem','Seit dem','Während dem','temporal: seitdem.'],
+ ['Sobald ich Zeit habe, ___ ich dir.','helfe','ich helfe','helfen','sobald → fe\'l oldin.'],
+ ['Gute ___! (Feedback)','Arbeit','Arbeiten','Arbeitung','Feedback.']]],
+[20,'Neugier',[
+ ['___ gesagt, das war schlecht.','Ehrlich','Ehrlichen','Ehrlichkeit','feste Partizipialgruppe.'],
+ ['Die ___ Aufgabe (die zu lösen ist)','zu lösende','gelöste','lösende','modales Partizip.'],
+ ['Kurz ___: Es klappt.','gesagt','sagend','zu sagen','kurz gesagt.'],
+ ['Damit ___ ich zum nächsten Punkt.','komme','gehe über','springe an','Taqdimot.'],
+ ['Er ist ___ neugierig.','sehr','zu viel','vieles','neugierig — qiziquvchan.']]],
+[21,'Algorithmen',[
+ ['Bis morgen ___ ich das erledigt haben.','werde','würde','wurde','Futur II.'],
+ ['Er wird es vergessen ___.','haben','hat','hätte','Futur II: werden + P.II + haben.'],
+ ['Sie wird schon ___ sein. (Vermutung)','angekommen','ankommen','ankam','Futur II (taxmin).'],
+ ['Die Tür ___. (Geräusch)','knarrt','bellt','zwitschert','knarren.'],
+ ['Das kann ich gut ___.','nachvollziehen','nachziehen','vollziehen','Empathie.']]],
+[22,'Forschung',[
+ ['___ des Projekts arbeiten wir viel.','Im Rahmen','Bei Rahmen','Mit Rahmen','im Rahmen + Genitiv.'],
+ ['___ der Kosten …','Hinsichtlich','Hinsicht','Bezüglich zu','hinsichtlich + Gen.'],
+ ['dass er kommt → seine ___','Ankunft','Ankommen','Ankommung','Nominalgruppe.'],
+ ['___ Wissens ist das richtig.','Meines','Meinem','Meinen','meines Wissens — bilishimcha (Genitiv).'],
+ ['Ich bin mir nicht ___.','sicher','sichern','Sicherheit','Halbwissen.']]],
+[23,'Esskulturen',[
+ ['Er ___ sich des Problems bewusst.','ist','hat','wird','sich bewusst sein + Gen.'],
+ ['Sie gedachten ___ Opfer.','der','den','die','gedenken + Genitiv.'],
+ ['Das hätte ___ werden müssen.','gemacht','machen','gemachen','Konj. II Vergangenheit Passiv.'],
+ ['Das schmeckt ___. (wie Zucker)','süß','sauer','bitter','Geschmack.'],
+ ['Das schmeckt ___. (wie Zitrone)','sauer','süß','salzig','Geschmack.']]],
+[24,'Vielfalt',[
+ ['Aus meiner ___ ist das wichtig.','Sicht','Sichten','Sehen','aus meiner Sicht.'],
+ ['Ich kann mich gut in sie ___.','hineinversetzen','versetzen hinein','einsetzen','Perspektive einnehmen.'],
+ ['Zusammenfassend ___ man sagen …','lässt sich','kann','darf','zusammenfassend kann man.'],
+ ['Die Grafik ___ …','zeigt','zeigen','gezeigt','eine Grafik beschreiben.'],
+ ['Mein persönliches ___','Fazit','Fazite','Fazits','ein Fazit ziehen.']]]
+];
+
 /* ================= BLITZ RALLY 3D — real-time multiplayer race ================= */
 const Race3D=(()=>{
 const T3URL='https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
@@ -2740,7 +3488,11 @@ const LENS={2000:'Sprint',3600:'Grand Prix',5200:'Marathon'};
 const KV=[{f:'vehicle-truck-red',n:'Pickup Rot',col:'#ef4444'},{f:'vehicle-truck-yellow',n:'Pickup Gelb',col:'#eab308'},{f:'vehicle-truck-green',n:'Pickup Grün',col:'#22c55e'},{f:'vehicle-truck-purple',n:'Pickup Lila',col:'#a855f7'},{f:'vehicle-motorcycle',n:'Motorrad',col:'#f97316'}];
 const VEH=[...KV.map(v=>({n:v.n,d:v.f.includes('moto')?'Wendig':'Kenney 3D',glb:1,col:v.col})),...CARS.map(c=>({n:c.n,d:c.d}))],NV=VEH.length;
 const vcol=(k,c)=>k<KV.length?KV[k].col:COLS[num(c)%COLS.length];
-const GAPS={A1:430,A2:390,B1:350,B2:320},gapOf=c=>GAPS[c.lvl]||280,nGates=c=>Math.max(3,Math.floor((c.len-420)/gapOf(c)));
+const BOOKS={mA1:{n:'Momente A1',lv:'A1',d:BK_MA1},mA2:{n:'Momente A2',lv:'A2',d:BK_MA2},mB1:{n:'Momente B1',lv:'B1',d:BK_MB1},vB2:{n:'Vielfalt B2',lv:'B2',d:BK_VB2},vC1:{n:'Vielfalt C1',lv:'C1',d:BK_VC1}};
+const lvlOf=c=>c.src&&BOOKS[c.src]?BOOKS[c.src].lv:c.lvl;
+function srcName(c){const B=BOOKS[c.src];if(!B)return c.lvl;const ms=(c.mods||[]).slice().sort((a,b)=>a-b);return B.n+(ms.length?' · Modul '+ms.join(', '):'')}
+function bookPool(c){const B=BOOKS[c.src];if(!B)return null;const ms=Array.isArray(c.mods)?c.mods:[];const out=[];B.d.forEach(([l,t,qs])=>{if(ms.length&&!ms.includes(Math.ceil(l/3)))return;qs.forEach(q=>out.push({t:'mc',q:q[0],o:q.slice(1,-1),tip:q[q.length-1],c:'B',les:l}))});return out}
+const GAPS={A1:430,A2:390,B1:350,B2:320,C1:300},gapOf=c=>GAPS[lvlOf(c)]||280,nGates=c=>{let n=Math.max(3,Math.floor((c.len-420)/gapOf(c)));const p=bookPool(c);if(p&&p.length>=3)n=Math.min(n,p.length);return n};
 function gatePos(cfg,qs){const base=gapOf(cfg),n=qs.length;if(n<2)return [300];const w=qs.map(q=>1+0.012*Math.max(0,(String(q.text).replace(/<[^>]+>|\*\*/g,'').length+q.opts.join('').length)-40));let tot=0;for(let j=1;j<n;j++)tot+=w[j];let c=0;return qs.map((q,k)=>{if(k)c+=w[k];return Math.round(300+base*(n-1)*c/tot)})}
 const TEAMS=[{n:'Team Blau',c:'#3b82f6'},{n:'Team Rot',c:'#ef4444'}];
 const ASSET='assets/';
@@ -2759,12 +3511,12 @@ const clean=s=>String(s==null?'':s).replace(/[\u0000-\u001f​-‏‪-‮]/g,'')
 function buildQs(cfg,seed,n){
  const r=rng(seed),sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
  const lv=cfg.lvl,cat=cfg.cat,ok=q=>cat==='mix'||(cat==='W'?(q.t==='art'||q.c==='W'):(q.c==='G'||q.t==='ord'));
- let pool=DB[lv].filter(ok);Object.values(LOCQ).forEach(a=>a.forEach(q=>{if(q.lv===lv&&ok(q))pool.push(q)}));pool=sh(pool);
+ let pool=bookPool(cfg);if(!pool||!pool.length){pool=DB[lv].filter(ok);Object.values(LOCQ).forEach(a=>a.forEach(q=>{if(q.lv===lv&&ok(q))pool.push(q)}))}pool=sh(pool);
  const out=[];for(let k=0;k<n;k++){const q=pool[k%pool.length];let text,opts,right;
   if(q.t==='art'){text=`Welcher Artikel? ___ ${q.n}`;opts=['der','die','das'];right=q.a}
   else if(q.t==='ord'){const tk=q.s.replace(/[.?!]$/,'').split(' '),pn=(q.s.match(/[.?!]$/)||[''])[0];right=tk.join(' ')+pn;const c=[];for(let i=0;i<tk.length-1;i++){const t=tk.slice();[t[i],t[i+1]]=[t[i+1],t[i]];const s=t.join(' ')+pn;if(s!==right&&!c.includes(s))c.push(s)}opts=sh([right,...sh(c).slice(0,2)]);text='Welcher Satz ist richtig?'}
   else{opts=sh(q.o);right=q.o[0];text=q.ann?`📢 ${q.ann} — ${q.q}`:q.say?`„${q.say}“ — ${q.q||'Was antwortest du?'}`:q.q}
-  out.push({text,opts,right,tip:q.t==='art'?artTipUz(q.n,q.a):tipUz(q),isG:q.t==='ord'||q.c==='G',art:q.t==='art',uz:q.t==='art'&&NOUN_UZ[q.n]?`${q.a} ${q.n} — ${NOUN_UZ[q.n]}`:''})}
+  out.push({les:q.les||0,text,opts,right,tip:q.t==='art'?artTipUz(q.n,q.a):tipUz(q),isG:q.t==='ord'||q.c==='G',art:q.t==='art',uz:q.t==='art'&&NOUN_UZ[q.n]?`${q.a} ${q.n} — ${NOUN_UZ[q.n]}`:''})}
  return out;
 }
 
@@ -3018,7 +3770,7 @@ async function startRace(opts){
  const myTm=cfg.team?num(ST.tm)%2:0;G.me=newRacer({name:ST.name||P.name||'Du',col:cfg.team?TEAMS[myTm].c:vcol(ST.car,ST.col),car:ST.car,me:true,tm:myTm});G.me.x=-4.5;
  G.me.mesh=makeCar(ST.car,G.me.col,null);scene.add(G.me.mesh);
  if(cfg.tod!=='day'){const hl=new THREE.SpotLight(0xfff1d6,cfg.tod==='night'?3.2:1.6,120,.5,.6,1.2);hl.position.set(0,1,1.5);G.me.mesh.add(hl);hl.target.position.set(0,0,30);G.me.mesh.add(hl.target)}
- if(opts.mode==='solo'){const n=ST.bots;for(let i=0;i<n;i++){const bk=(ST.car+1+i*2)%NV,btm=i%2?myTm:1-myTm;const b=newRacer({name:BOTN[i%BOTN.length],col:cfg.team?TEAMS[btm].c:vcol(bk,ST.col+1+i),car:bk,tm:btm,bot:true,acc:({A1:.5,A2:.55,B1:.6,B2:.65}[cfg.lvl]||.55)+Math.random()*.2,pace:.93+Math.random()*.06,x:[4.5,1.5,-1.5,7,-7][i%5],s:-Math.floor(i/3)*7});b.mesh=makeCar(b.car,b.col,b.name);scene.add(b.mesh);G.bots.push(b)}G.me.s=-12}
+ if(opts.mode==='solo'){const n=ST.bots;for(let i=0;i<n;i++){const bk=(ST.car+1+i*2)%NV,btm=i%2?myTm:1-myTm;const b=newRacer({name:BOTN[i%BOTN.length],col:cfg.team?TEAMS[btm].c:vcol(bk,ST.col+1+i),car:bk,tm:btm,bot:true,acc:({A1:.5,A2:.55,B1:.6,B2:.65,C1:.68}[lvlOf(cfg)]||.55)+Math.random()*.2,pace:.93+Math.random()*.06,x:[4.5,1.5,-1.5,7,-7][i%5],s:-Math.floor(i/3)*7});b.mesh=makeCar(b.car,b.col,b.name);scene.add(b.mesh);G.bots.push(b)}G.me.s=-12}
  else{const ps=NET.r?NET.r.peers().filter(p=>!(p.presence&&p.presence.sp)).map(p=>p.peer).sort():[];const idx=Math.max(0,ps.indexOf(NET.myPeer));G.me.x=[-4.5,4.5,-1.5,1.5,-7.5,7.5][idx%6];G.me.s=-Math.floor(idx/6)*9}
  const tr=root.querySelector('#r3tr');tr.innerHTML=G.gateS.map(s=>`<div class="gt" style="left:${(s/cfg.len*100).toFixed(2)}%"></div>`).join('');
  const rs=()=>{const w=root.clientWidth,h=root.clientHeight;renderer.setSize(w,h,false);cam.aspect=w/h;cam.fov=w<h?74:62;cam.setViewOffset(w,h,0,h*(w<h?.13:.08),w,h);cam.updateProjectionMatrix()};rs();G.onRs=rs;addEventListener('resize',rs);
@@ -3083,7 +3835,7 @@ function qResult(q,ln,ok,none){const el=G.root.querySelector('#r3q');const ri=q.
  clearTimeout(G.qHoldT);G.qHold=1;G.qHoldT=setTimeout(()=>{if(!G)return;G.qHold=0;renderQ()},ok?(info?1300:900):(info?2700:1600))}
 function renderQ(){const el=G.root.querySelector('#r3q'),k=G.me.nextGate;if(k>=G.qs.length||G.me.fin){el.classList.add('hide');return}const q=G.qs[k];el.classList.remove('hide');
  const n=q.opts.length,mx=Math.max(...q.opts.map(o=>o.length)),narrow=innerWidth<700;const cols=mx>26?1:(narrow?(n===3?(mx<=9?3:1):(n===4?2:n)):(mx>18?2:n));G.qCols=cols;
- el.innerHTML=`<div class="qcard"><div class="qh">${ic(q.art?'book':q.isG?'cap':'chat','sm')} ${q.art?'Artikel':q.isG?'Grammatik':'Wortschatz'} <span class="qn">${k+1}/${G.qs.length}</span><div class="qbar"><i id="r3qb"></i></div></div><div class="qt">${fmt(q.text)}</div></div>
+ el.innerHTML=`<div class="qcard"><div class="qh">${ic(q.art?'book':q.isG?'cap':'chat','sm')} ${q.les?'Lektion '+q.les:q.art?'Artikel':q.isG?'Grammatik':'Wortschatz'} <span class="qn">${k+1}/${G.qs.length}</span><div class="qbar"><i id="r3qb"></i></div></div><div class="qt">${fmt(q.text)}</div></div>
   <div class="qo" style="grid-template-columns:repeat(${cols},1fr)">${q.opts.map((o,i)=>`<button tabindex="-1" data-i="${i}" style="--gc:${GCOL[i]}"><i>${G.touch?GL[i]:i+1}</i><span>${esc(o)}</span></button>`).join('')}</div>`;
  el.classList.remove('lock','done','in');void el.offsetWidth;el.classList.add('in','arm');G.qArm=performance.now()+450;clearTimeout(G.armT);G.armT=setTimeout(()=>el.classList.remove('arm'),450)}
 function botAI(b,dt){const k=b.nextGate;let tx=b.x;if(k<G.gateS.length){const d=G.gateS[k]-b.s,q=G.qs[k],n=q.opts.length;if(d<170){if(b.pick==null||b.pickG!==k){b.pickG=k;const ri=q.opts.indexOf(q.right);b.pick=Math.random()<(b.acc+(b.s>G.me.s+60?-.2:b.s<G.me.s-120?.1:0))?ri:(ri+1+Math.floor(Math.random()*(n-1)))%n}tx=HW-(b.pick+.5)*RW/n}}
@@ -3228,7 +3980,7 @@ function onNet(){if(!NET.r)return;const peers=NET.r.peers(),h=hostPeer();
  if(!h&&performance.now()-NET.joinedAt>2500&&peers.length){const first=peers.slice().sort((a,b)=>a.peer<b.peer?-1:1)[0];if(first.isMe&&first.sameTab&&!NET.host){NET.host=true;NET.r.presence({h:1,ph:'lobby',cfg:ST.cfg}).catch(()=>{})}}
  if(h&&!(h.isMe&&h.sameTab)&&NET.host){NET.host=false;NET.r.presence({h:null,ph:null,cfg:null}).catch(()=>{})}
  if(h&&!(h.isMe&&h.sameTab)){const hp=h.presence;
-  if(hp.cfg&&typeof hp.cfg==='object'){const c=hp.cfg;if(TRACKS[c.city]&&LENS[c.len]&&LVLS.includes(c.lvl)&&['mix','W','G'].includes(c.cat)&&TODS[c.tod])ST.cfg=Object.assign({},c,{team:!!c.team})}
+  if(hp.cfg&&typeof hp.cfg==='object'){const c=hp.cfg;if(TRACKS[c.city]&&LENS[c.len]&&LVLS.includes(c.lvl)&&['mix','W','G'].includes(c.cat)&&TODS[c.tod])ST.cfg=Object.assign({},c,{team:!!c.team,src:BOOKS[c.src]?c.src:'',mods:Array.isArray(c.mods)?c.mods.map(Number).filter(m=>m>=1&&m<=8).slice(0,8):[]})}
   if(hp.ph==='cd'&&num(hp.seed)&&hp.seed!==NET.lastSeed&&!G&&App.view==='race'){NET.lastSeed=hp.seed;startRace({mode:'online',cfg:Object.assign({},ST.cfg),seed:hp.seed,goIn:Math.max(500,num(hp.go,4000))});return}
   if(hp.ph==='lobby'&&G&&G.mode==='online'&&G.done){exit();return}}
  if(SPEC)return;if(!G&&App.view==='race'){renderNet();renderSet();renderDrv()}}
@@ -3245,7 +3997,7 @@ function solo(){unlockAudio();saveST();startRace({mode:'solo',cfg:Object.assign(
 let SPEC=null;
 function specStart(seed){const cfg=Object.assign({},ST.cfg),n=nGates(cfg),gp=gapOf(cfg);stopShow();
  SPEC={seed,cfg,qs:buildQs(cfg,seed,n),gateS:null,goAt:performance.now()+6000,ph:'cd',t0:0,firstFin:0,rec:new Map(),done:false,iv:0};
- V().innerHTML=`<div class="wrap view-in spec"><div class="sp-head panel"><div><small>RAUM-CODE</small><b class="sp-code">${esc(NET.code)}</b></div><div class="sp-info"><b>${TRACKS[cfg.city]} · ${(cfg.len/1000).toFixed(1)} km · ${cfg.lvl}</b><span id="spPh">Countdown …</span></div><div class="sp-btns"><button class="btn glass" onclick="Race3D.specEnd()">${ic('flag')} Rennen beenden</button></div></div>
+ V().innerHTML=`<div class="wrap view-in spec"><div class="sp-head panel"><div><small>RAUM-CODE</small><b class="sp-code">${esc(NET.code)}</b></div><div class="sp-info"><b>${TRACKS[cfg.city]} · ${(cfg.len/1000).toFixed(1)} km · ${srcName(cfg)}</b><span id="spPh">Countdown …</span></div><div class="sp-btns"><button class="btn glass" onclick="Race3D.specEnd()">${ic('flag')} Rennen beenden</button></div></div>
   <div class="sp-grid"><section class="panel"><div class="lbl">Live-Rennen</div><div id="spTrack" class="sp-track"></div></section><section class="panel"><div class="lbl">Antworten pro Tor (live)</div><div id="spGates" class="sp-gates"></div></section></div></div>`;
  SPEC.gateS=gatePos(cfg,SPEC.qs);SPEC.iv=setInterval(specTick,250);specTick()}
 function specStop(){if(SPEC){clearInterval(SPEC.iv);SPEC=null}}
@@ -3265,8 +4017,8 @@ function specEnd(){const S=SPEC;if(!S||S.done)return;S.done=true;NET.r&&NET.r.pr
  const rs=[...S.rec.values()].sort((a,b)=>(a.f&&b.f)?a.f-b.f:a.f?-1:b.f?1:b.s-a.s);const tot=S.qs.length;
  const gst=S.qs.map((q,k)=>Object.assign({q,k},gateStat(k)));const hard=gst.filter(g=>g.n).sort((a,b)=>a.ok/a.n-b.ok/b.n).slice(0,3);
  const avg=rs.length?Math.round(rs.reduce((a,r)=>a+(r.a.length?r.cr/r.a.length:0),0)/rs.length*100):0;
- S.report=`Blitz Rally 3D – Klassenbericht\n${TRACKS[S.cfg.city]} · ${S.cfg.lvl} · ${tot} Fragen · Raum ${NET.code}\nDurchschnitt: ${avg}% richtig\n\nRANGLISTE\n`+rs.map((r,i)=>`${i+1}. ${r.n} – ${r.cr}/${r.a.length} richtig – ${r.sc} Punkte${r.f?' – '+fmtT(r.f):''}`).join('\n')+`\n\nFRAGEN\n`+gst.map(g=>`Tor ${g.k+1}: ${g.q.text.replace(/<[^>]+>|\*\*/g,'')} → ${g.q.right} | ${g.n?Math.round(g.ok/g.n*100):0}% richtig${g.top?' | Fehler: '+g.top:''}`).join('\n');
- V().innerHTML=`<div class="wrap view-in spec"><div class="sp-head panel"><div><small>RAUM-CODE</small><b class="sp-code">${esc(NET.code)}</b></div><div class="sp-info"><b>Klassenbericht · ${TRACKS[S.cfg.city]} · ${S.cfg.lvl}</b><span>${rs.length} Fahrer · Ø ${avg}% richtig</span></div>
+ S.report=`Blitz Rally 3D – Klassenbericht\n${TRACKS[S.cfg.city]} · ${srcName(S.cfg)} · ${tot} Fragen · Raum ${NET.code}\nDurchschnitt: ${avg}% richtig\n\nRANGLISTE\n`+rs.map((r,i)=>`${i+1}. ${r.n} – ${r.cr}/${r.a.length} richtig – ${r.sc} Punkte${r.f?' – '+fmtT(r.f):''}`).join('\n')+`\n\nFRAGEN\n`+gst.map(g=>`Tor ${g.k+1}: ${g.q.text.replace(/<[^>]+>|\*\*/g,'')} → ${g.q.right} | ${g.n?Math.round(g.ok/g.n*100):0}% richtig${g.top?' | Fehler: '+g.top:''}`).join('\n');
+ V().innerHTML=`<div class="wrap view-in spec"><div class="sp-head panel"><div><small>RAUM-CODE</small><b class="sp-code">${esc(NET.code)}</b></div><div class="sp-info"><b>Klassenbericht · ${TRACKS[S.cfg.city]} · ${srcName(S.cfg)}</b><span>${rs.length} Fahrer · Ø ${avg}% richtig</span></div>
   <div class="sp-btns"><button class="btn glass" onclick="Race3D.copyRep()">Bericht kopieren</button><button class="btn gold" onclick="Race3D.specNew()">${ic('refresh')} Neues Rennen</button></div></div>
   <div class="sp-grid"><section class="panel"><div class="lbl">Rangliste</div>${S.cfg.team?(()=>{const t=[0,0];rs.forEach(r=>t[r.tm]+=r.sc);return `<div class="teamsc big">${TEAMS.map((x,i)=>`<span style="background:${x.c}">${x.n} <b>${t[i]}</b>${t[i]>t[1-i]?' 🏆':''}</span>`).join('')}</div>`})():''}
    <table class="stats"><thead><tr><th>#</th><th>Name</th><th>Richtig</th><th>Punkte</th><th>Zeit</th></tr></thead><tbody>${rs.map((r,i)=>`<tr><td>${i+1}</td><td><span style="color:${r.col}">●</span> ${esc(r.n)}</td><td><b>${r.cr}/${r.a.length}</b> <small class="muted">${r.a.length?Math.round(r.cr/r.a.length*100):0}%</small></td><td>${r.sc}</td><td class="mono">${r.f?fmtT(r.f):'–'}</td></tr>`).join('')||'<tr><td colspan="5">Keine Fahrer</td></tr>'}</tbody></table>
@@ -3314,9 +4066,12 @@ function renderNet(){const el=document.getElementById('r3net');if(!el)return;
   <div><div class="lbl" style="margin-top:0">Im Raum${ST.cfg.team?` · <span style="color:${TEAMS[0].c}">${tcount[0]} Blau</span> / <span style="color:${TEAMS[1].c}">${tcount[1]} Rot</span>`:''}</div><div class="plist">${peers.map(p=>{const pr=p.presence||{};const kk=num(pr.k)%NV,tm=num(pr.tm)%2;return `<div class="pl"><span class="c" style="background:${pr.sp?'#16C47F':ST.cfg.team?TEAMS[tm].c:vcol(kk,pr.c)}"></span><span>${esc(clean(pr.n)||'…')}</span><small class="muted">${pr.sp?'Beamer':VEH[kk].n}</small>${pr.h===1?`<span class="tg">${pr.sp?'LEHRER':'HOST'}</span>`:''}${p.isMe&&p.sameTab?'<span class="tg y">DU</span>':''}${pr.rs?'<span class="tg y">FÄHRT</span>':''}</div>`}).join('')}</div></div></div>`}
 function renderSet(){const el=document.getElementById('r3set');if(!el)return;const ro=NET.r&&!NET.host;const c=ST.cfg;const city2pano={berlin:'berlin',muenchen:'muenchen',frankfurt:'frankfurt'};
  el.innerHTML=`<div class="lbl">Strecke ${ro?'· vom Host gewählt':''}</div><div class="${ro?'ro':''}"><div class="citypick">${Object.entries(TRACKS).map(([k,n])=>`<button class="${c.city===k?'on':''}" style="background-image:url(${Pano.thumb(city2pano[k],c.tod==='day'?'day':c.tod==='dusk'?'dusk':'night','clear',300,170)})" onclick="Race3D.cfg('city','${k}')"><span>${n}</span></button>`).join('')}</div>
-  <div class="lbl">Niveau</div><div class="seg">${LVLS.map(l=>`<button class="${c.lvl===l?'on':''}" onclick="Race3D.cfg('lvl','${l}')">${l}</button>`).join('')}</div>
+  <div class="lbl">Fragen aus</div><div class="seg wrap"><button class="${!c.src?'on':''}" onclick="Race3D.cfg('src','')">Allgemein<small>A1–B2 Mix</small></button>${Object.entries(BOOKS).map(([k,B])=>`<button class="${c.src===k?'on':''}" onclick="Race3D.cfg('src','${k}')">${B.n}<small>Lektion 1–24</small></button>`).join('')}</div>
+  ${c.src&&BOOKS[c.src]?`<div class="lbl">Modul <span class="muted" style="text-transform:none;letter-spacing:0">(bir nechtasini tanlash mumkin)</span></div><div class="modpick"><button class="${!(c.mods||[]).length?'on':''}" onclick="Race3D.mod(0)">Alle</button>${[1,2,3,4,5,6,7,8].map(m=>`<button class="${(c.mods||[]).includes(m)?'on':''}" onclick="Race3D.mod(${m})"><b>M${m}</b><small>L${m*3-2}–${m*3}</small></button>`).join('')}</div>
+   <div class="lesinfo">${BOOKS[c.src].d.filter(([l])=>!(c.mods||[]).length||(c.mods||[]).includes(Math.ceil(l/3))).map(([l,t])=>`<span><b>L${l}</b> ${esc(t)}</span>`).join('')}</div>`:
+  `<div class="lbl">Niveau</div><div class="seg">${LVLS.map(l=>`<button class="${c.lvl===l?'on':''}" onclick="Race3D.cfg('lvl','${l}')">${l}</button>`).join('')}</div>`}
   <div class="lbl">Distanz</div><div class="seg">${Object.entries(LENS).map(([m,n])=>`<button class="${c.len==m?'on':''}" onclick="Race3D.cfg('len',${m})">${n}<small>${nGates(Object.assign({},c,{len:+m}))} Fragen</small></button>`).join('')}</div>
-  <div class="lbl">Fragen</div><div class="seg">${[['mix','Mix'],['W','Wortschatz'],['G','Grammatik']].map(([k,n])=>`<button class="${c.cat===k?'on':''}" onclick="Race3D.cfg('cat','${k}')">${n}</button>`).join('')}</div>
+  ${c.src?'':`<div class="lbl">Fragen</div><div class="seg">${[['mix','Mix'],['W','Wortschatz'],['G','Grammatik']].map(([k,n])=>`<button class="${c.cat===k?'on':''}" onclick="Race3D.cfg('cat','${k}')">${n}</button>`).join('')}</div>`}
   <div class="lbl">Tageszeit</div><div class="seg">${Object.entries(TODS).map(([k,n])=>`<button class="${c.tod===k?'on':''}" onclick="Race3D.cfg('tod','${k}')">${n}</button>`).join('')}</div>
   <div class="lbl">Modus</div><div class="seg"><button class="${!c.team?'on':''}" onclick="Race3D.cfg('team',false)">Jeder gegen jeden</button><button class="${c.team?'on':''}" onclick="Race3D.cfg('team',true)">Team Blau vs. Rot<small>Punkte zählen fürs Team</small></button></div></div>`}
 
@@ -3338,7 +4093,7 @@ function stopShow(){if(SHOW){cancelAnimationFrame(SHOW.raf);try{SHOW.r.dispose()
 return{lobby,solo,again,fehler,exit,menu,start:hostStart,newRace,create:createRoom,join:c=>joinRoom(c,false),leave:leaveRoom,
  sound(){if(G){P.settings.sound?(engOn(),MUS.start()):(engOff(),MUS.stop());menu();menu()}},music(){P.settings.music=P.settings.music===false;saveP();if(G){P.settings.music?MUS.start():MUS.stop();if(G.root.querySelector('.pmenu3')){menu();menu()}}},
  setName(v){ST.name=clean(v);saveST();pubLobby()},setCar(i){ST.car=i;saveST();pubLobby();click3();renderDrv()},setCol(i){ST.col=i;saveST();pubLobby();renderDrv()},setBots(n){ST.bots=n;saveST();renderNet()},
- cfg(k,v){if(NET.r&&!NET.host)return;ST.cfg[k]=v;saveST();if(NET.host&&NET.r)NET.r.presence({cfg:ST.cfg}).catch(()=>{});renderSet();if(k==='team'){renderDrv();renderNet()}},setTeam(i){ST.tm=i;saveST();pubLobby();renderDrv()},teacher:hostTeacher,specEnd,specNew,copyRep,
+ cfg(k,v){if(NET.r&&!NET.host)return;ST.cfg[k]=v;if(k==='src')ST.cfg.mods=[];saveST();if(NET.host&&NET.r)NET.r.presence({cfg:ST.cfg}).catch(()=>{});renderSet();if(k==='team'){renderDrv();renderNet()}},mod(m){if(NET.r&&!NET.host)return;let ms=(ST.cfg.mods||[]).slice();if(!m)ms=[];else ms=ms.includes(m)?ms.filter(x=>x!==m):[...ms,m];ST.cfg.mods=ms;saveST();if(NET.host&&NET.r)NET.r.presence({cfg:ST.cfg}).catch(()=>{});renderSet()},setTeam(i){ST.tm=i;saveST();pubLobby();renderDrv()},teacher:hostTeacher,specEnd,specNew,copyRep,
  leaveView(){stopShow();specStop();if(G)stopRace()},pickCity(c){ST.cfg.city={berlin:'berlin',muenchen:'muenchen',frankfurt:'frankfurt',heidelberg:'frankfurt',koeln:'frankfurt',hamburg:'berlin'}[c]||'berlin';saveST()},_G:()=>G,_NET:NET};
 })();
 function viewRace(){Race3D.lobby()}
