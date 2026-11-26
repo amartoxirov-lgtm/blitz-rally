@@ -3601,7 +3601,11 @@ const lvlOf=c=>c.src&&BOOKS[c.src]?BOOKS[c.src].lv:c.lvl;
 function srcName(c){const B=BOOKS[c.src];if(!B)return c.lvl;const ms=(c.mods||[]).slice().sort((a,b)=>a-b);return B.n+(ms.length?' · Modul '+ms.join(', '):'')}
 function bookPool(c){const B=BOOKS[c.src];if(!B)return null;const ms=Array.isArray(c.mods)?c.mods:[];const out=[];B.d.forEach(([l,t,qs])=>{if(ms.length&&!ms.includes(Math.ceil(l/3)))return;qs.forEach(q=>out.push({t:'mc',q:q[0],o:q.slice(1,-1),tip:q[q.length-1],c:'B',les:l}))});return out}
 const GAPS={A1:430,A2:390,B1:350,B2:320,C1:300},gapOf=c=>GAPS[lvlOf(c)]||280,nGates=c=>{let n=Math.max(3,Math.floor((c.len-420)/gapOf(c)));const p=bookPool(c);if(p&&p.length>=3)n=Math.min(n,p.length);return n};
-function gatePos(cfg,qs){const base=gapOf(cfg),n=qs.length;if(n<2)return [300];const w=qs.map(q=>1+0.012*Math.max(0,(String(q.text).replace(/<[^>]+>|\*\*/g,'').length+q.opts.join('').length)-40));let tot=0;for(let j=1;j<n;j++)tot+=w[j];let c=0;return qs.map((q,k)=>{if(k)c+=w[k];return Math.round(300+base*(n-1)*c/tot)})}
+const RATE={A1:8,A2:10,B1:12,B2:14,C1:16};
+function readT(q,cfg){const txt=String(q.text).replace(/<[^>]+>|\*\*|„|“|—/g,'');const ch=txt.length+q.opts.join(' ').length;let t=2.2+ch/(RATE[lvlOf(cfg)]||11);
+ if(/Welcher Satz/.test(txt))t+=2.5;else if(q.isG||q.les)t+=1;if(q.opts.length>=4)t+=.6;return t}
+function gatePos(cfg,qs){const base=gapOf(cfg),V=55;const out=[];let s=0;qs.forEach((q,k)=>{const t=readT(q,cfg);if(k===0)s=Math.max(300,Math.round(V*(t-3.5)));else s+=Math.max(base,Math.round(70+V*t));out.push(s)});return out}
+function raceLen(cfg,gs){return Math.max(cfg.len,(gs.length?gs[gs.length-1]:300)+420)}
 const TEAMS=[{n:'Team Blau',c:'#3b82f6'},{n:'Team Rot',c:'#ef4444'}];
 const ASSET='assets/';
 const TODS={day:'Tag',dusk:'Abend',night:'Nacht'};
@@ -3884,12 +3888,12 @@ async function startRace(opts){
  const touch=matchMedia('(pointer:coarse)').matches;root.classList.toggle('touch',touch);
  try{await loadThree();await Promise.all([loadModels(),loadSounds()])}catch(e){root.querySelector('#r3load').innerHTML='<div><b>3D-Engine konnte nicht geladen werden.</b><p class="muted" style="margin-top:8px">Bitte Internetverbindung prüfen.</p><button class="btn primary" style="margin-top:14px" onclick="Race3D.exit()">Zurück</button></div>';return}
  await new Promise(r=>setTimeout(r,30));
- let cfg=opts.cfg;const seed=opts.seed;if(opts.qs)cfg=Object.assign({},cfg,{len:Math.round(300+(opts.qs.length-1)*gapOf(cfg)*1.15+450)});
+ let cfg=Object.assign({},opts.cfg);const seed=opts.seed;const QS=opts.qs||buildQs(cfg,seed,nGates(cfg)),GS=gatePos(cfg,QS);if(opts.qs)cfg.len=0;cfg.len=raceLen(cfg,GS);
  const cv=root.querySelector('#r3c');const renderer=new THREE.WebGLRenderer({canvas:cv,antialias:!touch,powerPreference:'high-performance'});
  renderer.setPixelRatio(Math.min(devicePixelRatio,touch?1.5:2));renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=cfg.tod==='night'?1.15:1;renderer.shadowMap.enabled=!touch;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
  const scene=new THREE.Scene(),cam=new THREE.PerspectiveCamera(64,1,.3,6000);
- const T=makeTrack(cfg.len,seed);const nG=opts.qs?opts.qs.length:nGates(cfg),GP=gapOf(cfg);
- G={mode:opts.mode,cfg,seed,T,renderer,scene,cam,root,touch,phase:'load',goAt:0,t0:0,keys:{},me:null,bots:[],remote:new Map(),qs:opts.qs||buildQs(cfg,seed,nG),gateS:null,burst:[],wob:0,fehler:!!opts.qs,daily:opts.daily||'',leadS:0,lastPos:0,parts:[],lastHit:0,mist:[],lastPub:0,lastHud:0,firstFin:0,camPos:null,shake:0,done:false,xpGiven:false,raf:0,lastT:0,fbT:0,qArm:0,qHold:0};G.gateS=gatePos(cfg,G.qs);
+ const T=makeTrack(cfg.len,seed);
+ G={mode:opts.mode,cfg,seed,T,renderer,scene,cam,root,touch,phase:'load',goAt:0,t0:0,keys:{},me:null,bots:[],remote:new Map(),qs:QS,gateS:GS,burst:[],wob:0,fehler:!!opts.qs,daily:opts.daily||'',leadS:0,lastPos:0,parts:[],lastHit:0,mist:[],lastPub:0,lastHud:0,firstFin:0,camPos:null,shake:0,done:false,xpGiven:false,raf:0,lastT:0,fbT:0,qArm:0,qHold:0};
  const W0=buildWorld(scene,T,cfg,seed,renderer);G.sun=W0.sun;G.sunDir=W0.sunDir;
  if(renderer.shadowMap.enabled){const s=G.sun;s.castShadow=true;s.shadow.mapSize.set(2048,2048);const sc=s.shadow.camera;sc.left=-40;sc.right=40;sc.top=40;sc.bottom=-40;sc.near=1;sc.far=320;s.shadow.bias=-.0004}
  G.gates=buildGates(scene,T,G.qs);
@@ -4171,10 +4175,10 @@ function solo(){unlockAudio();saveST();startRace({mode:'solo',cfg:Object.assign(
 /* ---------- teacher / projector mode ---------- */
 let SPEC=null;
 function specStart(seed){const cfg=Object.assign({},ST.cfg),n=nGates(cfg),gp=gapOf(cfg);stopShow();
- SPEC={seed,cfg,qs:buildQs(cfg,seed,n),gateS:null,goAt:performance.now()+6000,ph:'cd',t0:0,firstFin:0,rec:new Map(),done:false,iv:0};
+ const sq=buildQs(cfg,seed,n),sg=gatePos(cfg,sq);cfg.len=raceLen(cfg,sg);SPEC={seed,cfg,qs:sq,gateS:sg,goAt:performance.now()+6000,ph:'cd',t0:0,firstFin:0,rec:new Map(),done:false,iv:0};
  V().innerHTML=`<div class="wrap view-in spec"><div class="sp-head panel"><img class="splogo" src="assets/blitz-logo.png" alt="Blitz"><div><small>RAUM-CODE</small><b class="sp-code">${esc(NET.code)}</b></div><div class="sp-info"><b>${TRACKS[cfg.city]} · ${(cfg.len/1000).toFixed(1)} km · ${srcName(cfg)}</b><span id="spPh">Countdown …</span></div><div class="sp-btns"><button class="btn glass" onclick="Race3D.specEnd()">${ic('flag')} Rennen beenden</button></div></div>
   <div class="sp-grid"><section class="panel"><div class="lbl">Live-Rennen</div><div id="spTrack" class="sp-track"></div></section><section class="panel"><div class="lbl">Antworten pro Tor (live)</div><div id="spGates" class="sp-gates"></div></section></div></div>`;
- SPEC.gateS=gatePos(cfg,SPEC.qs);SPEC.iv=setInterval(specTick,250);specTick()}
+ SPEC.iv=setInterval(specTick,250);specTick()}
 function specStop(){if(SPEC){clearInterval(SPEC.iv);SPEC=null}}
 function specTick(){const S=SPEC;if(!S||!NET.r)return;const now=performance.now();if(S.ph==='cd'&&now>=S.goAt){S.ph='race';S.t0=now;sBeep(true)}
  NET.r.peers().forEach(p=>{const pr=p.presence;if(!pr||pr.sp||pr.rs!==S.seed)return;const kk=num(pr.k)%NV,tm=num(pr.tm)%2;S.rec.set(p.peer,{n:clean(pr.n)||'Spieler',col:S.cfg.team?TEAMS[tm].c:vcol(kk,pr.c),s:num(pr.s),f:num(pr.f),sc:num(pr.sc),cr:num(pr.cr),a:String(pr.a||'').slice(0,40),tm,on:1})});
