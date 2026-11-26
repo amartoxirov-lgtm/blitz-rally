@@ -3593,7 +3593,7 @@ const GCOL=['#2563EB','#E11D48','#059669','#D97706'],GL=['A','B','C','D'];
 const TRACKS={berlin:'Berlin',muenchen:'München',frankfurt:'Frankfurt'};
 const LENS={2000:'Sprint',3600:'Grand Prix',5200:'Marathon'};
 const KV=[];
-const VEH=[{n:'Chaqqon',col:'#f97316',d:'Kichkina va chaqqon',f:'hatchback-sports'},{n:'Karvon',col:'#3b82f6',d:'Butun oila sig\'adi',f:'van'},{n:'Bobur',col:'#ef4444',d:'Ishonchli klassika',f:'sedan'},{n:'Yukchi',col:'#22c55e',d:'Yuk tashuvchi',f:'truck'},{n:'Taksi',col:'#facc15',d:'Shahar taksisi',f:'taxi'},{n:'Lochin',col:'#f97316',d:'Sport sedan',f:'sedan-sports'},{n:'Patrul',col:'#e5e7eb',d:'Yo\'l patruli',f:'police'},{n:'Burgut',col:'#facc15',d:'Baland krossover',f:'suv'},{n:'Sardor',col:'#22c55e',d:'Hashamatli SUV',f:'suv-luxury'},{n:'Bolid',col:'#ef4444',d:'Poyga mashinasi',f:'race'}],NV=VEH.length;
+const VEH=[{n:'Flitz S',col:'#f97316',d:'Klein, flink, frech',f:'hatchback-sports'},{n:'Reisemax',col:'#3b82f6',d:'Platz für die ganze Familie',f:'van'},{n:'Stadtfuchs',col:'#ef4444',d:'Der zuverlässige Klassiker',f:'sedan'},{n:'Ladeprofi',col:'#22c55e',d:'Packt alles auf die Ladefläche',f:'truck'},{n:'Stadtpilot',col:'#facc15',d:'Taxi! Immer im Dienst',f:'taxi'},{n:'Sturmvogel',col:'#f97316',d:'Sportlich mit Spoiler',f:'sedan-sports'},{n:'Streife 110',col:'#e5e7eb',d:'Blaulicht an!',f:'police'},{n:'Bergadler',col:'#facc15',d:'Hoch hinaus, überall hin',f:'suv'},{n:'Herzog',col:'#22c55e',d:'Luxus auf vier Rädern',f:'suv-luxury'},{n:'Donnerkeil',col:'#ef4444',d:'Reiner Rennsport',f:'race'}],NV=VEH.length;
 const VLOCK=[1,1,1,1,2,3,4,5,6,8],vLocked=k=>plevel()<(VLOCK[k]||1);
 const vlocked2=k=>vLocked(k);
 const vcol=(k,c)=>{c=Number(c);if(!(c>=0))return VEH[num(k)%NV].col;return COLS[c%COLS.length]};
