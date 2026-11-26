@@ -827,6 +827,13 @@ body.raceonly main#view{padding-bottom:20px}
 .r3d .rh-q .verd.ok{background:#16a34a;color:#fff}.r3d .rh-q .verd.bad{background:#be123c;color:#fff}
 .r3d .rh-q.done .qbar{display:none}
 @media (max-width:760px){.r3d .fbk small{display:none}.r3d .fbk{font-size:26px}.r3d .nbtn{transition:bottom .2s,opacity .2s}}
+.r3d .qtip{margin-top:8px;padding:8px 10px;border-radius:10px;background:rgba(255,201,60,.14);border:1px solid rgba(255,201,60,.4);color:#ffe7a3;font-weight:700;font-size:14px;line-height:1.35;animation:qin .3s}
+.r3d .qtip.ok{background:rgba(34,197,94,.14);border-color:rgba(74,222,128,.4);color:#bbf7d0}
+.mistbox{margin-top:14px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);text-align:left;max-height:38vh;overflow:auto}
+.mistbox.ok{text-align:center;color:#86efac}
+.mistbox .mh{display:flex;align-items:center;justify-content:space-between;gap:10px;position:sticky;top:-12px;background:inherit}
+.mistbox .btn.sm{padding:8px 12px;font-size:13px;white-space:nowrap}
+@media (max-width:760px){.r3d .qtip{font-size:13.5px}.mistbox{max-height:34vh}}
 </style>
 </head>
 <body>
@@ -2660,6 +2667,65 @@ addEventListener('keydown',e=>{
  else if(R.duel&&e.key in m2){const k=m2[e.key];if(k<R.cars[1].opts.length)answerCar(1,k)}
 });
 
+/* ---------- o'zbekcha izohlar ---------- */
+const NOUN_UZ={Tisch:'stol',Lampe:'chiroq',Buch:'kitob',Apfel:'olma',Kind:'bola',Stuhl:'stul',Küche:'oshxona',Fenster:'deraza',Brot:'non',Milch:'sut',Kaffee:'qahva',Mädchen:'qiz bola',Montag:'dushanba',Wohnung:'kvartira',Fahrrad:'velosiped',Geburtstag:"tug'ilgan kun",Rechnung:'hisob (chek)',Gemüse:'sabzavot',Urlaub:"ta'til",Zeugnis:'attestat, guvohnoma',Freiheit:'erkinlik',Krankenhaus:'kasalxona',Kühlschrank:'muzlatgich',Möglichkeit:'imkoniyat',Gesellschaft:'jamiyat',Verhalten:'xulq-atvor',Vorschlag:'taklif',Umwelt:'atrof-muhit',Ergebnis:'natija',Zustand:'holat',Bewerbung:'ishga ariza',Gehalt:'maosh',Erfolg:'muvaffaqiyat',Erziehung:'tarbiya',Ausflug:'sayohat (bir kunlik)',Gefühl:'his-tuyg\'u',Auswirkung:"ta'sir, oqibat",Verständnis:'tushunish',Zusammenhang:"bog'liqlik",Voraussetzung:'shart, talab',Bedürfnis:'ehtiyoj',Aufwand:'sarf (vaqt, kuch)',Maßnahme:'chora',Ereignis:'voqea',Rückgang:'pasayish',Herausforderung:'qiyinchilik, sinov',Umgang:'muomala',Zeitalter:'davr',Fahrkarte:'chipta',Bahnsteig:'perron',Gleis:"yo'l (temir yo'l)",Koffer:'chamadon',Abfahrt:"jo'nash",Fahrplan:'jadval (transport)',Speisekarte:'menyu',Löffel:'qoshiq',Messer:'pichoq',Gabel:'vilka',Suppe:"sho'rva",Glas:'stakan',Gurke:'bodring',Ei:'tuxum',Tomate:'pomidor',Joghurt:'yogurt',Zwiebel:'piyoz',Mehl:'un',Einkaufswagen:'savat-arava',Kasse:'kassa',Angebot:'taklif, aksiya',Bibliothek:'kutubxona',Hörsaal:'auditoriya',Semester:'semestr',Prüfung:'imtihon',Fieber:'isitma',Kopf:'bosh',Hand:"qo'l",Rezept:'retsept',Tablette:'tabletka',Krankenwagen:'tez yordam mashinasi',Zimmer:'xona',Schlüssel:'kalit',Bett:"karavot",Dusche:'dush',Handtuch:'sochiq',Rezeption:'qabulxona (resepshn)',Beruf:'kasb',Firma:'firma',Stelle:"ish o'rni",Arbeitsvertrag:'mehnat shartnomasi',Straße:"ko'cha",Platz:'maydon',Rathaus:'hokimiyat binosi',Ampel:'svetofor',Museum:'muzey'};
+
+function artTipUz(n,a){const w=NOUN_UZ[n]?` — ${NOUN_UZ[n]}`:'';const l=n.toLowerCase();let r='';
+ if(/(ung|heit|keit|schaft|ion|tät|ik)$/.test(l))r=`-${l.match(/(ung|heit|keit|schaft|ion|tät|ik)$/)[1]} bilan tugaydigan otlar doim die.`;
+ else if(/(chen|lein)$/.test(l))r=`-${l.match(/(chen|lein)$/)[1]} bilan tugaydigan otlar doim das (hatto „das Mädchen“).`;
+ else if(/(nis|um|ment)$/.test(l))r=`-${l.match(/(nis|um|ment)$/)[1]} bilan tugaydigan otlar ko'pincha das.`;
+ else if(/^(montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag)$/.test(l))r="Hafta kunlari doim der.";
+ else if(/^ge/.test(l)&&a==='das')r="Ge- bilan boshlanadigan otlar ko'pincha das.";
+ else if(/e$/.test(l)&&a==='die')r="-e bilan tugaydigan otlar ko'pincha die.";
+ else if(/(ling|ismus|or)$/.test(l))r="-ling, -ismus, -or bilan tugaydigan otlar der.";
+ else if(/(haus|zimmer|bett|rad|glas)$/.test(l)&&a==='das')r=`Qo'shma so'zda artikl oxirgi so'zdan olinadi: das ${n.match(/(haus|zimmer|bett|rad|glas)$/i)[0].replace(/^./,c=>c.toUpperCase())}.`;
+ else if(/(schrank|wagen|plan|saal|steig)$/.test(l))r=`Qo'shma so'zda artikl oxirgi so'zdan olinadi (der ${n.match(/(schrank|wagen|plan|saal|steig)$/i)[0].replace(/^./,c=>c.toUpperCase())}).`;
+ else if(/(karte|vertrag)$/.test(l))r="Qo'shma so'zda artikl oxirgi so'zdan olinadi.";
+ else r=`Qoida yo'q — artikl bilan birga yodlang: ${a} ${n}.`;
+ return `${a} ${n}${w}. ${r}`}
+
+const QTIP_UZ={
+ 'Das Gegenteil von »groß« ist ___.':"groß — katta, klein — kichik. Gegenteil = qarama-qarshi ma'no.",
+ 'Wo kauft man Brot?':"Bäckerei — novvoyxona. Apotheke — dorixona, Post — pochta.",
+ 'Wie geht es dir? – ___':"„Qalaysan?“ savoliga „Danke, gut!“ (Rahmat, yaxshi!) deb javob beriladi.",
+ 'Was ist ein Getränk?':"Getränk — ichimlik. der Saft — sharbat. Brötchen, Käse, Wurst — ovqat.",
+ 'Wo kauft man Medikamente?':"Medikamente — dorilar → Apotheke (dorixona).",
+ 'Ich habe Kopfschmerzen. Ich gehe ___.':"Boshim og'riyapti → shifokorga boraman: zum Arzt (zu + dem).",
+ 'Beim Arzt: einen Termin ___':"einen Termin vereinbaren — uchrashuv vaqtini kelishib olmoq (birikma).",
+ 'Das Gegenteil von »billig« ist ___.':"billig — arzon, teuer — qimmat. günstig ham arzon degani.",
+ 'Ein Synonym für »ungefähr« ist ___.':"ungefähr = etwa — taxminan. genau — aniq (teskari ma'no).",
+ 'auf jemanden Rücksicht ___':"Rücksicht nehmen — kimnidir hisobga olmoq, e'tibor bermoq (turg'un birikma).",
+ 'Ein Synonym für »erheblich« ist ___.':"erheblich = beträchtlich — sezilarli, katta. geringfügig — arzimas (teskari).",
+ 'Bildung ___ eine wichtige Rolle.':"eine Rolle spielen — rol o'ynamoq (turg'un birikma).",
+ 'Wo kauft man am Bahnhof eine Fahrkarte?':"Chipta avtomatdan olinadi: der Fahrkartenautomat.",
+ 'Was möchten Sie trinken?':"„Nima ichasiz?“ → ichimlik nomini ayting + bitte.",
+ 'Die Suppe ist zu salzig. Was sagst du?':"Shikoyatni xushmuomala aytish: Entschuldigung, … leider … (afsuski).",
+ '»vegetarisch« bedeutet:':"vegetarisch — go'shtsiz (ohne Fleisch).",
+ 'Was ist »das Trinkgeld«?':"Trinkgeld — choychaqa: ofitsiantga qo'shimcha beriladigan pul.",
+ '»Das ist mir zu deftig.« bedeutet:':"deftig — og'ir, to'yimli, yog'li ovqat haqida.",
+ 'Brauchen Sie eine Tüte?':"„Paket kerakmi?“ → Nein danke, … yoki Ja, bitte.",
+ 'Das macht 12,40 Euro, bitte.':"Kassada to'lov: „Kann ich mit Karte zahlen?“ — karta bilan to'lasam bo'ladimi?",
+ 'Wo findet man Milch und Käse?':"Sut va pishloq sovuq javonda: das Kühlregal.",
+ 'Ich kaufe eine Flasche ___.':"eine Flasche — bir shisha: suyuqlik bo'lishi kerak → Saft (sharbat).",
+ 'Sonderangebot! Gilt nur noch bis Samstag.':"bis Samstag — shanbagacha. Demak yakshanbadan narx yana qimmat.",
+ 'Hast du die Hausarbeit schon abgegeben?':"schon — allaqachon? Nein, … noch … (hali) bilan javob beriladi.",
+ 'Was ist »die Vorlesung«?':"Vorlesung — ma'ruza: professor ko'p talabaga gapiradi.",
+ 'Man sieht mit den ___.':"sehen — ko'rmoq → die Augen (ko'zlar). hören → Ohren.",
+ 'Haben Sie Ihre Versichertenkarte dabei?':"Versichertenkarte — sug'urta kartasi. „Ja, hier ist sie.“ — mana.",
+ 'Wo wartet man auf den Arzt?':"Wartezimmer — kutish xonasi (warten = kutmoq).",
+ 'Was ist »die Notaufnahme«?':"Notaufnahme — shoshilinch qabul bo'limi (Notfall = favqulodda holat).",
+ 'Haben Sie eine Reservierung?':"Reservierung — bron. „Ja, ein Doppelzimmer auf den Namen …“ — … nomiga.",
+ 'Wie lange bleiben Sie bei uns?':"Wie lange? — qancha muddat? → Drei Nächte (uch kecha).",
+ 'Die Heizung funktioniert nicht. Was sagst du an der Rezeption?':"Muammoni aniq va xushmuomala ayting: Entschuldigung, … funktioniert nicht.",
+ '»Vollzeit« bedeutet ungefähr:':"Vollzeit — to'liq stavka (haftasiga ~40 soat). Teilzeit — yarim stavka.",
+ '»Ich bin teamfähig« bedeutet:':"teamfähig — jamoada yaxshi ishlay oladigan.",
+ 'Wollen wir heute Abend ins Kino gehen?':"Taklifga rozilik: „Gute Idee!“ + savol.",
+ 'Was ist »die Haltestelle«?':"Haltestelle — bekat (halten = to'xtamoq).",
+ 'Wann sagt man »Schönen Feierabend«?':"Feierabend — ish kuni tugagandan keyingi vaqt.",
+ 'Was bedeutet das?':"„Jemandem die Daumen drücken“ — omad tilamoq (ibora)."
+};
+function tipUz(q){if(q.tip)return q.tip;const k=q.q||q.say||'';return QTIP_UZ[k]||QTIP_UZ[q.say]||''}
+
 /* ================= BLITZ RALLY 3D — real-time multiplayer race ================= */
 const Race3D=(()=>{
 const T3URL='https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
@@ -2698,7 +2764,7 @@ function buildQs(cfg,seed,n){
   if(q.t==='art'){text=`Welcher Artikel? ___ ${q.n}`;opts=['der','die','das'];right=q.a}
   else if(q.t==='ord'){const tk=q.s.replace(/[.?!]$/,'').split(' '),pn=(q.s.match(/[.?!]$/)||[''])[0];right=tk.join(' ')+pn;const c=[];for(let i=0;i<tk.length-1;i++){const t=tk.slice();[t[i],t[i+1]]=[t[i+1],t[i]];const s=t.join(' ')+pn;if(s!==right&&!c.includes(s))c.push(s)}opts=sh([right,...sh(c).slice(0,2)]);text='Welcher Satz ist richtig?'}
   else{opts=sh(q.o);right=q.o[0];text=q.ann?`📢 ${q.ann} — ${q.q}`:q.say?`„${q.say}“ — ${q.q||'Was antwortest du?'}`:q.q}
-  out.push({text,opts,right,tip:q.tip||'',isG:q.t==='ord'||q.c==='G',art:q.t==='art'})}
+  out.push({text,opts,right,tip:q.t==='art'?artTipUz(q.n,q.a):tipUz(q),isG:q.t==='ord'||q.c==='G',art:q.t==='art',uz:q.t==='art'&&NOUN_UZ[q.n]?`${q.a} ${q.n} — ${NOUN_UZ[q.n]}`:''})}
  return out;
 }
 
@@ -2940,12 +3006,12 @@ async function startRace(opts){
  const touch=matchMedia('(pointer:coarse)').matches;root.classList.toggle('touch',touch);
  try{await loadThree();await Promise.all([loadModels(),loadSounds()])}catch(e){root.querySelector('#r3load').innerHTML='<div><b>3D-Engine konnte nicht geladen werden.</b><p class="muted" style="margin-top:8px">Bitte Internetverbindung prüfen.</p><button class="btn primary" style="margin-top:14px" onclick="Race3D.exit()">Zurück</button></div>';return}
  await new Promise(r=>setTimeout(r,30));
- const cfg=opts.cfg,seed=opts.seed;
+ let cfg=opts.cfg;const seed=opts.seed;if(opts.qs)cfg=Object.assign({},cfg,{len:Math.round(300+(opts.qs.length-1)*gapOf(cfg)*1.15+450)});
  const cv=root.querySelector('#r3c');const renderer=new THREE.WebGLRenderer({canvas:cv,antialias:!touch,powerPreference:'high-performance'});
  renderer.setPixelRatio(Math.min(devicePixelRatio,touch?1.5:2));renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=cfg.tod==='night'?1.15:1;renderer.shadowMap.enabled=!touch;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
  const scene=new THREE.Scene(),cam=new THREE.PerspectiveCamera(64,1,.3,6000);
- const T=makeTrack(cfg.len,seed);const nG=nGates(cfg),GP=gapOf(cfg);
- G={mode:opts.mode,cfg,seed,T,renderer,scene,cam,root,touch,phase:'load',goAt:0,t0:0,keys:{},me:null,bots:[],remote:new Map(),qs:buildQs(cfg,seed,nG),gateS:null,leadS:0,lastPos:0,parts:[],lastHit:0,mist:[],lastPub:0,lastHud:0,firstFin:0,camPos:null,shake:0,done:false,xpGiven:false,raf:0,lastT:0,fbT:0,qArm:0,qHold:0};G.gateS=gatePos(cfg,G.qs);
+ const T=makeTrack(cfg.len,seed);const nG=opts.qs?opts.qs.length:nGates(cfg),GP=gapOf(cfg);
+ G={mode:opts.mode,cfg,seed,T,renderer,scene,cam,root,touch,phase:'load',goAt:0,t0:0,keys:{},me:null,bots:[],remote:new Map(),qs:opts.qs||buildQs(cfg,seed,nG),gateS:null,fehler:!!opts.qs,leadS:0,lastPos:0,parts:[],lastHit:0,mist:[],lastPub:0,lastHud:0,firstFin:0,camPos:null,shake:0,done:false,xpGiven:false,raf:0,lastT:0,fbT:0,qArm:0,qHold:0};G.gateS=gatePos(cfg,G.qs);
  const W0=buildWorld(scene,T,cfg,seed,renderer);G.sun=W0.sun;G.sunDir=W0.sunDir;
  if(renderer.shadowMap.enabled){const s=G.sun;s.castShadow=true;s.shadow.mapSize.set(2048,2048);const sc=s.shadow.camera;sc.left=-40;sc.right=40;sc.top=40;sc.bottom=-40;sc.near=1;sc.far=320;s.shadow.bias=-.0004}
  G.gates=buildGates(scene,T,G.qs);
@@ -3002,7 +3068,7 @@ function gateCheck(c,isMe){
   if(isMe){play('coin',.55)||sNitro(false);fb(true,c.streak%3===0?`${c.streak}er-Serie! +2 Nitro`:'RICHTIG! +1 Nitro',`+${pts} Punkte${early>.6?' · Früh entschieden!':''}`);flash('r3ok');P.stats.correct++;P.stats.answers++;if(q.art){P.stats.art++;bumpMission('art')}else if(q.isG){P.stats.gram++;bumpMission('gram')}else P.stats.voc++;bumpMission('correct');bumpMission('streak',c.streak,'max');if(c.streak>P.stats.bestStreak)P.stats.bestStreak=c.streak}
   const gt=G.gates[k];if(gt&&isMe)gt.curt.forEach((cu,i)=>{cu.material.color.set(i===ln2?'#22e37a':'#333');cu.material.opacity=i===ln2?.35:.06})}
  else{c.streak=0;c.slowT=1.8;c.boostT=0;c.mega=false;
-  if(isMe){(play('skid',.55)&&play('break',.35))||sSkid();G.shake=.6;flash('r3hit');P.stats.answers++;fb(false,none?'ZU SPÄT! ⏱':'FALSCH! 💥',`Richtig: ${q.right}`,q.tip);G.mist.push({q:q.text,y:none?'(keine Antwort)':q.opts[ln2],r:q.right,t:q.tip});
+  if(isMe){(play('skid',.55)&&play('break',.35))||sSkid();G.shake=.6;flash('r3hit');P.stats.answers++;fb(false,none?'ZU SPÄT! ⏱':'FALSCH! 💥',`Richtig: ${q.right}`,q.tip);G.mist.push({qo:q,q:q.text,y:none?'(keine Antwort)':q.opts[ln2],r:q.right,t:q.tip});
    const gt=G.gates[k];if(gt)gt.curt.forEach((cu,i)=>{cu.material.color.set(q.opts[i]===q.right?'#22e37a':i===ln2?'#ff2d55':'#333');cu.material.opacity=(q.opts[i]===q.right||i===ln2)?.35:.06})}}
  if(isMe){saveP();qResult(q,ln2,ok,none)}
 }
@@ -3013,7 +3079,8 @@ function flash(id){const e=G.root.querySelector('#'+id);e.classList.add('on');se
 function qResult(q,ln,ok,none){const el=G.root.querySelector('#r3q');const ri=q.opts.indexOf(q.right);el.classList.add('done');el.classList.remove('lock');const qb=el.querySelector('#r3qb');if(qb){qb.removeAttribute('id');qb.style.width='0%'}
  el.querySelectorAll('[data-i]').forEach(b=>{const i=+b.dataset.i;b.classList.remove('sel');if(i===ri)b.classList.add('right');else if(!none&&i===ln)b.classList.add('wrong')});
  const h=el.querySelector('.qh');if(h)h.insertAdjacentHTML('beforeend',`<span class="verd ${ok?'ok':'bad'}">${ok?'✓ Richtig':none?'⏱ Zu spät':'✗ Falsch'}</span>`);
- clearTimeout(G.qHoldT);G.qHold=1;G.qHoldT=setTimeout(()=>{if(!G)return;G.qHold=0;renderQ()},ok?900:1600)}
+ const info=!ok&&q.tip?`💡 ${q.tip}`:ok&&q.uz?`📘 ${q.uz}`:'';if(info){const c=el.querySelector('.qcard');if(c)c.insertAdjacentHTML('beforeend',`<div class="qtip ${ok?'ok':''}">${esc(info)}</div>`)}
+ clearTimeout(G.qHoldT);G.qHold=1;G.qHoldT=setTimeout(()=>{if(!G)return;G.qHold=0;renderQ()},ok?(info?1300:900):(info?2700:1600))}
 function renderQ(){const el=G.root.querySelector('#r3q'),k=G.me.nextGate;if(k>=G.qs.length||G.me.fin){el.classList.add('hide');return}const q=G.qs[k];el.classList.remove('hide');
  const n=q.opts.length,mx=Math.max(...q.opts.map(o=>o.length)),narrow=innerWidth<700;const cols=mx>26?1:(narrow?(n===3?(mx<=9?3:1):(n===4?2:n)):(mx>18?2:n));G.qCols=cols;
  el.innerHTML=`<div class="qcard"><div class="qh">${ic(q.art?'book':q.isG?'cap':'chat','sm')} ${q.art?'Artikel':q.isG?'Grammatik':'Wortschatz'} <span class="qn">${k+1}/${G.qs.length}</span><div class="qbar"><i id="r3qb"></i></div></div><div class="qt">${fmt(q.text)}</div></div>
@@ -3096,7 +3163,7 @@ function showRes(){if(!G||G.done)return;G.done=true;MUS.hype(false);const st=sta
   <div class="pod3">${order.map(e=>{const k=top.indexOf(e);return `<div><b>${esc(e.n)}</b><span style="height:${hh[k]}px;background:linear-gradient(180deg,${e.col},rgba(15,23,42,.6))">${k+1}</span></div>`}).join('')}</div>
   <table><thead><tr><th>#</th><th>Fahrer</th><th>Zeit</th><th>Punkte</th><th>Richtig</th></tr></thead><tbody>${st.map((e,i)=>`<tr class="${e.me?'me':''}"><td>${i+1}</td><td><span style="color:${e.col}">●</span> ${esc(e.n)}${e.bot?' 🤖':''}${G.cfg.team?` <small class="muted">${TEAMS[e.tm||0].n.replace('Team ','')}</small>`:''}</td><td>${e.fin?fmtT(e.fin):'–'}</td><td>${e.sc||0}</td><td>${e.cr||0}${e.tot?'/'+e.tot:''}</td></tr>`).join('')}</tbody></table>
   <div class="xpgain" style="margin-top:14px"><div class="top"><span>${ic('bolt','sm')} Erfahrung</span><b>+${G.xp||0} XP</b></div></div>
-  ${G.mist.length?`<details><summary>Fehler-Analyse (${G.mist.length}) — xatolar ustida ishlash</summary>${G.mist.map(m=>`<div class="mitem"><div class="q">${fmt(m.q)}</div><div class="y">✗ ${esc(m.y)}</div><div class="r">✓ ${esc(m.r)}</div>${m.t?`<div class="t">${esc(m.t)}</div>`:''}</div>`).join('')}</details>`:''}
+  ${G.mist.length?`<div class="mistbox"><div class="mh"><b>Xatolar ustida ishlash (${G.mist.length})</b>${G.mode==='solo'?`<button class="btn gold sm" onclick="Race3D.fehler()">🔁 Fehler-Rennen</button>`:''}</div>${G.mode==='solo'?'<p class="muted" style="font-size:12.5px;margin:4px 0 6px">Fehler-Rennen — faqat xato qilgan savollaringiz bilan qisqa poyga. 2 marta to\'g\'ri javob bersangiz, o\'zlashtirgan bo\'lasiz.</p>':''}${G.mist.map(m=>`<div class="mitem"><div class="q">${fmt(m.q)}</div><div class="y">✗ ${esc(m.y)}</div><div class="r">✓ ${esc(m.r)}</div>${m.t?`<div class="t">💡 ${esc(m.t)}</div>`:''}</div>`).join('')}</div>`:G.total?'<div class="mistbox ok"><b>🎉 Hech qanday xato yo\'q!</b></div>':''}
   <div class="acts">${G.mode==='solo'?`<button class="btn primary" onclick="Race3D.again()">${ic('refresh')} Nochmal</button>`:NET.host?`<button class="btn primary" onclick="Race3D.newRace()">${ic('refresh')} Neues Rennen</button>`:''}<button class="btn glass" onclick="Race3D.exit()">${ic('left')} Zur Lobby</button></div></div>`;
  G.root.appendChild(div);if(pos===1)FX.big();if(G.lv&&G.lv.after>G.lv.before)setTimeout(()=>levelUp(G.lv.before,G.lv.after),1600)}
 function menu(){if(!G)return;if(G.root.querySelector('.pmenu3'))return G.root.querySelector('.pmenu3').remove();const d=document.createElement('div');d.className='pmenu3';
@@ -3167,7 +3234,11 @@ function onNet(){if(!NET.r)return;const peers=NET.r.peers(),h=hostPeer();
  if(SPEC)return;if(!G&&App.view==='race'){renderNet();renderSet();renderDrv()}}
 function hostStart(){if(!NET.host||!NET.r)return;const seed=1+Math.floor(Math.random()*2e9);NET.lastSeed=seed;NET.r.presence({ph:'cd',seed,cfg:ST.cfg,go:NET.spec?6000:5000}).catch(()=>{});if(NET.spec)return specStart(seed);startRace({mode:'online',cfg:Object.assign({},ST.cfg),seed,goIn:5000})}
 function newRace(){if(NET.r)NET.r.presence({ph:'lobby',seed:null}).catch(()=>{});exit()}
-function again(){const cfg=Object.assign({},G.cfg);stopRace();startRace({mode:'solo',cfg,seed:1+Math.floor(Math.random()*2e9),goIn:4000})}
+function fehler(){if(!G||!G.mist.length)return;const cfg=Object.assign({},G.cfg),seen=new Set(),u=[];G.mist.forEach(m=>{if(m.qo&&!seen.has(m.qo.text)){seen.add(m.qo.text);u.push(m.qo)}});
+ const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+ let list=[...sh(u),...sh(u)];while(list.length<3)list.push(...sh(u));list=list.slice(0,10).map(q=>Object.assign({},q,{opts:sh(q.opts)}));
+ stopRace();startRace({mode:'solo',cfg,seed:1+Math.floor(Math.random()*2e9),goIn:4000,qs:list})}
+function again(){const cfg=Object.assign({},G.cfg);if(G.fehler)cfg.len=ST.cfg.len;stopRace();startRace({mode:'solo',cfg,seed:1+Math.floor(Math.random()*2e9),goIn:4000})}
 function solo(){unlockAudio();saveST();startRace({mode:'solo',cfg:Object.assign({},ST.cfg),seed:1+Math.floor(Math.random()*2e9),goIn:4500})}
 
 /* ---------- teacher / projector mode ---------- */
@@ -3264,7 +3335,7 @@ function startShow(){stopShow();const cv=document.getElementById('r3show');if(!c
   const a=t*.0004,wide=cam.aspect>1.6&&innerWidth>760;cam.fov=cam.aspect<1.4?34:24;cam.updateProjectionMatrix();cam.position.set(Math.sin(a)*13,3.4,Math.cos(a)*13);cam.lookAt(0,.8,0);if(wide){cam.setViewOffset(w,h,-w*.27,0,w,h)}else cam.clearViewOffset();if(car.userData.glb)car.userData.wheels.forEach(wh=>wh.rotation.x+=.03);else car.userData.wheels.forEach(wh=>wh.children.forEach(c=>c.rotation.x+=.03));r.render(sc,cam);S.raf=requestAnimationFrame(step)};S.raf=requestAnimationFrame(step)}).catch(()=>{})}
 function stopShow(){if(SHOW){cancelAnimationFrame(SHOW.raf);try{SHOW.r.dispose();SHOW.r.forceContextLoss()}catch(e){}SHOW=null}}
 
-return{lobby,solo,again,exit,menu,start:hostStart,newRace,create:createRoom,join:c=>joinRoom(c,false),leave:leaveRoom,
+return{lobby,solo,again,fehler,exit,menu,start:hostStart,newRace,create:createRoom,join:c=>joinRoom(c,false),leave:leaveRoom,
  sound(){if(G){P.settings.sound?(engOn(),MUS.start()):(engOff(),MUS.stop());menu();menu()}},music(){P.settings.music=P.settings.music===false;saveP();if(G){P.settings.music?MUS.start():MUS.stop();if(G.root.querySelector('.pmenu3')){menu();menu()}}},
  setName(v){ST.name=clean(v);saveST();pubLobby()},setCar(i){ST.car=i;saveST();pubLobby();click3();renderDrv()},setCol(i){ST.col=i;saveST();pubLobby();renderDrv()},setBots(n){ST.bots=n;saveST();renderNet()},
  cfg(k,v){if(NET.r&&!NET.host)return;ST.cfg[k]=v;saveST();if(NET.host&&NET.r)NET.r.presence({cfg:ST.cfg}).catch(()=>{});renderSet();if(k==='team'){renderDrv();renderNet()}},setTeam(i){ST.tm=i;saveST();pubLobby();renderDrv()},teacher:hostTeacher,specEnd,specNew,copyRep,
