@@ -943,6 +943,11 @@ body.raceonly main#view{padding-bottom:20px}
 .r2-acts{position:sticky;bottom:-18px;margin:14px -16px -18px;padding:12px 16px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(11,16,48,0),#0b1030 30%);border-radius:0 0 28px 28px}
 @media (max-width:420px){.r2-stats b{font-size:15px}.r2-stars i{font-size:40px}.r2-stars i:nth-child(2){font-size:50px}}
 body.resfx #fx{opacity:.45}
+.brand .brandlogo{height:34px;width:auto;display:block}
+.brand{display:flex;align-items:center;gap:10px}
+.brand .brandtag{font:800 11px Unbounded,Manrope,sans-serif;letter-spacing:.08em;padding:4px 8px;border-radius:8px;background:linear-gradient(90deg,#FFC93C,#ff8a00);color:#1a1200;white-space:nowrap}
+.spec .splogo{height:44px;width:auto}
+@media (max-width:420px){.brand .brandlogo{height:28px}.brand .brandtag{font-size:9.5px;padding:3px 6px}}
 </style>
 </head>
 <body>
@@ -950,7 +955,7 @@ body.resfx #fx{opacity:.45}
 <div id="app">
  <div class="tricolor"></div>
  <header class="topbar">
-  <div class="brand" onclick="go('race')"><div class="mk" id="brandMk"></div><div><b>Blitz</b><small>Rally 3D</small></div></div>
+  <div class="brand" onclick="go('race')"><img class="brandlogo" src="assets/blitz-logo.png" alt="Blitz · nemis tili markazi"><span class="brandtag">Rally 3D</span></div>
   <nav class="nav" id="topNav"></nav>
   <div class="tb-sp"></div>
   <span class="stat-pill fire hide-m" id="tbStreak"></span>
@@ -4167,7 +4172,7 @@ function solo(){unlockAudio();saveST();startRace({mode:'solo',cfg:Object.assign(
 let SPEC=null;
 function specStart(seed){const cfg=Object.assign({},ST.cfg),n=nGates(cfg),gp=gapOf(cfg);stopShow();
  SPEC={seed,cfg,qs:buildQs(cfg,seed,n),gateS:null,goAt:performance.now()+6000,ph:'cd',t0:0,firstFin:0,rec:new Map(),done:false,iv:0};
- V().innerHTML=`<div class="wrap view-in spec"><div class="sp-head panel"><div><small>RAUM-CODE</small><b class="sp-code">${esc(NET.code)}</b></div><div class="sp-info"><b>${TRACKS[cfg.city]} · ${(cfg.len/1000).toFixed(1)} km · ${srcName(cfg)}</b><span id="spPh">Countdown …</span></div><div class="sp-btns"><button class="btn glass" onclick="Race3D.specEnd()">${ic('flag')} Rennen beenden</button></div></div>
+ V().innerHTML=`<div class="wrap view-in spec"><div class="sp-head panel"><img class="splogo" src="assets/blitz-logo.png" alt="Blitz"><div><small>RAUM-CODE</small><b class="sp-code">${esc(NET.code)}</b></div><div class="sp-info"><b>${TRACKS[cfg.city]} · ${(cfg.len/1000).toFixed(1)} km · ${srcName(cfg)}</b><span id="spPh">Countdown …</span></div><div class="sp-btns"><button class="btn glass" onclick="Race3D.specEnd()">${ic('flag')} Rennen beenden</button></div></div>
   <div class="sp-grid"><section class="panel"><div class="lbl">Live-Rennen</div><div id="spTrack" class="sp-track"></div></section><section class="panel"><div class="lbl">Antworten pro Tor (live)</div><div id="spGates" class="sp-gates"></div></section></div></div>`;
  SPEC.gateS=gatePos(cfg,SPEC.qs);SPEC.iv=setInterval(specTick,250);specTick()}
 function specStop(){if(SPEC){clearInterval(SPEC.iv);SPEC=null}}
@@ -4188,7 +4193,7 @@ function specEnd(){const S=SPEC;if(!S||S.done)return;S.done=true;NET.r&&NET.r.pr
  const gst=S.qs.map((q,k)=>Object.assign({q,k},gateStat(k)));const hard=gst.filter(g=>g.n).sort((a,b)=>a.ok/a.n-b.ok/b.n).slice(0,3);
  const avg=rs.length?Math.round(rs.reduce((a,r)=>a+(r.a.length?r.cr/r.a.length:0),0)/rs.length*100):0;
  S.report=`Blitz Rally 3D – Klassenbericht\n${TRACKS[S.cfg.city]} · ${srcName(S.cfg)} · ${tot} Fragen · Raum ${NET.code}\nDurchschnitt: ${avg}% richtig\n\nRANGLISTE\n`+rs.map((r,i)=>`${i+1}. ${r.n} – ${r.cr}/${r.a.length} richtig – ${r.sc} Punkte${r.f?' – '+fmtT(r.f):''}`).join('\n')+`\n\nFRAGEN\n`+gst.map(g=>`Tor ${g.k+1}: ${g.q.text.replace(/<[^>]+>|\*\*/g,'')} → ${g.q.right} | ${g.n?Math.round(g.ok/g.n*100):0}% richtig${g.top?' | Fehler: '+g.top:''}`).join('\n');
- V().innerHTML=`<div class="wrap view-in spec"><div class="sp-head panel"><div><small>RAUM-CODE</small><b class="sp-code">${esc(NET.code)}</b></div><div class="sp-info"><b>Klassenbericht · ${TRACKS[S.cfg.city]} · ${srcName(S.cfg)}</b><span>${rs.length} Fahrer · Ø ${avg}% richtig</span></div>
+ V().innerHTML=`<div class="wrap view-in spec"><div class="sp-head panel"><img class="splogo" src="assets/blitz-logo.png" alt="Blitz"><div><small>RAUM-CODE</small><b class="sp-code">${esc(NET.code)}</b></div><div class="sp-info"><b>Klassenbericht · ${TRACKS[S.cfg.city]} · ${srcName(S.cfg)}</b><span>${rs.length} Fahrer · Ø ${avg}% richtig</span></div>
   <div class="sp-btns"><button class="btn glass" onclick="Race3D.copyRep()">Bericht kopieren</button><button class="btn gold" onclick="Race3D.specNew()">${ic('refresh')} Neues Rennen</button></div></div>
   <div class="sp-grid"><section class="panel"><div class="lbl">Rangliste</div>${S.cfg.team?(()=>{const t=[0,0];rs.forEach(r=>t[r.tm]+=r.sc);return `<div class="teamsc big">${TEAMS.map((x,i)=>`<span style="background:${x.c}">${x.n} <b>${t[i]}</b>${t[i]>t[1-i]?' 🏆':''}</span>`).join('')}</div>`})():''}
    <table class="stats"><thead><tr><th>#</th><th>Name</th><th>Richtig</th><th>Punkte</th><th>Zeit</th></tr></thead><tbody>${rs.map((r,i)=>`<tr><td>${i+1}</td><td><span style="color:${r.col}">●</span> ${esc(r.n)}</td><td><b>${r.cr}/${r.a.length}</b> <small class="muted">${r.a.length?Math.round(r.cr/r.a.length*100):0}%</small></td><td>${r.sc}</td><td class="mono">${r.f?fmtT(r.f):'–'}</td></tr>`).join('')||'<tr><td colspan="5">Keine Fahrer</td></tr>'}</tbody></table>
@@ -4291,7 +4296,7 @@ function raceTo(c){Race3D.pickCity(c);go('race')}
 const NAVS=[];document.body.classList.add('raceonly');
 document.getElementById('topNav').innerHTML=NAVS.map(([v,i,l])=>`<button data-v="${v}" onclick="go('${v}')">${ic(i,'sm')}${l}</button>`).join('');
 document.getElementById('bNav').innerHTML=NAVS.map(([v,i,l])=>`<button data-v="${v}" onclick="go('${v}')">${ic(i)}${l}</button>`).join('');
-document.getElementById('brandMk').innerHTML=ic('zap');document.getElementById('tbSet').innerHTML=ic('sliders');
+document.getElementById('tbSet').innerHTML=ic('sliders');
 (function boot(){
  loadP();S.sound=P.settings.sound;S.level=P.lvl;ensureDaily();
  FX.init();Pano.mount(document.getElementById('bg'));Pano.start();
