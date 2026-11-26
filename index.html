@@ -949,6 +949,49 @@ body.resfx #fx{opacity:.45}
 .spec .splogo{height:44px;width:auto}
 @media (max-width:420px){.brand .brandlogo{height:28px}.brand .brandtag{font-size:9.5px;padding:3px 6px}}
 .swatch button.orig{display:grid;place-items:center;color:#111;font-weight:900;font-size:13px}
+/* v12 — Lektion picker */
+.lespick{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;max-height:220px;overflow:auto;padding:2px}
+.lespick button{display:flex;align-items:center;gap:8px;text-align:left;padding:8px 10px;border-radius:12px;border:1.5px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:inherit;font:600 12.5px/1.25 Manrope,system-ui,sans-serif;cursor:pointer;min-width:0}
+.lespick button b{flex:none;color:#5BC8FA;font:800 12px Unbounded,Manrope,sans-serif;min-width:30px}
+.lespick button span{flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.lespick button small{flex:none;font-size:10.5px;opacity:.55}
+.lespick button.on{border-color:#5BC8FA;background:rgba(3,137,255,.28);box-shadow:0 0 0 2px rgba(91,200,250,.25)}
+.lespick button.on b{color:#fff}
+.lessum{margin-top:8px;font-size:12.5px;font-weight:700;opacity:.9;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lessum button{margin-left:auto;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:inherit;border-radius:9px;padding:4px 9px;font:700 12px Manrope,system-ui,sans-serif;cursor:pointer}
+@media (max-width:560px){.lespick{grid-template-columns:1fr 1fr;max-height:190px}}
+/* v12 — eye-catching question card */
+.r3d .qcard{background:#fff;color:#0F172A;border:0;border-radius:20px;padding:0 0 0;overflow:hidden;box-shadow:0 14px 40px rgba(2,6,23,.45),0 0 0 3px rgba(91,200,250,.55);backdrop-filter:none;-webkit-backdrop-filter:none;position:relative}
+.r3d .rh-q .qh{background:linear-gradient(90deg,#2529D8,#0389FF 60%,#5BC8FA);color:#fff;padding:7px 12px;font-size:11.5px;letter-spacing:1.2px}
+.r3d .rh-q .qh .ic{color:#fff}
+.r3d .rh-q .qn{color:#fff;opacity:1;background:rgba(255,255,255,.2);padding:2px 7px;border-radius:7px;letter-spacing:0}
+.r3d .rh-q .qsec{margin-left:auto;background:#fff;color:#2529D8;padding:3px 9px;border-radius:9px;font:800 12.5px Unbounded,Manrope,sans-serif;letter-spacing:0;min-width:54px;text-align:center;text-transform:none}
+.r3d .rh-q .qt{color:#0F172A;font-size:clamp(18px,2.2vw,23px);line-height:1.3;padding:10px 14px 12px;margin:0}
+.r3d .rh-q .qt .gap{min-width:56px;border-bottom:0;height:1.05em;vertical-align:-.12em;transform:none;border-radius:8px;background:repeating-linear-gradient(90deg,#DBEAFE 0 8px,#BFDBFE 8px 16px);box-shadow:inset 0 0 0 2px #0389FF;animation:gapb 1.2s ease-in-out infinite}
+@keyframes gapb{50%{box-shadow:inset 0 0 0 2px #0389FF,0 0 0 4px rgba(3,137,255,.18)}}
+.r3d .qcard .qbar{position:absolute;left:0;right:0;bottom:0;height:5px;margin:0;border-radius:0;background:#E2E8F0}
+.r3d .qcard .qbar i{border-radius:0}
+.r3d .rh-q.in .qcard{animation:qin2 .45s cubic-bezier(.2,1.3,.4,1),qglow 1.1s ease-out}
+@keyframes qin2{0%{transform:translateY(40px) scale(.9);opacity:0}100%{transform:none;opacity:1}}
+@keyframes qglow{0%,30%{box-shadow:0 14px 40px rgba(2,6,23,.45),0 0 0 3px #5BC8FA,0 0 0 14px rgba(91,200,250,.45)}100%{box-shadow:0 14px 40px rgba(2,6,23,.45),0 0 0 3px rgba(91,200,250,.55),0 0 0 26px rgba(91,200,250,0)}}
+.r3d .rh-q.hurry:not(.done) .qcard{box-shadow:0 14px 40px rgba(2,6,23,.45),0 0 0 3px #FF2D55;animation:hurry .5s ease-in-out infinite alternate}
+.r3d .rh-q.hurry:not(.done) .qsec{background:#FF2D55;color:#fff}
+@keyframes hurry{to{box-shadow:0 14px 40px rgba(2,6,23,.45),0 0 0 3px #FF2D55,0 0 0 9px rgba(255,45,85,.3)}}
+/* answer buttons = lane colours of the arches on the road */
+.r3d .rh-q .qo button{background:var(--gc);border:2.5px solid rgba(255,255,255,.35);backdrop-filter:none;-webkit-backdrop-filter:none;color:#fff;box-shadow:0 6px 18px color-mix(in srgb,var(--gc) 45%,transparent),inset 0 -4px 0 rgba(0,0,0,.18);text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.r3d .rh-q .qo button i{background:rgba(255,255,255,.95);color:var(--gc);text-shadow:none}
+.r3d .rh-q .qo button.sel{background:var(--gc);border-color:#fff;transform:translateY(-3px) scale(1.02);box-shadow:0 0 0 3px #fff,0 10px 28px color-mix(in srgb,var(--gc) 70%,transparent)}
+.r3d .rh-q .qo button.sel i::after{content:'✓'}
+.r3d .rh-q .qo button.sel i{font-size:0}.r3d .rh-q .qo button.sel i::after{font-size:15px}
+.r3d .rh-q.lock .qo button:not(.sel){opacity:.35;filter:saturate(.4)}
+.r3d .rh-q.arm .qo button{opacity:.6}
+.r3d .rh-q.done .qo button{filter:saturate(.3)}
+.r3d .rh-q.done .qo button.right,.r3d .rh-q.done .qo button.wrong{filter:none}
+.r3d .rh-q .verd{margin-left:6px}
+.r3d .qcard .qtip{margin:0 12px 14px;background:#FFF7DB;border:1px solid #F5C44B;color:#6B4A00}
+.r3d .qcard .qtip.ok{background:#E9FBF0;border-color:#86EFAC;color:#14532D}
+@media (max-width:760px){.r3d .rh-q .qt{font-size:18px;padding:8px 12px 10px}.r3d .rh-q .qh{padding:6px 10px}}
+@media (max-width:760px) and (max-height:500px){.r3d .rh-q .qt{font-size:15px;padding:6px 12px 8px}}
 </style>
 </head>
 <body>
@@ -3599,8 +3642,8 @@ const vlocked2=k=>vLocked(k);
 const vcol=(k,c)=>{c=Number(c);if(!(c>=0))return VEH[num(k)%NV].col;return COLS[c%COLS.length]};
 const BOOKS={mA1:{n:'Momente A1',lv:'A1',d:BK_MA1},mA2:{n:'Momente A2',lv:'A2',d:BK_MA2},mB1:{n:'Momente B1',lv:'B1',d:BK_MB1},vB2:{n:'Vielfalt B2',lv:'B2',d:BK_VB2},vC1:{n:'Vielfalt C1',lv:'C1',d:BK_VC1}};
 const lvlOf=c=>c.src&&BOOKS[c.src]?BOOKS[c.src].lv:c.lvl;
-function srcName(c){const B=BOOKS[c.src];if(!B)return c.lvl;const ms=(c.mods||[]).slice().sort((a,b)=>a-b);return B.n+(ms.length?' · Modul '+ms.join(', '):'')}
-function bookPool(c){const B=BOOKS[c.src];if(!B)return null;const ms=Array.isArray(c.mods)?c.mods:[];const out=[];B.d.forEach(([l,t,qs])=>{if(ms.length&&!ms.includes(Math.ceil(l/3)))return;qs.forEach(q=>out.push({t:'mc',q:q[0],o:q.slice(1,-1),tip:q[q.length-1],c:'B',les:l}))});return out}
+function srcName(c){const B=BOOKS[c.src];if(!B)return c.lvl;const ls=(c.les||[]).slice().sort((a,b)=>a-b);if(ls.length)return B.n+' · Lektion '+ls.join(', ');const ms=(c.mods||[]).slice().sort((a,b)=>a-b);return B.n+(ms.length?' · Modul '+ms.join(', '):'')}
+function bookPool(c){const B=BOOKS[c.src];if(!B)return null;const ms=Array.isArray(c.mods)?c.mods:[],ls=Array.isArray(c.les)?c.les:[];const out=[];B.d.forEach(([l,t,qs])=>{if(ls.length){if(!ls.includes(l))return}else if(ms.length&&!ms.includes(Math.ceil(l/3)))return;qs.forEach(q=>out.push({t:'mc',q:q[0],o:q.slice(1,-1),tip:q[q.length-1],c:'B',les:l}))});return out}
 const GAPS={A1:430,A2:390,B1:350,B2:320,C1:300},gapOf=c=>GAPS[lvlOf(c)]||280,nGates=c=>{let n=Math.max(3,Math.floor((c.len-420)/gapOf(c)));const p=bookPool(c);if(p&&p.length>=3)n=Math.min(n,p.length);return n};
 const RATE={A1:8,A2:10,B1:12,B2:14,C1:16};
 function readT(q,cfg){const txt=String(q.text).replace(/<[^>]+>|\*\*|„|“|—/g,'');const ch=txt.length+q.opts.join(' ').length;let t=2.2+ch/(RATE[lvlOf(cfg)]||11);
@@ -4161,14 +4204,14 @@ function fireNitro(){if(!G||G.phase!=='race'||!G.me||G.me.fin||G.me.nitro<=0||G.
 function pop(t,cls){const e=G.root.querySelector('#r3pop');e.className='rh-pop show '+(cls||'');e.textContent=t;clearTimeout(G.popT);G.popT=setTimeout(()=>{if(G)e.className='rh-pop'},1400)}
 function fb(ok,t,sub,tip){const c=G.root.querySelector('#r3c2');c.innerHTML=`<div class="fbk ${ok?'ok':'bad'}">${esc(t)}<small>${esc(sub)}</small>${tip?`<small class="tip">${esc(tip)}</small>`:''}</div>`;clearTimeout(G.fbT);G.fbT=setTimeout(()=>{if(G&&G.phase==='race')c.innerHTML=''},ok?1300:2600)}
 function flash(id){const e=G.root.querySelector('#'+id);e.classList.add('on');setTimeout(()=>e&&e.classList.remove('on'),300)}
-function qResult(q,ln,ok,none){const el=G.root.querySelector('#r3q');const ri=q.opts.indexOf(q.right);el.classList.add('done');el.classList.remove('lock');const qb=el.querySelector('#r3qb');if(qb){qb.removeAttribute('id');qb.style.width='0%'}
+function qResult(q,ln,ok,none){const el=G.root.querySelector('#r3q');const ri=q.opts.indexOf(q.right);el.classList.add('done');el.classList.remove('lock','hurry');const qb=el.querySelector('#r3qb');if(qb){qb.removeAttribute('id');qb.style.width='0%'}
  el.querySelectorAll('[data-i]').forEach(b=>{const i=+b.dataset.i;b.classList.remove('sel');if(i===ri)b.classList.add('right');else if(!none&&i===ln)b.classList.add('wrong')});
  const h=el.querySelector('.qh');if(h)h.insertAdjacentHTML('beforeend',`<span class="verd ${ok?'ok':'bad'}">${ok?'✓ Richtig':none?'⏱ Zu spät':'✗ Falsch'}</span>`);
  const info=!ok&&q.tip?`💡 ${q.tip}`:ok&&q.uz?`📘 ${q.uz}`:'';if(info){const c=el.querySelector('.qcard');if(c)c.insertAdjacentHTML('beforeend',`<div class="qtip ${ok?'ok':''}">${esc(info)}</div>`)}
  clearTimeout(G.qHoldT);G.qHold=1;G.qHoldT=setTimeout(()=>{if(!G)return;G.qHold=0;renderQ()},ok?(info?1300:900):(info?2700:1600))}
 function renderQ(){const el=G.root.querySelector('#r3q'),k=G.me.nextGate;if(k>=G.qs.length||G.me.fin){el.classList.add('hide');return}const q=G.qs[k];el.classList.remove('hide');if(G.lastQ!==k&&G.phase==='race'){G.lastQ=k;play('ui_q',.3)}
  const n=q.opts.length,mx=Math.max(...q.opts.map(o=>o.length)),narrow=innerWidth<700;const cols=mx>26?1:(narrow?(n===3?(mx<=9?3:1):(n===4?2:n)):(mx>18?2:n));G.qCols=cols;
- el.innerHTML=`<div class="qcard"><div class="qh">${ic(q.art?'book':q.isG?'cap':'chat','sm')} ${q.les?'Lektion '+q.les:q.art?'Artikel':q.isG?'Grammatik':'Wortschatz'} <span class="qn">${k+1}/${G.qs.length}</span><div class="qbar"><i id="r3qb"></i></div></div><div class="qt">${fmt(q.text)}</div></div>
+ el.innerHTML=`<div class="qcard"><div class="qh">${ic(q.art?'book':q.isG?'cap':'chat','sm')} <span class="qcat">${q.les?'Lektion '+q.les:q.art?'Artikel':q.isG?'Grammatik':'Wortschatz'}</span> <span class="qn">${k+1}/${G.qs.length}</span><span class="qsec" id="r3qs">⏱ –</span></div><div class="qt">${fmt(q.text)}</div><div class="qbar"><i id="r3qb"></i></div></div>
   <div class="qo" style="grid-template-columns:repeat(${cols},1fr)">${q.opts.map((o,i)=>`<button tabindex="-1" data-i="${i}" style="--gc:${GCOL[i]}"><i>${G.touch?GL[i]:i+1}</i><span>${esc(o)}</span></button>`).join('')}</div>`;
  el.classList.remove('lock','done','in');void el.offsetWidth;el.classList.add('in','arm');G.qArm=performance.now()+450;clearTimeout(G.armT);G.armT=setTimeout(()=>el.classList.remove('arm'),450)}
 function botAI(b,dt){const k=b.nextGate;let tx=b.x;if(k<G.gateS.length){const d=G.gateS[k]-b.s,q=G.qs[k],n=q.opts.length;if(d<170){if(b.pick==null||b.pickG!==k){b.pickG=k;const ri=q.opts.indexOf(q.right);b.pick=Math.random()<(b.acc+(b.s>G.me.s+60?-.2:b.s<G.me.s-120?.1:0))?ri:(ri+1+Math.floor(Math.random()*(n-1)))%n}tx=HW-(b.pick+.5)*RW/n}}
@@ -4203,7 +4246,7 @@ function loop(now){if(!G)return;const dt=Math.min(.05,(now-G.lastT)/1000);G.last
  G.renderer.render(G.scene,G.cam);
  engSet(me.v,me.boostT>0);MUS.hype(me.s/G.cfg.len>.72||me.boostT>0);const sfx=G.root.querySelector('#r3sfx');sfx.classList.toggle('on',me.boostT>0);sfx.classList.toggle('mid',me.boostT<=0&&me.v>46);
  if(now-G.lastHud>100){G.lastHud=now;hud(now)}
- if(G.phase==='race'&&!me.fin&&me.nextGate<G.gateS.length){const k=me.nextGate,d=G.gateS[k]-me.s,tot=k?G.gateS[k]-G.gateS[k-1]:G.gateS[0];const qb=G.root.querySelector('#r3qb');if(qb){qb.style.width=Math.max(0,Math.min(100,d/tot*100))+'%';qb.classList.toggle('warn',d<90)}if(!G.qHold)G.root.querySelector('#r3q').classList.toggle('lock',d<LOCKD)}
+ if(G.phase==='race'&&!me.fin&&me.nextGate<G.gateS.length){const k=me.nextGate,d=G.gateS[k]-me.s,tot=k?G.gateS[k]-G.gateS[k-1]:G.gateS[0];const qb=G.root.querySelector('#r3qb');if(qb){qb.style.width=Math.max(0,Math.min(100,d/tot*100))+'%';qb.classList.toggle('warn',d<90)}const qs=G.root.querySelector('#r3qs'),qq=G.root.querySelector('#r3q');if(qs){const sec=Math.max(0,Math.ceil((d-LOCKD)/Math.max(10,me.v)));if(qs._s!==sec){qs._s=sec;qs.textContent='⏱ '+sec+' s'}qq.classList.toggle('hurry',d<130)}if(!G.qHold)G.root.querySelector('#r3q').classList.toggle('lock',d<LOCKD)}
  if(G.mode==='online'&&NET.r&&now-G.lastPub>70){G.lastPub=now;const pt={rs:G.seed,s:+me.s.toFixed(1),x:+me.x.toFixed(2),v:+me.v.toFixed(1),b:me.boostT>0?1:0,w:me.slowT>0?1:0,f:Math.round(me.fin),sc:me.score,cr:me.correct,a:me.ans,nt:me.nitro,tm:me.tm};
   if(NET.host){pt.ph=G.done?'res':G.phase==='cd'?'cd':'race';pt.go=Math.max(0,Math.round(G.goAt-now));hostCheck(now)}NET.r.presence(pt).catch(()=>{})}
  if(G.mode==='online'&&!NET.host&&!G.done){const h=hostPeer();if((h&&h.presence.ph==='res'&&G.phase!=='cd')||(G.phase==='fin'&&now-G.myFinAt>45000))showRes()}
@@ -4339,14 +4382,14 @@ function onNet(){if(!NET.r)return;const peers=NET.r.peers(),h=hostPeer();
  if(!h&&performance.now()-NET.joinedAt>2500&&peers.length){const first=peers.slice().sort((a,b)=>a.peer<b.peer?-1:1)[0];if(first.isMe&&first.sameTab&&!NET.host){NET.host=true;NET.r.presence({h:1,ph:'lobby',cfg:ST.cfg}).catch(()=>{})}}
  if(h&&!(h.isMe&&h.sameTab)&&NET.host){NET.host=false;NET.r.presence({h:null,ph:null,cfg:null}).catch(()=>{})}
  if(h&&!(h.isMe&&h.sameTab)){const hp=h.presence;
-  if(hp.cfg&&typeof hp.cfg==='object'){const c=hp.cfg;if(TRACKS[c.city]&&LENS[c.len]&&LVLS.includes(c.lvl)&&['mix','W','G'].includes(c.cat)&&TODS[c.tod])ST.cfg=Object.assign({},c,{team:!!c.team,src:BOOKS[c.src]?c.src:'',mods:Array.isArray(c.mods)?c.mods.map(Number).filter(m=>m>=1&&m<=8).slice(0,8):[]})}
+  if(hp.cfg&&typeof hp.cfg==='object'){const c=hp.cfg;if(TRACKS[c.city]&&LENS[c.len]&&LVLS.includes(c.lvl)&&['mix','W','G'].includes(c.cat)&&TODS[c.tod])ST.cfg=Object.assign({},c,{team:!!c.team,src:BOOKS[c.src]?c.src:'',mods:Array.isArray(c.mods)?c.mods.map(Number).filter(m=>m>=1&&m<=8).slice(0,8):[],les:Array.isArray(c.les)?c.les.map(Number).filter(m=>m>=1&&m<=24).slice(0,24):[]})}
   if(hp.ph==='cd'&&num(hp.seed)&&hp.seed!==NET.lastSeed&&!G&&App.view==='race'){NET.lastSeed=hp.seed;startRace({mode:'online',cfg:Object.assign({},ST.cfg),seed:hp.seed,goIn:Math.max(500,num(hp.go,4000))});return}
   if(hp.ph==='lobby'&&G&&G.mode==='online'&&G.done){exit();return}}
  if(SPEC)return;if(!G&&App.view==='race'){renderNet();renderSet();renderDrv()}}
 function hostStart(){if(!NET.host||!NET.r)return;const seed=1+Math.floor(Math.random()*2e9);NET.lastSeed=seed;NET.r.presence({ph:'cd',seed,cfg:ST.cfg,go:NET.spec?6000:5000}).catch(()=>{});if(NET.spec)return specStart(seed);startRace({mode:'online',cfg:Object.assign({},ST.cfg),seed,goIn:5000})}
 function newRace(){if(NET.r)NET.r.presence({ph:'lobby',seed:null}).catch(()=>{});exit()}
 const DLY_CITY=['berlin','muenchen','frankfurt'];
-function dailyCfg(){const lvl=LVLS.includes(ST.cfg.lvl)?ST.cfg.lvl:'A1',d=today();return{d,lvl,cfg:{city:DLY_CITY[hashStr(d)%3],len:3600,lvl,cat:'mix',tod:['day','dusk','night'][hashStr(d+'t')%3],team:false,src:'',mods:[]},seed:1+hashStr('blitz-daily-'+d+'-'+lvl)%2e9}}
+function dailyCfg(){const lvl=LVLS.includes(ST.cfg.lvl)?ST.cfg.lvl:'A1',d=today();return{d,lvl,cfg:{city:DLY_CITY[hashStr(d)%3],len:3600,lvl,cat:'mix',tod:['day','dusk','night'][hashStr(d+'t')%3],team:false,src:'',mods:[],les:[]},seed:1+hashStr('blitz-daily-'+d+'-'+lvl)%2e9}}
 function daily(){unlockAudio();const D=dailyCfg();startRace({mode:'solo',cfg:D.cfg,seed:D.seed,goIn:4500,daily:D.d+'|'+D.lvl})}
 function pid(){let p='';try{p=localStorage.getItem('blitzPid')||''}catch(e){}if(!p){p='u'+Math.random().toString(36).slice(2,10);try{localStorage.setItem('blitzPid',p)}catch(e){}}return p}
 function bestKey(d,l){return 'blitzDaily_'+d+'_'+l}
@@ -4456,7 +4499,8 @@ function renderSet(){const el=document.getElementById('r3set');if(!el)return;con
  el.innerHTML=`<div class="lbl">Strecke ${ro?'· vom Host gewählt':''}</div><div class="${ro?'ro':''}"><div class="citypick">${Object.entries(TRACKS).map(([k,n])=>`<button class="${c.city===k?'on':''}" style="background-image:url(${Pano.thumb(city2pano[k],c.tod==='day'?'day':c.tod==='dusk'?'dusk':'night','clear',300,170)})" onclick="Race3D.cfg('city','${k}')"><span>${n}</span></button>`).join('')}</div>
   <div class="lbl">Fragen aus</div><div class="seg wrap"><button class="${!c.src?'on':''}" onclick="Race3D.cfg('src','')">Allgemein<small>A1–B2 Mix</small></button>${Object.entries(BOOKS).map(([k,B])=>`<button class="${c.src===k?'on':''}" onclick="Race3D.cfg('src','${k}')">${B.n}<small>Lektion 1–24</small></button>`).join('')}</div>
   ${c.src&&BOOKS[c.src]?`<div class="lbl">Modul <span class="muted" style="text-transform:none;letter-spacing:0">(bir nechtasini tanlash mumkin)</span></div><div class="modpick"><button class="${!(c.mods||[]).length?'on':''}" onclick="Race3D.mod(0)">Alle</button>${[1,2,3,4,5,6,7,8].map(m=>`<button class="${(c.mods||[]).includes(m)?'on':''}" onclick="Race3D.mod(${m})"><b>M${m}</b><small>L${m*3-2}–${m*3}</small></button>`).join('')}</div>
-   <div class="lesinfo">${BOOKS[c.src].d.filter(([l])=>!(c.mods||[]).length||(c.mods||[]).includes(Math.ceil(l/3))).map(([l,t])=>`<span><b>L${l}</b> ${esc(t)}</span>`).join('')}</div>`:
+   <div class="lbl">Lektion <span class="muted" style="text-transform:none;letter-spacing:0">(bitta mavzuni alohida o'ynash uchun bosing)</span></div><div class="lespick">${BOOKS[c.src].d.filter(([l])=>!(c.mods||[]).length||(c.mods||[]).includes(Math.ceil(l/3))).map(([l,t,qs])=>`<button class="${(c.les||[]).includes(l)?'on':''}" onclick="Race3D.les(${l})"><b>L${l}</b><span>${esc(t)}</span><small>${qs.length}</small></button>`).join('')}</div>
+   <div class="lessum">${(c.les||[]).length?`🎯 ${srcName(c).split(' · ')[1]} · ${(bookPool(c)||[]).length} ta savol <button onclick="Race3D.les(0)">✕ hammasi</button>`:`${(bookPool(c)||[]).length} ta savol tanlangan`}</div>`:
   `<div class="lbl">Niveau</div><div class="seg">${LVLS.map(l=>`<button class="${c.lvl===l?'on':''}" onclick="Race3D.cfg('lvl','${l}')">${l}</button>`).join('')}</div>`}
   <div class="lbl">Distanz</div><div class="seg">${Object.entries(LENS).map(([m,n])=>`<button class="${c.len==m?'on':''}" onclick="Race3D.cfg('len',${m})">${n}<small>${nGates(Object.assign({},c,{len:+m}))} Fragen</small></button>`).join('')}</div>
   ${c.src?'':`<div class="lbl">Fragen</div><div class="seg">${[['mix','Mix'],['W','Wortschatz'],['G','Grammatik']].map(([k,n])=>`<button class="${c.cat===k?'on':''}" onclick="Race3D.cfg('cat','${k}')">${n}</button>`).join('')}</div>`}
@@ -4481,7 +4525,7 @@ function stopShow(){if(SHOW){cancelAnimationFrame(SHOW.raf);try{SHOW.r.dispose()
 return{_G:()=>G,_K:()=>KIT,_paint:()=>JSON.stringify(Object.fromEntries(Object.entries(PAINT).map(([k,v])=>[k,[v.r,v.g,v.b]]))),useCar(i){if(vLocked(i))return;ST.car=i;VIEWK=i;saveST();toast('Neues Auto','Ausgewählt: '+VEH[i].n,{c:['#b45309','#FFC93C'],ic:'car'})},sheet,closeSheet,carStep,lobby,solo,again,fehler,daily,board:showBoard,exit,menu,start:hostStart,newRace,create:createRoom,join:c=>joinRoom(c,false),leave:leaveRoom,
  sound(){if(G){P.settings.sound?(engOn(),MUS.start()):(engOff(),MUS.stop());menu();menu()}},music(){P.settings.music=P.settings.music===false;saveP();if(G){P.settings.music?MUS.start():MUS.stop();if(G.root.querySelector('.pmenu3')){menu();menu()}}},
  setName(v){ST.name=clean(v);saveST();pubLobby()},setCar(i){if(vLocked(i))return;ST.car=i;saveST();pubLobby();click3();renderDrv()},setCol(i){ST.col=i;saveST();pubLobby();renderDrv()},setBots(n){ST.bots=n;saveST();renderNet()},
- cfg(k,v){if(NET.r&&!NET.host)return;ST.cfg[k]=v;if(k==='src')ST.cfg.mods=[];saveST();if(NET.host&&NET.r)NET.r.presence({cfg:ST.cfg}).catch(()=>{});renderSet();renderNet();if(k==='team')renderDrv()},mod(m){if(NET.r&&!NET.host)return;let ms=(ST.cfg.mods||[]).slice();if(!m)ms=[];else ms=ms.includes(m)?ms.filter(x=>x!==m):[...ms,m];ST.cfg.mods=ms;saveST();if(NET.host&&NET.r)NET.r.presence({cfg:ST.cfg}).catch(()=>{});renderSet()},setTeam(i){ST.tm=i;saveST();pubLobby();renderDrv()},teacher:hostTeacher,specEnd,specNew,copyRep,
+ cfg(k,v){if(NET.r&&!NET.host)return;ST.cfg[k]=v;if(k==='src'){ST.cfg.mods=[];ST.cfg.les=[]}saveST();if(NET.host&&NET.r)NET.r.presence({cfg:ST.cfg}).catch(()=>{});renderSet();renderNet();if(k==='team')renderDrv()},mod(m){if(NET.r&&!NET.host)return;let ms=(ST.cfg.mods||[]).slice();if(!m)ms=[];else ms=ms.includes(m)?ms.filter(x=>x!==m):[...ms,m];ST.cfg.mods=ms;ST.cfg.les=[];saveST();if(NET.host&&NET.r)NET.r.presence({cfg:ST.cfg}).catch(()=>{});renderSet()},les(l){if(NET.r&&!NET.host)return;let ls=(ST.cfg.les||[]).slice();if(!l)ls=[];else ls=ls.includes(l)?ls.filter(x=>x!==l):[...ls,l];ST.cfg.les=ls;saveST();if(NET.host&&NET.r)NET.r.presence({cfg:ST.cfg}).catch(()=>{});renderSet()},setTeam(i){ST.tm=i;saveST();pubLobby();renderDrv()},teacher:hostTeacher,specEnd,specNew,copyRep,
  leaveView(){stopShow();specStop();if(G)stopRace()},pickCity(c){ST.cfg.city={berlin:'berlin',muenchen:'muenchen',frankfurt:'frankfurt',heidelberg:'frankfurt',koeln:'frankfurt',hamburg:'berlin'}[c]||'berlin';saveST()},_G:()=>G,_NET:NET};
 })();
 function viewRace(){Race3D.lobby()}
